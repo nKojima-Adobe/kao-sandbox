@@ -21,25 +21,176 @@
       "id": "hero",
       "fields": [
         {
-          "component": "reference",
+          "component": "select",
+          "name": "layout",
+          "label": "Layout",
           "valueType": "string",
-          "name": "image",
-          "label": "Image",
-          "multi": false
+          "options": [
+            {
+              "name": "Text Only",
+              "value": "text-only"
+            },
+            {
+              "name": "Contains Media",
+              "value": "contains-media"
+            }
+          ],
+          "default": "text-only"
         },
         {
-          "component": "text",
+          "component": "select",
+          "name": "mediaType",
+          "label": "Media Type",
           "valueType": "string",
-          "name": "imageAlt",
-          "label": "Alt",
-          "value": ""
+          "options": [
+            {
+              "name": "Image",
+              "value": "image"
+            },
+            {
+              "name": "Video",
+              "value": "video"
+            }
+          ],
+          "default": "image",
+          "condition": {
+            "===": [
+              {
+                "var": "layout"
+              },
+              "contains-media"
+            ]
+          }
+        },
+        {
+          "component": "reference",
+          "name": "mediaImage",
+          "label": "Image",
+          "valueType": "string",
+          "multi": false,
+          "required": false,
+          "condition": {
+            "and": [
+              {
+                "===": [
+                  {
+                    "var": "layout"
+                  },
+                  "contains-media"
+                ]
+              },
+              {
+                "===": [
+                  {
+                    "var": "mediaType"
+                  },
+                  "image"
+                ]
+              }
+            ]
+          }
         },
         {
           "component": "richtext",
-          "name": "text",
-          "value": "",
-          "label": "Text",
-          "valueType": "string"
+          "name": "mediaVideo",
+          "label": "Video (JS Embed Code)",
+          "valueType": "string",
+          "required": false,
+          "condition": {
+            "and": [
+              {
+                "===": [
+                  {
+                    "var": "layout"
+                  },
+                  "contains-media"
+                ]
+              },
+              {
+                "===": [
+                  {
+                    "var": "mediaType"
+                  },
+                  "video"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "component": "text",
+          "name": "altText",
+          "label": "Alt Text",
+          "valueType": "string",
+          "required": true,
+          "condition": {
+            "var": "mediaImage"
+          },
+          "validation": {
+            "customErrorMsg": "Please enter alt text"
+          }
+        },
+        {
+          "component": "text",
+          "name": "caption",
+          "label": "Caption",
+          "valueType": "string",
+          "required": false,
+          "condition": {
+            "===": [
+              {
+                "var": "layout"
+              },
+              "contains-media"
+            ]
+          }
+        },
+        {
+          "component": "text",
+          "name": "pretitle",
+          "label": "Pretitle",
+          "valueType": "string",
+          "required": false
+        },
+        {
+          "component": "text",
+          "name": "title",
+          "label": "Title",
+          "valueType": "string",
+          "required": true,
+          "validation": {
+            "customErrorMsg": "Please enter a title"
+          }
+        },
+        {
+          "component": "richtext",
+          "name": "description",
+          "label": "Description",
+          "valueType": "string",
+          "required": false
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "ctaButtonLink",
+          "label": "CTA Button Link",
+          "valueFormat": "regexp",
+          "required": false,
+          "validation": {
+            "regExp": "^(https?://[^\\s/$.?#].[^\\s]*|/[^\\s]*|#[^\\s]*|mailto:[^\\s@]+@[^\\s@]+\\.[^\\s@]+|tel:[+]?[0-9\\s\\-\\(\\)]+)$",
+            "customErrorMsg": "Please provide a valid URL"
+          }
+        },
+        {
+          "component": "text",
+          "name": "ctaButtonText",
+          "label": "CTA Button Text",
+          "valueType": "string",
+          "required": true,
+          "condition": { "var": "ctaButtonLink" },
+          "validation": {
+            "customErrorMsg": "Please enter a CTA button text"
+          }
         }
       ]
     }
