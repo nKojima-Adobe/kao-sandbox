@@ -1,24 +1,24 @@
 /**
- * Hero Block
+ * {BLOCK_FUNC} Block
  * Displays primary content area at the top of a webpage with title, description,
  * optional media (image/video), and CTA buttons
  */
 
 import { decorateIcons } from '../../scripts/aem.js';
 import {
-  heroParseContent,
-  heroBuildMediaWrapper,
-  heroBuildVideoWrapper,
-  heroCreateScrollTextElement,
-  heroInitScrollHint,
-} from './hero-utils.js';
+  {BLOCK_VAR}ParseContent,
+  {BLOCK_VAR}BuildMediaWrapper,
+  {BLOCK_VAR}BuildVideoWrapper,
+  {BLOCK_VAR}CreateScrollTextElement,
+  {BLOCK_VAR}InitScrollHint,
+} from './{BLOCK_NAME}-utils.js';
 import {
-  HERO_CSS_CLASSES,
-  HERO_CONSOLE_PATTERNS,
-  HERO_VIDEO_ATTRIBUTES,
-  HERO_DEFAULT_VIDEO_CAPTION,
-  generateHeroUID,
-} from './hero-constants.js';
+  {BLOCK_UPPER}_CSS_CLASSES,
+  {BLOCK_UPPER}_CONSOLE_PATTERNS,
+  {BLOCK_UPPER}_VIDEO_ATTRIBUTES,
+  {BLOCK_UPPER}_DEFAULT_VIDEO_CAPTION,
+  generate{BLOCK_FUNC}UID,
+} from './{BLOCK_NAME}-constants.js';
 import { sanitizeText, sanitizeUrl } from '../../utils/generic-utils.js';
 // eslint-disable-next-line no-unused-vars
 import fetchPlaceholdersForLocale from '../../scripts/placeholders.js';
@@ -57,10 +57,10 @@ function cleanHtmlContent(html) {
  */
 (() => {
   try {
-    if (typeof window !== 'undefined' && !window.heroWarnPatchedFlag) {
+    if (typeof window !== 'undefined' && !window.{BLOCK_VAR}WarnPatchedFlag) {
       // eslint-disable-next-line no-console
       const originalWarn = console.warn;
-      const patterns = HERO_CONSOLE_PATTERNS;
+      const patterns = {BLOCK_UPPER}_CONSOLE_PATTERNS;
       // eslint-disable-next-line no-console
       console.warn = (...args) => {
         const parts = (args || []).map((a) => {
@@ -71,7 +71,7 @@ function cleanHtmlContent(html) {
         // eslint-disable-next-line no-console
         return originalWarn.apply(console, args);
       };
-      window.heroWarnPatchedFlag = true;
+      window.{BLOCK_VAR}WarnPatchedFlag = true;
     }
   } catch (e) { /* noop */ }
 })();
@@ -81,15 +81,15 @@ function cleanHtmlContent(html) {
  * Prevents memory leaks in SPAs and dynamic content scenarios
  * @param {HTMLElement} block - The block element to observe
  */
-function setupHeroCleanupObserver(block) {
+function setup{BLOCK_FUNC}CleanupObserver(block) {
   if (!block || !block.parentNode) return;
 
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       mutation.removedNodes.forEach((node) => {
-        if (node === block && block.heroCleanup) {
+        if (node === block && block.{BLOCK_VAR}Cleanup) {
           // Block was removed, run cleanup
-          block.heroCleanup();
+          block.{BLOCK_VAR}Cleanup();
           observer.disconnect();
         }
       });
@@ -107,14 +107,14 @@ function setupHeroCleanupObserver(block) {
  */
 function createVideoControlButton() {
   const controlBtn = document.createElement('button');
-  controlBtn.className = HERO_CSS_CLASSES.VIDEO_CONTROL;
+  controlBtn.className = {BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL;
   controlBtn.setAttribute('aria-label', 'Pause video');
   controlBtn.setAttribute('type', 'button');
   controlBtn.setAttribute('aria-pressed', 'false');
 
   // Create icon span (safe DOM creation)
   const iconSpan = document.createElement('span');
-  iconSpan.className = `${HERO_CSS_CLASSES.VIDEO_CONTROL_ICON} ${HERO_CSS_CLASSES.VIDEO_CONTROL_PAUSE}`;
+  iconSpan.className = `${{BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL_ICON} ${{BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL_PAUSE}`;
   iconSpan.setAttribute('aria-hidden', 'true');
   controlBtn.appendChild(iconSpan);
 
@@ -237,7 +237,7 @@ function initVideoControls(videoWrapper, videoJsEl) {
         // Only add VTT tracks if there's no visual caption (to avoid duplication)
         // eslint-disable-next-line no-underscore-dangle
         const captionForTracks = videoJsEl._captionForTracks;
-        const hasVisualCaption = videoWrapper.querySelector(`.${HERO_CSS_CLASSES.CAPTION}`);
+        const hasVisualCaption = videoWrapper.querySelector(`.${BLOCK_UPPER}_CSS_CLASSES.CAPTION}`);
 
         if (captionForTracks && !hasVisualCaption) {
           // Get the actual video element from the player
@@ -257,14 +257,14 @@ function initVideoControls(videoWrapper, videoJsEl) {
           if (isPlaying) {
             player.pause();
             // Update to play icon (safe - only changing className)
-            iconSpan.className = `${HERO_CSS_CLASSES.VIDEO_CONTROL_ICON} ${HERO_CSS_CLASSES.VIDEO_CONTROL_PLAY}`;
+            iconSpan.className = `${{BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL_ICON} ${{BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL_PLAY}`;
             controlBtn.setAttribute('aria-label', 'Play video');
             controlBtn.setAttribute('aria-pressed', 'false');
             isPlaying = false;
           } else {
             player.play();
             // Update to pause icon (safe - only changing className)
-            iconSpan.className = `${HERO_CSS_CLASSES.VIDEO_CONTROL_ICON} ${HERO_CSS_CLASSES.VIDEO_CONTROL_PAUSE}`;
+            iconSpan.className = `${{BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL_ICON} ${{BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL_PAUSE}`;
             controlBtn.setAttribute('aria-label', 'Pause video');
             controlBtn.setAttribute('aria-pressed', 'true');
             isPlaying = true;
@@ -275,7 +275,7 @@ function initVideoControls(videoWrapper, videoJsEl) {
         handlePause = () => {
           if (isPlaying) {
             // Update to play icon (safe - only changing className)
-            iconSpan.className = `${HERO_CSS_CLASSES.VIDEO_CONTROL_ICON} ${HERO_CSS_CLASSES.VIDEO_CONTROL_PLAY}`;
+            iconSpan.className = `${{BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL_ICON} ${{BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL_PLAY}`;
             controlBtn.setAttribute('aria-label', 'Play video');
             controlBtn.setAttribute('aria-pressed', 'false');
             isPlaying = false;
@@ -286,7 +286,7 @@ function initVideoControls(videoWrapper, videoJsEl) {
         handlePlay = () => {
           if (!isPlaying) {
             // Update to pause icon (safe - only changing className)
-            iconSpan.className = `${HERO_CSS_CLASSES.VIDEO_CONTROL_ICON} ${HERO_CSS_CLASSES.VIDEO_CONTROL_PAUSE}`;
+            iconSpan.className = `${{BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL_ICON} ${{BLOCK_UPPER}_CSS_CLASSES.VIDEO_CONTROL_PAUSE}`;
             controlBtn.setAttribute('aria-label', 'Pause video');
             controlBtn.setAttribute('aria-pressed', 'true');
             isPlaying = true;
@@ -325,7 +325,7 @@ function initVideoControls(videoWrapper, videoJsEl) {
 function addVideoAccessibility(videoJsEl, visualCaption) {
   // For accessibility, we always need a meaningful description
   // Use visual caption if available, otherwise use default for screen readers
-  const accessibilityCaption = visualCaption || HERO_DEFAULT_VIDEO_CAPTION;
+  const accessibilityCaption = visualCaption || {BLOCK_UPPER}_DEFAULT_VIDEO_CAPTION;
 
   // Add ARIA attributes for screen readers
   videoJsEl.setAttribute('role', 'application');
@@ -342,12 +342,12 @@ function addVideoAccessibility(videoJsEl, visualCaption) {
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
       // Toggle play/pause on space/enter
-      const videoPlayer = window.videojs?.getPlayer(videoJsEl.id);
-      if (videoPlayer) {
-        if (videoPlayer.paused()) {
-          videoPlayer.play();
+      const player = window.videojs?.getPlayer(videoJsEl.id);
+      if (player) {
+        if (player.paused()) {
+          player.play();
         } else {
-          videoPlayer.pause();
+          player.pause();
         }
       }
     }
@@ -385,23 +385,23 @@ function loadBrightcoveVideo(videoWrapper, videoJsEl) {
 
     // Extract video configuration
     const account = videoJsEl.getAttribute('data-account') || '';
-    const bcPlayer = videoJsEl.getAttribute('data-player') || '';
+    const player = videoJsEl.getAttribute('data-player') || '';
     const embed = videoJsEl.getAttribute('data-embed') || 'default';
 
-    if (!account || !bcPlayer) {
+    if (!account || !player) {
       return;
     }
 
-    // Configure autoplay, muted, and loop for hero video
-    videoJsEl.setAttribute(HERO_VIDEO_ATTRIBUTES.AUTOPLAY, '');
-    videoJsEl.setAttribute(HERO_VIDEO_ATTRIBUTES.MUTED, '');
-    videoJsEl.setAttribute(HERO_VIDEO_ATTRIBUTES.PLAYSINLINE, '');
-    videoJsEl.setAttribute(HERO_VIDEO_ATTRIBUTES.LOOP, '');
+    // Configure autoplay, muted, and loop for {BLOCK_VAR} video
+    videoJsEl.setAttribute({BLOCK_UPPER}_VIDEO_ATTRIBUTES.AUTOPLAY, '');
+    videoJsEl.setAttribute({BLOCK_UPPER}_VIDEO_ATTRIBUTES.MUTED, '');
+    videoJsEl.setAttribute({BLOCK_UPPER}_VIDEO_ATTRIBUTES.PLAYSINLINE, '');
+    videoJsEl.setAttribute({BLOCK_UPPER}_VIDEO_ATTRIBUTES.LOOP, '');
 
     // Ensure video has an ID for player access
     if (!videoJsEl.getAttribute('id')) {
       // Use secure ID generation (timestamp-based, not Math.random)
-      const uniqueId = `hero-video-${generateHeroUID()}`;
+      const uniqueId = `{BLOCK_NAME}-video-${generate{BLOCK_FUNC}UID()}`;
       videoJsEl.setAttribute('id', uniqueId);
     }
 
@@ -416,7 +416,7 @@ function loadBrightcoveVideo(videoWrapper, videoJsEl) {
     videoWrapper.videoAccessibilityCleanup = videoAccessibilityCleanup;
 
     // Generate script URL
-    const scriptSrc = `https://players.brightcove.net/${account}/${bcPlayer}_${embed}/index.min.js`;
+    const scriptSrc = `https://players.brightcove.net/${account}/${player}_${embed}/index.min.js`;
 
     // Validate script URL for security
     try {
@@ -437,7 +437,7 @@ function loadBrightcoveVideo(videoWrapper, videoJsEl) {
     // Add visual caption (only if provided by AEM author) – innerHTML supports icons
     if (videoWrapper.dataset.caption) {
       const captionEl = document.createElement('p');
-      captionEl.className = HERO_CSS_CLASSES.CAPTION;
+      captionEl.className = {BLOCK_UPPER}_CSS_CLASSES.CAPTION;
       captionEl.innerHTML = sanitizeText(videoWrapper.dataset.caption, { richHTML: true });
       decorateIcons(captionEl);
       videoWrapper.appendChild(captionEl);
@@ -504,8 +504,8 @@ function trackCtaClick(ctaIndex, ctaText, ctaType, ctaHref) {
     // Sanitize URL to convert relative URLs to full URLs and remove sensitive query parameters
     const sanitizedHref = sanitizeUrlForAnalytics(ctaHref);
 
-    trackElementInteraction('hero-cta-click', {
-      elementType: 'hero',
+    trackElementInteraction('{BLOCK_NAME}-cta-click', {
+      elementType: '{BLOCK_NAME}',
       elementText: ctaText,
       elementHref: sanitizedHref,
       additionalData: {
@@ -516,7 +516,7 @@ function trackCtaClick(ctaIndex, ctaText, ctaType, ctaHref) {
     });
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Error tracking hero CTA click:', error);
+    console.error('Error tracking {BLOCK_NAME} CTA click:', error);
   }
 }
 
@@ -531,7 +531,7 @@ function trackCtaClick(ctaIndex, ctaText, ctaType, ctaHref) {
 function createCtaButton(text, link, index = 0, type = 'filled') {
   const button = document.createElement('a');
   button.href = sanitizeUrl(link) || '#';
-  button.className = `${HERO_CSS_CLASSES.BUTTON} ${HERO_CSS_CLASSES.CTA_BUTTON}`;
+  button.className = `${{BLOCK_UPPER}_CSS_CLASSES.BUTTON} ${{BLOCK_UPPER}_CSS_CLASSES.CTA_BUTTON}`;
   button.innerHTML = sanitizeText(text || '', { richHTML: true });
   decorateIcons(button);
 
@@ -562,8 +562,8 @@ function createCtaButton(text, link, index = 0, type = 'filled') {
 }
 
 /**
- * Decorates the hero block with content
- * @param {HTMLElement} block - The hero block element
+ * Decorates the {BLOCK_VAR} block with content
+ * @param {HTMLElement} block - The {BLOCK_VAR} block element
  */
 export default async function decorate(block) {
   // Track cleanup functions for memory leak prevention
@@ -576,7 +576,7 @@ export default async function decorate(block) {
   block.innerHTML = '';
 
   // Parse the authored content using field mapping
-  const content = heroParseContent(rows);
+  const content = {BLOCK_VAR}ParseContent(rows);
 
   // Destructure content for easier access
   const {
@@ -593,29 +593,29 @@ export default async function decorate(block) {
     ctaButtonText,
   } = content;
 
-  // Generate unique ID for this hero instance
-  const uid = generateHeroUID();
+  // Generate unique ID for this {BLOCK_VAR} instance
+  const uid = generate{BLOCK_FUNC}UID();
   let titleId = '';
 
   // Add layout class
-  block.classList.add(layout === 'text-only' ? HERO_CSS_CLASSES.LAYOUT_TEXT_ONLY : HERO_CSS_CLASSES.LAYOUT_CONTAINS_MEDIA);
+  block.classList.add(layout === 'text-only' ? {BLOCK_UPPER}_CSS_CLASSES.LAYOUT_TEXT_ONLY : {BLOCK_UPPER}_CSS_CLASSES.LAYOUT_CONTAINS_MEDIA);
 
   // Create main container
   const container = document.createElement('div');
-  container.className = HERO_CSS_CLASSES.INNER;
+  container.className = {BLOCK_UPPER}_CSS_CLASSES.INNER;
 
   // Create content wrapper
   const contentWrapper = document.createElement('div');
-  contentWrapper.className = HERO_CSS_CLASSES.CONTENT;
+  contentWrapper.className = {BLOCK_UPPER}_CSS_CLASSES.CONTENT;
 
-  // Create inner content wrapper for main hero content
+  // Create inner content wrapper for main {BLOCK_VAR} content
   const contentInner = document.createElement('div');
-  contentInner.className = HERO_CSS_CLASSES.CONTENT_INNER;
+  contentInner.className = {BLOCK_UPPER}_CSS_CLASSES.CONTENT_INNER;
 
   // For text-only layout, combine pretitle and title on same line
   if (layout === 'text-only' && pretitle && (pretitle.text || pretitle.processed?.content) && title) {
     const titleEl = document.createElement('h1');
-    titleEl.className = `${HERO_CSS_CLASSES.TITLE} ${HERO_CSS_CLASSES.TITLE_WITH_PRETITLE}`;
+    titleEl.className = `${{BLOCK_UPPER}_CSS_CLASSES.TITLE} ${{BLOCK_UPPER}_CSS_CLASSES.TITLE_WITH_PRETITLE}`;
 
     const pretitleContent = pretitle.processed?.content ?? pretitle.text;
     const titleContent = title.processed?.content ?? title.text;
@@ -623,7 +623,7 @@ export default async function decorate(block) {
     // Create span for pretitle with dash
     // (content from processContentWithIconsAndLink: slash -> text only, no link; icons)
     const pretitleSpan = document.createElement('span');
-    pretitleSpan.className = 'hero-pretitle-inline';
+    pretitleSpan.className = '{BLOCK_CLASS}-pretitle-inline';
     if (pretitleContent) {
       const pretitleText = `${pretitleContent} – `;
       pretitleSpan.innerHTML = sanitizeText(pretitleText, { richHTML: true });
@@ -632,7 +632,7 @@ export default async function decorate(block) {
 
     // Create span for title (content already from processContentWithIconsAndLink: slash + icons)
     const titleSpan = document.createElement('span');
-    titleSpan.className = 'hero-title-text';
+    titleSpan.className = '{BLOCK_CLASS}-title-text';
     titleSpan.innerHTML = sanitizeText(titleContent || '', { richHTML: true });
     decorateIcons(titleSpan);
 
@@ -640,7 +640,7 @@ export default async function decorate(block) {
     titleEl.appendChild(pretitleSpan);
     titleEl.appendChild(titleSpan);
 
-    titleId = `hero-title-${uid}`;
+    titleId = `{BLOCK_NAME}-title-${uid}`;
     titleEl.id = titleId;
     contentInner.appendChild(titleEl);
   } else {
@@ -648,7 +648,7 @@ export default async function decorate(block) {
     const pretitleContent = pretitle?.processed?.content ?? pretitle?.text;
     if (pretitleContent && pretitleContent.trim()) {
       const pretitleEl = document.createElement('p');
-      pretitleEl.className = HERO_CSS_CLASSES.PRETITLE;
+      pretitleEl.className = {BLOCK_UPPER}_CSS_CLASSES.PRETITLE;
       pretitleEl.innerHTML = sanitizeText(pretitleContent, { richHTML: true });
       decorateIcons(pretitleEl);
       contentInner.appendChild(pretitleEl);
@@ -658,11 +658,11 @@ export default async function decorate(block) {
     const titleContent = title?.processed?.content ?? title?.text;
     if (titleContent) {
       const titleEl = document.createElement('h1');
-      titleEl.className = HERO_CSS_CLASSES.TITLE;
+      titleEl.className = {BLOCK_UPPER}_CSS_CLASSES.TITLE;
       titleEl.innerHTML = sanitizeText(titleContent, { richHTML: true });
       decorateIcons(titleEl);
 
-      titleId = `hero-title-${uid}`;
+      titleId = `{BLOCK_NAME}-title-${uid}`;
       titleEl.id = titleId;
       contentInner.appendChild(titleEl);
     }
@@ -671,7 +671,7 @@ export default async function decorate(block) {
   // Add description if exists
   if (description) {
     const descEl = document.createElement('div');
-    descEl.className = HERO_CSS_CLASSES.DESCRIPTION;
+    descEl.className = {BLOCK_UPPER}_CSS_CLASSES.DESCRIPTION;
     // Clean HTML content and sanitize to prevent XSS attacks, allow rich content
     const cleanedDescription = cleanHtmlContent(description);
     descEl.innerHTML = sanitizeText(cleanedDescription, { richHTML: true });
@@ -681,7 +681,7 @@ export default async function decorate(block) {
   // Add CTA button if both text and link exist
   if (ctaButtonText && ctaButtonLink) {
     const ctaWrapper = document.createElement('div');
-    ctaWrapper.className = HERO_CSS_CLASSES.CTA;
+    ctaWrapper.className = {BLOCK_UPPER}_CSS_CLASSES.CTA;
 
     // Determine button type from classes or default to 'filled'
     // For now, we'll use 'filled' as default type
@@ -709,7 +709,7 @@ export default async function decorate(block) {
   let videoElementToLoad = null; // Store reference to video element for loading after DOM insertion
   if (layout === 'contains-media') {
     const gridContainer = document.createElement('div');
-    gridContainer.className = HERO_CSS_CLASSES.GRID;
+    gridContainer.className = {BLOCK_UPPER}_CSS_CLASSES.GRID;
 
     // Add content to grid
     gridContainer.appendChild(contentWrapper);
@@ -717,9 +717,9 @@ export default async function decorate(block) {
     // Add media if exists
     let mediaWrapper = null;
     if (mediaType === 'image' && mediaImage) {
-      mediaWrapper = heroBuildMediaWrapper(mediaImage, altText, caption);
+      mediaWrapper = {BLOCK_VAR}BuildMediaWrapper(mediaImage, altText, caption);
     } else if (mediaType === 'video' && mediaVideo) {
-      mediaWrapper = heroBuildVideoWrapper(caption);
+      mediaWrapper = {BLOCK_VAR}BuildVideoWrapper(caption);
       // Store video element to load AFTER it's in the DOM
       videoElementToLoad = mediaVideo;
     }
@@ -736,9 +736,9 @@ export default async function decorate(block) {
 
   // Wrap everything in a section tag for accessibility
   const section = document.createElement('section');
-  section.className = HERO_CSS_CLASSES.SECTION;
+  section.className = {BLOCK_UPPER}_CSS_CLASSES.SECTION;
 
-  // ARIA: Mark as banner region (hero is typically the main banner)
+  // ARIA: Mark as banner region ({BLOCK_VAR} is typically the main banner)
   section.setAttribute('role', 'region');
 
   // ARIA: Provide accessible label
@@ -746,7 +746,7 @@ export default async function decorate(block) {
     section.setAttribute('aria-labelledby', titleId);
   } else {
     // Fallback label if no title is present
-    section.setAttribute('aria-label', 'Hero section');
+    section.setAttribute('aria-label', '{BLOCK_FUNC} section');
   }
 
   section.appendChild(container);
@@ -756,7 +756,7 @@ export default async function decorate(block) {
   // Load Brightcove video AFTER element is in the DOM
   if (videoElementToLoad) {
     // Find the video wrapper in the DOM to pass to loadBrightcoveVideo
-    const videoWrapper = block.querySelector(`.${HERO_CSS_CLASSES.MEDIA_VIDEO}`);
+    const videoWrapper = block.querySelector(`.${BLOCK_UPPER}_CSS_CLASSES.MEDIA_VIDEO}`);
     if (videoWrapper) {
       loadBrightcoveVideo(videoWrapper, videoElementToLoad);
     }
@@ -767,14 +767,14 @@ export default async function decorate(block) {
   if (layout === 'contains-media') {
     // Load placeholders for i18n support
     const placeholders = await fetchPlaceholdersForLocale();
-    scrollText = heroCreateScrollTextElement(placeholders);
+    scrollText = {BLOCK_VAR}CreateScrollTextElement(placeholders);
     // Add scroll text to content wrapper (outside of content inner)
     contentWrapper.appendChild(scrollText);
   }
 
   // Initialize scroll hint behavior
   if (scrollText) {
-    const scrollHintCleanup = heroInitScrollHint(scrollText);
+    const scrollHintCleanup = {BLOCK_VAR}InitScrollHint(scrollText);
     if (scrollHintCleanup) {
       // Store cleanup function
       cleanupFunctions.push(scrollHintCleanup);
@@ -782,12 +782,12 @@ export default async function decorate(block) {
   }
 
   // Store consolidated cleanup function on block for memory leak prevention
-  block.heroCleanup = () => {
+  block.{BLOCK_VAR}Cleanup = () => {
     cleanupFunctions.forEach((fn) => fn());
     cleanupFunctions.length = 0; // Clear array
 
     // Cleanup video controls (intervals and timeouts) and accessibility listeners
-    const videoWrappers = block.querySelectorAll(`.${HERO_CSS_CLASSES.MEDIA_VIDEO}`);
+    const videoWrappers = block.querySelectorAll(`.${BLOCK_UPPER}_CSS_CLASSES.MEDIA_VIDEO}`);
     videoWrappers.forEach((videoWrapper) => {
       if (videoWrapper.videoControlsCleanup) {
         videoWrapper.videoControlsCleanup();
@@ -825,7 +825,7 @@ export default async function decorate(block) {
   };
 
   // Setup cleanup observer for automatic cleanup when block is removed
-  setupHeroCleanupObserver(block);
+  setup{BLOCK_FUNC}CleanupObserver(block);
 
   // Decorate any icons in the content
   decorateIcons(block);

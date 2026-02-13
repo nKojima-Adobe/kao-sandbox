@@ -1,54 +1,54 @@
-/* ===== Hero BASE STYLES ===== */
+/* ===== {BLOCK_FUNC} BASE STYLES ===== */
 
 /* Container wrapper - removes default padding */
-.hero-wrapper {
+.{BLOCK_CLASS}-wrapper {
     max-width: unset;
     padding: 0;
 }
 
 /* Main block with CSS variables */
-.hero {
+.{BLOCK_CLASS} {
     position: relative;
     margin: 0;
     width: 100%;
 
     /* Component spacing */
-    --hero-content-gutter: 16px;
-    --hero-scroll-bottom: 22px;
-    --hero-spacing-md: 20px;
-    --hero-spacing-lg: 28px;
+    --{BLOCK_CLASS}-content-gutter: 16px;
+    --{BLOCK_CLASS}-scroll-bottom: 22px;
+    --{BLOCK_CLASS}-spacing-md: 20px;
+    --{BLOCK_CLASS}-spacing-lg: 28px;
 
     /* Icon sizes */
-    --hero-icon-size: 20px;
-    --hero-video-control-size: 30px;
-    --hero-video-control-position: 20px;
-    --hero-video-control-radius: 8px;
+    --{BLOCK_CLASS}-icon-size: 20px;
+    --{BLOCK_CLASS}-video-control-size: 30px;
+    --{BLOCK_CLASS}-video-control-position: 20px;
+    --{BLOCK_CLASS}-video-control-radius: 8px;
 
     /* Video control icon dimensions */
-    --hero-pause-bar-width: 4px;
-    --hero-pause-bar-height: 11px;
-    --hero-pause-bar-left: 5px;
-    --hero-pause-bar-right: 4px;
+    --{BLOCK_CLASS}-pause-bar-width: 4px;
+    --{BLOCK_CLASS}-pause-bar-height: 11px;
+    --{BLOCK_CLASS}-pause-bar-left: 5px;
+    --{BLOCK_CLASS}-pause-bar-right: 4px;
 
     /* Play triangle dimensions */
-    --hero-play-triangle-vertical: 6px;
-    --hero-play-triangle-horizontal: 8px;
+    --{BLOCK_CLASS}-play-triangle-vertical: 6px;
+    --{BLOCK_CLASS}-play-triangle-horizontal: 8px;
 
     /* CTA padding */
-    --hero-cta-padding: 5px 8px;
+    --{BLOCK_CLASS}-cta-padding: 5px 8px;
 
     /* Width calculations */
-    --hero-description-width: 100%;
-    --hero-text-only-offset: 0;
+    --{BLOCK_CLASS}-description-width: 100%;
+    --{BLOCK_CLASS}-text-only-offset: 0;
 }
 
-.hero-section {
+.{BLOCK_CLASS}-section {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-.hero-inner {
+.{BLOCK_CLASS}-inner {
     position: relative;
     width: 100%;
     display: flex;
@@ -58,7 +58,7 @@
 
 /* ===== CONTENT WRAPPER ===== */
 
-.hero-content {
+.{BLOCK_CLASS}-content {
     position: relative;
     z-index: 2;
     max-width: var(--viewport-xl);
@@ -68,7 +68,7 @@
 
 /* ===== PRETITLE ===== */
 
-.hero-pretitle {
+.{BLOCK_CLASS}-pretitle {
     font-size: var(--font-scale-02);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-xs-px);
@@ -78,10 +78,10 @@
 
 /* ===== TITLE ===== */
 
-.hero-title {
+.{BLOCK_CLASS}-title {
     font-size: var(--font-scale-09);
     line-height: var(--line-height-sm);
-    margin: 0 0 var(--hero-spacing-md);
+    margin: 0 0 var(--{BLOCK_CLASS}-spacing-md);
     font-weight: var(--font-weight-light);
     letter-spacing: var(--letter-spacing-xs);
     color: var(--nec-gray-90);
@@ -89,20 +89,20 @@
 
 /* ===== DESCRIPTION ===== */
 
-.hero-description {
+.{BLOCK_CLASS}-description {
     font-size: var(--font-scale-03);
     line-height: var(--line-height-xl);
     margin-bottom: var(--spacer-04);
     color: var(--nec-gray-80);
 }
 
-.hero-description p {
+.{BLOCK_CLASS}-description p {
     margin: 0;
 }
 
 /* ===== CTA BUTTON ===== */
 
-.hero-cta-button {
+.{BLOCK_CLASS}-cta-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -119,19 +119,19 @@
     border: 2px solid transparent;
 }
 
-.button.hero-cta-button {
-    padding: var(--hero-cta-padding);
+.button.{BLOCK_CLASS}-cta-button {
+    padding: var(--{BLOCK_CLASS}-cta-padding);
 }
 
 /* ===== MEDIA (IMAGE/VIDEO) ===== */
 
-.hero-media {
+.{BLOCK_CLASS}-media {
     position: relative;
     width: 100%;
     overflow: hidden;
 }
 
-.hero-media :is(picture, img, video-js, .video-js) {
+.{BLOCK_CLASS}-media :is(picture, img, video-js, .video-js) {
     width: 100%;
     height: auto;
     aspect-ratio: 1 / 1;
@@ -142,21 +142,21 @@
 
 /* Video specific styles */
 
-.hero-media-video video {
+.{BLOCK_CLASS}-media-video video {
     aspect-ratio: 1 / 1;
     object-fit: cover;
 }
 
 /* Custom video play/pause control */
-.hero-video-control {
+.{BLOCK_CLASS}-video-control {
     position: absolute;
-    top: var(--hero-video-control-position);
-    right: var(--hero-video-control-position);
+    top: var(--{BLOCK_CLASS}-video-control-position);
+    right: var(--{BLOCK_CLASS}-video-control-position);
     z-index: 8;
-    width: var(--hero-video-control-size);
-    height: var(--hero-video-control-size);
+    width: var(--{BLOCK_CLASS}-video-control-size);
+    height: var(--{BLOCK_CLASS}-video-control-size);
     border: none;
-    border-radius: var(--hero-video-control-radius);
+    border-radius: var(--{BLOCK_CLASS}-video-control-radius);
     background-color: rgb(41 46 61 / 50%);
     cursor: pointer;
     display: flex;
@@ -166,15 +166,15 @@
     transition: background-color var(--transition-medium) ease-out;
 }
 
-.hero-video-control:hover {
+.{BLOCK_CLASS}-video-control:hover {
     background-color: rgb(41 46 61 / 70%);
 }
 
-.hero-video-control:active {
+.{BLOCK_CLASS}-video-control:active {
     background-color: rgb(41 46 61 / 90%);
 }
 
-.hero-video-control:focus-visible {
+.{BLOCK_CLASS}-video-control:focus-visible {
     outline: 2px solid var(--nec-sky-50);
     outline-offset: 2px;
 }
@@ -190,34 +190,34 @@ video-js:focus:not(:focus-visible) {
 }
 
 /* Play/Pause icons */
-.hero-video-control-icon {
+.{BLOCK_CLASS}-video-control-icon {
     display: block;
-    width: var(--hero-icon-size);
-    height: var(--hero-icon-size);
+    width: var(--{BLOCK_CLASS}-icon-size);
+    height: var(--{BLOCK_CLASS}-icon-size);
     position: relative;
 }
 
 /* Pause icon - two vertical bars */
-.hero-video-control-pause::before,
-.hero-video-control-pause::after {
+.{BLOCK_CLASS}-video-control-pause::before,
+.{BLOCK_CLASS}-video-control-pause::after {
     content: "";
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: var(--hero-pause-bar-width);
-    height: var(--hero-pause-bar-height);
+    width: var(--{BLOCK_CLASS}-pause-bar-width);
+    height: var(--{BLOCK_CLASS}-pause-bar-height);
     background-color: white;
 }
 
-.hero-video-control-pause::before {
-    left: var(--hero-pause-bar-left);
+.{BLOCK_CLASS}-video-control-pause::before {
+    left: var(--{BLOCK_CLASS}-pause-bar-left);
 }
 
-.hero-video-control-pause::after {
-    right: var(--hero-pause-bar-right);
+.{BLOCK_CLASS}-video-control-pause::after {
+    right: var(--{BLOCK_CLASS}-pause-bar-right);
 }
 
-.hero-cta .button:focus, .hero-cta .button:focus-visible {
+.{BLOCK_CLASS}-cta .button:focus, .{BLOCK_CLASS}-cta .button:focus-visible {
     color: var(--nec-blue-50);
     background-color: var(--nec-sky-05);
     border: 1px solid var(--nec-sky-05);
@@ -226,7 +226,7 @@ video-js:focus:not(:focus-visible) {
 }
 
 /* Play icon - triangle pointing right */
-.hero-video-control-play::before {
+.{BLOCK_CLASS}-video-control-play::before {
     content: "";
     position: absolute;
     top: 50%;
@@ -235,15 +235,15 @@ video-js:focus:not(:focus-visible) {
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: var(--hero-play-triangle-vertical) 0 
-                  var(--hero-play-triangle-vertical) 
-                  var(--hero-play-triangle-horizontal);
+    border-width: var(--{BLOCK_CLASS}-play-triangle-vertical) 0 
+                  var(--{BLOCK_CLASS}-play-triangle-vertical) 
+                  var(--{BLOCK_CLASS}-play-triangle-horizontal);
     border-color: transparent transparent transparent white;
 }
 
 /* ===== SCROLL TEXT ===== */
 
-.hero-scroll-text {
+.{BLOCK_CLASS}-scroll-text {
     font-size: var(--font-scale-02);
     line-height: var(--line-height-xs-px);
     opacity: 1;
@@ -253,32 +253,32 @@ video-js:focus:not(:focus-visible) {
     align-items: center;
     gap: var(--spacer-02);
     width: auto;
-    margin: var(--hero-spacing-md) 0 0;
+    margin: var(--{BLOCK_CLASS}-spacing-md) 0 0;
 }
 
-.hero-scroll-text.fade-out {
+.{BLOCK_CLASS}-scroll-text.fade-out {
     opacity: 0;
 }
 
-.hero-scroll-text.hidden {
+.{BLOCK_CLASS}-scroll-text.hidden {
     opacity: 0;
     visibility: hidden;
 }
 
 /* Scroll icon sizing */
-.hero-scroll-text .icon {
-    width: var(--hero-icon-size);
-    height: var(--hero-icon-size);
+.{BLOCK_CLASS}-scroll-text .icon {
+    width: var(--{BLOCK_CLASS}-icon-size);
+    height: var(--{BLOCK_CLASS}-icon-size);
     display: inline-flex;
 }
 
-.hero-scroll-text .icon img {
+.{BLOCK_CLASS}-scroll-text .icon img {
     width: 100%;
     height: 100%;
     margin-left: 0;
 }
 
-.hero-caption {
+.{BLOCK_CLASS}-caption {
     font-size: var(--font-scale-02);
     line-height: var(--line-height-xs-px);
     color: var(--nec-gray-70);
@@ -287,7 +287,7 @@ video-js:focus:not(:focus-visible) {
 
 /* ===== TEXT-ONLY LAYOUT ===== */
 
-.hero-text-only .hero-pretitle {
+.{BLOCK_CLASS}-text-only .{BLOCK_CLASS}-pretitle {
     font-size: var(--font-scale-09);
     font-weight: var(--font-weight-light);
     line-height: var(--line-height-sm);
@@ -295,28 +295,28 @@ video-js:focus:not(:focus-visible) {
 }
 
 /* Inline pretitle-title combination for text-only layout */
-.hero-text-only .hero-pretitle-inline {
+.{BLOCK_CLASS}-text-only .{BLOCK_CLASS}-pretitle-inline {
     color: var(--nec-sky-50);
     font-weight: var(--font-weight-light);
 }
 
-.hero-text-only .hero-pretitle-inline .icon img {
+.{BLOCK_CLASS}-text-only .{BLOCK_CLASS}-pretitle-inline .icon img {
      /* nec-sky-50 icon */
     filter: brightness(0) saturate(100%) invert(37%) sepia(87%) saturate(5300%) hue-rotate(226deg) brightness(101%) contrast(101%);
 }
 
-.hero-text-only .hero-title-text {
+.{BLOCK_CLASS}-text-only .{BLOCK_CLASS}-title-text {
     color: var(--nec-gray-90);
     font-weight: var(--font-weight-light);
 }
 
-.hero-text-only .hero-description {
-    margin-bottom: var(--hero-spacing-md);
+.{BLOCK_CLASS}-text-only .{BLOCK_CLASS}-description {
+    margin-bottom: var(--{BLOCK_CLASS}-spacing-md);
 }
 
 /* ===== CONTAINS-MEDIA LAYOUT ===== */
 
-.hero-contains-media .hero-grid {
+.{BLOCK_CLASS}-contains-media .{BLOCK_CLASS}-grid {
     display: flex;
     flex-direction: column;
     gap: var(--grid-gutter);
@@ -325,50 +325,50 @@ video-js:focus:not(:focus-visible) {
     width: 100%;
 }
 
-.hero-contains-media .hero-content {
+.{BLOCK_CLASS}-contains-media .{BLOCK_CLASS}-content {
     margin: 0;
     max-width: 100%;
 }
 
 /* ===== TABLET STYLES (>= 800px) ===== */
 
-@media (width >= 800px) {
-    .hero {
-        --hero-content-gutter: 24px;
-        --hero-cta-padding: 5px 12px;
-        --hero-description-width: calc(
+@media (min-width: 800px) {
+    .{BLOCK_CLASS} {
+        --{BLOCK_CLASS}-content-gutter: 24px;
+        --{BLOCK_CLASS}-cta-padding: 5px 12px;
+        --{BLOCK_CLASS}-description-width: calc(
             var(--grid-column-tab-width-6) + var(--grid-gutter) * 5
         );
     }
 
-    .hero-title {
+    .{BLOCK_CLASS}-title {
         margin-bottom: var(--spacer-07);
     }
 
-    .hero-cta-button {
+    .{BLOCK_CLASS}-cta-button {
         font-size: var(--font-scale-03);
     }
 
-    .hero-description {
+    .{BLOCK_CLASS}-description {
         margin-bottom: var(--spacer-05);
     }
 
-    .hero-text-only .hero-description {
-        max-width: var(--hero-description-width);
+    .{BLOCK_CLASS}-text-only .{BLOCK_CLASS}-description {
+        max-width: var(--{BLOCK_CLASS}-description-width);
     }
     
     /* Contains-media layout: side-by-side on desktop */
-    .hero-contains-media .hero-grid {
+    .{BLOCK_CLASS}-contains-media .{BLOCK_CLASS}-grid {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         align-items: center;
     }
 
-    .hero-scroll-text {
+    .{BLOCK_CLASS}-scroll-text {
         margin-top: 0;
     }
 
-    .hero-content {
+    .{BLOCK_CLASS}-content {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -378,67 +378,67 @@ video-js:focus:not(:focus-visible) {
 
 /* ===== DESKTOP STYLES (>= 1080px) ===== */
 
-@media (width >= 1080px) {
-    .hero {
-        --hero-content-gutter: 56px;
-        --hero-cta-padding: 9px 16px;
-        --hero-video-control-size: 38px;
-        --hero-video-control-position: 40px;
-        --hero-pause-bar-left: 12px;
-        --hero-pause-bar-right: 11px;
-        --hero-description-width: calc(
+@media (min-width: 1080px) {
+    .{BLOCK_CLASS} {
+        --{BLOCK_CLASS}-content-gutter: 56px;
+        --{BLOCK_CLASS}-cta-padding: 9px 16px;
+        --{BLOCK_CLASS}-video-control-size: 38px;
+        --{BLOCK_CLASS}-video-control-position: 40px;
+        --{BLOCK_CLASS}-pause-bar-left: 12px;
+        --{BLOCK_CLASS}-pause-bar-right: 11px;
+        --{BLOCK_CLASS}-description-width: calc(
             calc((100% - 100px) / 6 * 4) + var(--grid-gutter) * 3
         );
-        --hero-text-only-offset: calc(
+        --{BLOCK_CLASS}-text-only-offset: calc(
             var(--grid-column-width-6) + var(--grid-gutter) * 6
         );
     }
 
-    .hero-content { 
+    .{BLOCK_CLASS}-content { 
         gap: var(--spacer-12);
     }
 
     /* Contains-media layout: side-by-side on desktop */
-    .hero-contains-media .hero-grid {
+    .{BLOCK_CLASS}-contains-media .{BLOCK_CLASS}-grid {
         align-items: unset;
     }
 
-    .hero-title {
+    .{BLOCK_CLASS}-title {
         font-size: var(--font-scale-10);
         margin-bottom: var(--spacer-12);
     }
 
-    .hero-description {
+    .{BLOCK_CLASS}-description {
         margin-bottom: var(--spacer-06);
-        max-width: var(--hero-description-width);
+        max-width: var(--{BLOCK_CLASS}-description-width);
     }
 
-    .hero-cta-button {
+    .{BLOCK_CLASS}-cta-button {
         font-size: var(--font-scale-03);
     }
 
 
     /* Text-only layout keeps centered text */
-    .hero-text-only .hero-description,
-    .hero-text-only .button {
-        margin-left: var(--hero-text-only-offset);
-        overflow-wrap: break-word;
+    .{BLOCK_CLASS}-text-only .{BLOCK_CLASS}-description,
+    .{BLOCK_CLASS}-text-only .button {
+        margin-left: var(--{BLOCK_CLASS}-text-only-offset);
+        word-wrap: break-word;
     }
 
-    .hero-contains-media .hero-content-inner {
+    .{BLOCK_CLASS}-contains-media .{BLOCK_CLASS}-content-inner {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
 
-    .hero-scroll-text {
+    .{BLOCK_CLASS}-scroll-text {
         margin-bottom: var(--spacer-05);
     }
 
 }
 
-.hero-content-inner > *:last-child {
+.{BLOCK_CLASS}-content-inner > *:last-child {
     margin-bottom: 0;
 }
 
@@ -446,14 +446,14 @@ video-js:focus:not(:focus-visible) {
 
 /* Fallback for browsers without aspect-ratio support */
 @supports not (aspect-ratio: 1 / 1) {
-    .hero-media :is(picture, img) {
+    .{BLOCK_CLASS}-media :is(picture, img) {
         height: 0;
         padding-bottom: 100%; /* 1:1 aspect ratio */
         position: relative;
     }
 
-    .hero-media > img,
-    .hero-media picture img {
+    .{BLOCK_CLASS}-media > img,
+    .{BLOCK_CLASS}-media picture img {
         position: absolute;
         inset: 0;
         height: 100%;
@@ -465,34 +465,34 @@ video-js:focus:not(:focus-visible) {
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-    .hero-cta-button,
-    .hero-scroll-text,
-    .hero-video-control {
+    .{BLOCK_CLASS}-cta-button,
+    .{BLOCK_CLASS}-scroll-text,
+    .{BLOCK_CLASS}-video-control {
         transition: none;
     }
 
-    .hero-video-control:hover,
-    .hero-video-control:active {
+    .{BLOCK_CLASS}-video-control:hover,
+    .{BLOCK_CLASS}-video-control:active {
         transform: none;
     }
 }
 
 /* ===== HIGH CONTRAST MODE SUPPORT ===== */
 @media (prefers-contrast: more) {
-    .hero-cta-button:focus-visible {
+    .{BLOCK_CLASS}-cta-button:focus-visible {
         outline: 4px solid;
         outline-offset: 4px;
     }
     
-    .hero-video-control {
+    .{BLOCK_CLASS}-video-control {
         background-color: rgb(0 0 0 / 80%);
     }
     
-    .hero-video-control:hover {
+    .{BLOCK_CLASS}-video-control:hover {
         background-color: rgb(0 0 0 / 90%);
     }
     
-    .hero-video-control:focus-visible {
+    .{BLOCK_CLASS}-video-control:focus-visible {
         outline: 3px solid;
         outline-offset: 3px;
     }
@@ -500,27 +500,27 @@ video-js:focus:not(:focus-visible) {
 
 /* Print styles */
 @media print {
-    .hero-scroll-text {
+    .{BLOCK_CLASS}-scroll-text {
         display: none;
     }
 }
 
 /* Reset Japanese typography to use block-specific line-heights */
-html[lang="ja"] .hero-pretitle {
+html[lang="ja"] .{BLOCK_CLASS}-pretitle {
     line-height: var(--line-height-ja-xxxl);
     letter-spacing: var(--letter-spacing-ja);
 }
 
-html[lang="ja"] .hero-title {
+html[lang="ja"] .{BLOCK_CLASS}-title {
     line-height: var(--line-height-ja-md);
 }
 
-html[lang="ja"] .hero-description {
+html[lang="ja"] .{BLOCK_CLASS}-description {
     line-height: var(--line-height-ja-xxl);
     letter-spacing: var(--letter-spacing-ja);
 }
 
-html[lang="ja"] .hero-caption {
+html[lang="ja"] .{BLOCK_CLASS}-caption {
     line-height: var(--line-height-ja-lg);
     letter-spacing: 0;
 }
