@@ -1,6 +1,0 @@
-{
-  "_note": "This snippet must be merged into the target project's section model (typically models/_section.json).",
-  "_instruction": "Add the block name to the 'components' array in the section filter definition.",
-  "_example": "In models/_section.json, find the 'section' filter's 'components' array and add the block name.",
-  "componentEntry": "{BLOCK_NAME}"
-}
