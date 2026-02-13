@@ -46,7 +46,8 @@
             { "name": "Full Grid", "value": "full-grid" },
             { "name": "Full Width", "value": "full-width" },
             { "name": "Image Only (Medium)", "value": "image-only-medium" },
-            { "name": "Image Only (Large)", "value": "image-only-large" }
+            { "name": "Image Only (Large)", "value": "image-only-large" },
+            { "name": "KAO Home", "value": "kao-home" }
           ],
           "default": "full-grid"
         }

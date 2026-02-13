@@ -185,6 +185,10 @@
           {
             "name": "Image Only (Large)",
             "value": "image-only-large"
+          },
+          {
+            "name": "KAO Home",
+            "value": "kao-home"
           }
         ],
         "default": "full-grid"

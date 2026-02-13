@@ -1506,3 +1506,64 @@ html[lang="ja"] .carousel .carousel-description {
     border: 2px solid currentcolor;
   }
 }
+
+
+/* ===== KAO-HOME VARIANT ===== */
+
+/* Autoplay-only crossfade: no navigation controls, simultaneous fade-in/fade-out */
+
+/* Hide all navigation UI */
+.carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-nav,
+.carousel.carousel-layout-kao-home .carousel-container .carousel-dots,
+.carousel.carousel-layout-kao-home .carousel-container .carousel-live-region {
+  display: none;
+}
+
+/* All items stacked absolutely for crossfade layering */
+.carousel.carousel-layout-kao-home .carousel-track .carousel-item {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.2s ease-in-out;
+  z-index: var(--carousel-z-base);
+}
+
+/* Active slide fades in */
+.carousel.carousel-layout-kao-home .carousel-track .carousel-item.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1.2s ease-in-out;
+  z-index: calc(var(--carousel-z-content) + 1);
+  position: relative;
+}
+
+/* Outgoing slide (crossfade: stays visible while fading out) */
+.carousel.carousel-layout-kao-home .carousel-track .carousel-item.is-fading-out {
+  opacity: 0;
+  visibility: visible;
+  transition: opacity 1.2s ease-in-out;
+  z-index: var(--carousel-z-content);
+  position: absolute;
+  inset: 0;
+}
+
+/* Disable text/CTA animations for clean crossfade */
+.carousel.carousel-layout-kao-home .carousel-track .carousel-item .carousel-title,
+.carousel.carousel-layout-kao-home .carousel-track .carousel-item .carousel-description,
+.carousel.carousel-layout-kao-home .carousel-track .carousel-item .carousel-buttons .carousel-cta {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* Ensure track has relative positioning for absolute children */
+.carousel.carousel-layout-kao-home .carousel-track {
+  position: relative;
+}
+
+/* Disable pointer events during transition */
+.carousel.carousel-layout-kao-home {
+  cursor: default;
+  user-select: none;
+}

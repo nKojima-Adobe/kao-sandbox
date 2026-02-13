@@ -2753,6 +2753,85 @@ export default async function decorate(block) {
     return; // Skip all the fade animation logic below
   }
 
+  // === KAO-Home variant: autoplay-only crossfade, no user controls ===
+  const isKaoHome = layoutClass && layoutClass.includes('kao-home');
+  if (isKaoHome) {
+    // Activate first slide
+    if (items[0]) {
+      items[0].classList.add('is-active');
+    }
+
+    // Crossfade autoplay: both slides visible during transition
+    let kaoActiveIndex = 0;
+    let kaoAutoplayTimer = null;
+
+    const kaoCrossfade = () => {
+      if (items.length <= 1) return;
+
+      const currentItem = items[kaoActiveIndex];
+      const nextIndex = (kaoActiveIndex + 1) % items.length;
+      const nextItem = items[nextIndex];
+
+      // Start crossfade: outgoing fades out, incoming fades in simultaneously
+      currentItem.classList.remove('is-active');
+      currentItem.classList.add('is-fading-out');
+
+      nextItem.classList.add('is-active');
+
+      // Clean up the outgoing slide after transition completes
+      const handleTransitionEnd = () => {
+        currentItem.classList.remove('is-fading-out');
+        currentItem.removeEventListener('transitionend', handleTransitionEnd);
+      };
+      currentItem.addEventListener('transitionend', handleTransitionEnd);
+
+      // Fallback cleanup in case transitionend doesn't fire
+      setTimeout(() => {
+        currentItem.classList.remove('is-fading-out');
+      }, 1500);
+
+      kaoActiveIndex = nextIndex;
+    };
+
+    const startKaoAutoplay = () => {
+      if (kaoAutoplayTimer) clearInterval(kaoAutoplayTimer);
+      kaoAutoplayTimer = setInterval(kaoCrossfade, AUTOPLAY_INTERVAL);
+    };
+
+    startKaoAutoplay();
+
+    // Accessibility
+    container.setAttribute('role', 'region');
+    container.setAttribute('aria-label', placeholders[CAROUSEL_ARIA_LABEL] || 'Carousel');
+    container.setAttribute('aria-roledescription', placeholders[CAROUSEL_ROLE] || 'carousel');
+
+    // Cleanup
+    block.carouselCleanup = () => {
+      if (kaoAutoplayTimer) {
+        clearInterval(kaoAutoplayTimer);
+        kaoAutoplayTimer = null;
+      }
+    };
+
+    // Track initialization
+    try {
+      trackElementInteraction('carousel-init', {
+        elementType: 'carousel',
+        elementId: carouselId,
+        additionalData: {
+          totalSlides: items.length,
+          autoPlay: true,
+          layout: 'kao-home',
+        },
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error tracking carousel initialization:', error);
+    }
+
+    return; // Skip standard carousel setup
+  }
+
   // === Standard carousel (full-grid, full-width) ===
 
   // Single item - no navigation/pagination needed

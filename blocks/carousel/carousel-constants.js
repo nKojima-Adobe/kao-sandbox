@@ -26,6 +26,7 @@ export const LAYOUT_VARIATIONS = [
   'full-width',
   'image-only-medium',
   'image-only-large',
+  'kao-home',
 ];
 
 /**
