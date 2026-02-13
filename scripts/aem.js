@@ -495,44 +495,259 @@ function decorateIcons(element, prefix = '') {
 }
 
 /**
+ * Normalize bottom margin class values to supported spacing tokens.
+ * @param {string} marginValue The raw margin value
+ * @returns {string} The normalized margin class value
+ */
+function normalizeBottomMarginClass(marginValue) {
+  if (!marginValue) return '';
+  const normalizedValue = marginValue.toLowerCase();
+
+  // Legacy pixel values to new spacing tokens
+  if (normalizedValue === '40px') return 'spacing07';
+  if (normalizedValue === '80px') return 'spacing12';
+  if (normalizedValue === '120px') return 'spacing14';
+
+  // Supported new tokens stay as-is
+  if (
+    normalizedValue === 'spacing07'
+    || normalizedValue === 'spacing12'
+    || normalizedValue === 'spacing14'
+  ) {
+    return normalizedValue;
+  }
+
+  // Treat "none" as explicit zero margin
+  if (normalizedValue === 'none' || normalizedValue === '0px') {
+    return '0px';
+  }
+
+  return marginValue;
+}
+
+/**
  * Decorates all sections in a container element.
+ * Includes grid-columns awareness: grid-columns containers skip child wrapping
+ * but still process metadata.
  * @param {Element} main The container element
  */
 function decorateSections(main) {
   main.querySelectorAll(':scope > div:not([data-section-status])').forEach((section) => {
-    const wrappers = [];
-    let defaultContent = false;
-    [...section.children].forEach((e) => {
-      if ((e.tagName === 'DIV' && e.className) || !defaultContent) {
-        const wrapper = document.createElement('div');
-        wrappers.push(wrapper);
-        defaultContent = e.tagName !== 'DIV' || !e.className;
-        if (defaultContent) wrapper.classList.add('default-content-wrapper');
-      }
-      wrappers[wrappers.length - 1].append(e);
-    });
-    wrappers.forEach((wrapper) => section.append(wrapper));
-    section.classList.add('section');
-    section.dataset.sectionStatus = 'initialized';
-    section.style.display = 'none';
+    // Check if this is a grid-columns container
+    const isGridColumns = section.classList.contains('grid-columns');
+
+    if (!isGridColumns) {
+      const wrappers = [];
+      let defaultContent = false;
+      [...section.children].forEach((e) => {
+        if ((e.tagName === 'DIV' && e.className) || !defaultContent) {
+          const wrapper = document.createElement('div');
+          wrappers.push(wrapper);
+          defaultContent = e.tagName !== 'DIV' || !e.className;
+          if (defaultContent) wrapper.classList.add('default-content-wrapper');
+        }
+        wrappers[wrappers.length - 1].append(e);
+      });
+      wrappers.forEach((wrapper) => section.append(wrapper));
+      section.classList.add('section');
+      section.dataset.sectionStatus = 'initialized';
+      section.style.display = 'none';
+    } else {
+      // For grid-columns containers, just mark as initialized
+      section.dataset.sectionStatus = 'initialized';
+    }
 
     // Process section metadata
     const sectionMeta = section.querySelector('div.section-metadata');
     if (sectionMeta) {
       const meta = readBlockConfig(sectionMeta);
       Object.keys(meta).forEach((key) => {
-        if (key === 'style') {
-          const styles = meta.style
-            .split(',')
-            .filter((style) => style)
-            .map((style) => toClassName(style.trim()));
-          styles.forEach((style) => section.classList.add(style));
+        const normalizedKey = key.toLowerCase().replace(/-/g, '');
+        if (normalizedKey === 'bottommargin') {
+          if (meta[key]) {
+            const rawValue = meta[key].trim();
+            const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
+            if (marginValue) {
+              section.classList.add(`bottom-margin-${marginValue}`);
+            }
+          }
+        } else if (key === 'style' || key === 'columns' || key === 'tablet-columns') {
+          if (meta.style) {
+            const styles = meta.style
+              .split(',')
+              .filter((style) => style)
+              .map((style) => toClassName(style.trim()));
+            styles.forEach((style) => section.classList.add(style));
+          }
+          if (meta.columns) {
+            const columns = meta.columns
+              .split(',')
+              .filter((column) => column)
+              .map((column) => toClassName(column.trim()));
+            columns.forEach((column) => section.classList.add(column));
+          }
+          if (meta['tablet-columns']) {
+            const tabletColumns = meta['tablet-columns']
+              .split(',')
+              .filter((column) => column)
+              .map((column) => toClassName(column.trim()));
+            tabletColumns.forEach((column) => section.classList.add(column));
+          }
         } else {
           section.dataset[toCamelCase(key)] = meta[key];
         }
       });
       sectionMeta.parentNode.remove();
     }
+
+    // Check data attributes for bottomMargin
+    const bottomMarginData = section.dataset.bottommargin
+      || section.dataset.bottomMargin
+      || section.getAttribute('data-bottommargin')
+      || section.getAttribute('data-bottom-margin');
+    if (bottomMarginData) {
+      const rawValue = bottomMarginData.trim();
+      const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
+      const className = marginValue && `bottom-margin-${marginValue}`;
+      if (className && !section.classList.contains(className)) {
+        section.classList.add(className);
+      }
+    }
+  });
+}
+
+/**
+ * Wraps a single section's children (used for sections inside grid-columns containers).
+ * @param {Element} section The section element to decorate
+ */
+function decorateSectionColumn(section) {
+  const wrappers = [];
+  let defaultContent = false;
+  [...section.children].forEach((e) => {
+    if ((e.tagName === 'DIV' && e.className) || !defaultContent) {
+      const wrapper = document.createElement('div');
+      wrappers.push(wrapper);
+      defaultContent = e.tagName !== 'DIV' || !e.className;
+      if (defaultContent) wrapper.classList.add('default-content-wrapper');
+    }
+    wrappers[wrappers.length - 1].append(e);
+  });
+  wrappers.forEach((wrapper) => section.append(wrapper));
+  section.classList.add('section');
+  section.dataset.sectionStatus = 'initialized';
+  section.style.display = 'none';
+
+  // Process section metadata
+  const sectionMeta = section.querySelector('div.section-metadata');
+  if (sectionMeta) {
+    const meta = readBlockConfig(sectionMeta);
+    Object.keys(meta).forEach((key) => {
+      const normalizedKey = key.toLowerCase().replace(/-/g, '');
+      if (normalizedKey === 'bottommargin') {
+        if (meta[key]) {
+          const rawValue = meta[key].trim();
+          const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
+          if (marginValue) {
+            section.classList.add(`bottom-margin-${marginValue}`);
+          }
+        }
+      } else if (key === 'style') {
+        if (meta.style) {
+          const styles = meta.style
+            .split(',')
+            .filter((style) => style)
+            .map((style) => toClassName(style.trim()));
+          styles.forEach((style) => section.classList.add(style));
+        }
+      } else {
+        section.dataset[toCamelCase(key)] = meta[key];
+      }
+    });
+    sectionMeta.parentNode.remove();
+  }
+}
+
+/**
+ * Main grid-columns grouping logic.
+ * Decorates unprocessed sections inside grid-columns containers and groups
+ * consecutive span-col sections into grid-columns wrappers.
+ * @param {Element} main The container element
+ */
+function decorateSectionsColumn(main) {
+  if (!main) return;
+
+  const decorateUnprocessed = (selector) => {
+    main.querySelectorAll(selector).forEach(decorateSectionColumn);
+  };
+
+  // Decorate standalone and nested sections
+  decorateUnprocessed(':scope > div:not([data-section-status]):not(.grid-columns)');
+  decorateUnprocessed(':scope > div.grid-columns > div:not([data-section-status])');
+
+  // Process bottomMargin for existing grid-columns containers
+  main.querySelectorAll(':scope > div.grid-columns').forEach((gridContainer) => {
+    // Check data attributes for bottomMargin
+    const bottomMarginData = gridContainer.dataset.bottommargin
+      || gridContainer.dataset.bottomMargin
+      || gridContainer.getAttribute('data-bottommargin')
+      || gridContainer.getAttribute('data-bottom-margin');
+    if (bottomMarginData) {
+      const rawValue = bottomMarginData.trim();
+      const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
+      if (marginValue) {
+        gridContainer.classList.add(`bottom-margin-${marginValue}`);
+      }
+    }
+
+    // Process bottomMargin from metadata
+    const sectionMeta = gridContainer.querySelector('div.section-metadata');
+    if (sectionMeta) {
+      const meta = readBlockConfig(sectionMeta);
+      Object.keys(meta).forEach((key) => {
+        const normalizedKey = key.toLowerCase().replace(/-/g, '');
+        if (normalizedKey === 'bottommargin') {
+          if (meta[key]) {
+            const rawValue = meta[key].trim();
+            const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
+            if (marginValue) {
+              gridContainer.classList.add(`bottom-margin-${marginValue}`);
+            }
+          }
+        }
+      });
+    }
+  });
+
+  // Skip regrouping if current element itself is a grid-columns block
+  if (main.classList.contains('grid-columns')) return;
+
+  const colSectionGroups = {};
+  let currentGroupIndex = main.querySelectorAll('.grid-columns').length;
+
+  main.querySelectorAll(':scope > div.section').forEach((section) => {
+    const isSpanCol = Array.from(section.classList).some((cls) => cls.startsWith('span-col-'));
+
+    if (isSpanCol) {
+      const prev = section.previousElementSibling;
+      if (prev?.classList.contains('grid-columns')) {
+        prev.appendChild(section);
+        return;
+      }
+
+      (colSectionGroups[currentGroupIndex] ||= []).push(section);
+    } else if (colSectionGroups[currentGroupIndex]?.length) {
+      currentGroupIndex += 1;
+    }
+  });
+
+  Object.entries(colSectionGroups).forEach(([index, group]) => {
+    if (!group.length) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'grid-columns';
+    wrapper.id = `grid-columns-${index}`;
+
+    main.replaceChild(wrapper, group[0]);
+    wrapper.append(...group);
   });
 }
 
@@ -719,6 +934,7 @@ export {
   decorateButtons,
   decorateIcons,
   decorateSections,
+  decorateSectionsColumn,
   decorateTemplateAndTheme,
   getMetadata,
   loadBlock,

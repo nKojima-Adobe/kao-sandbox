@@ -4,12 +4,68 @@ import {
   decorateButtons,
   decorateIcons,
   decorateSections,
+  decorateSectionsColumn,
   loadBlock,
   loadScript,
   loadSections,
 } from './aem.js';
 import { decorateRichtext } from './editor-support-rte.js';
 import { decorateMain } from './scripts.js';
+
+/**
+ * Unwraps grid-columns back to individual sections for regrouping.
+ * Ensures proper grid-columns structure after Universal Editor updates.
+ * @param {Element} container The container element (usually main)
+ */
+function unwrapGridColumns(container) {
+  if (!container) return;
+
+  // Find all grid-columns containers at the top level
+  const gridContainers = container.querySelectorAll(':scope > .grid-columns');
+
+  gridContainers.forEach((gridContainer) => {
+    const sections = Array.from(gridContainer.querySelectorAll(':scope > .section'));
+
+    if (sections.length > 0) {
+      sections.forEach((section) => {
+        gridContainer.parentElement.insertBefore(section, gridContainer);
+      });
+      gridContainer.remove();
+    }
+  });
+
+  // Handle AEM's nested section structure
+  const wrapperSections = container.querySelectorAll(':scope > .section');
+  wrapperSections.forEach((wrapperSection) => {
+    const nestedSections = wrapperSection.querySelectorAll(
+      ':scope > div > .section[class*="span-col-"]',
+    );
+    if (nestedSections.length > 0) {
+      nestedSections.forEach((nestedSection) => {
+        container.insertBefore(nestedSection, wrapperSection);
+      });
+      const isEmpty = wrapperSection.children.length === 0
+        || (wrapperSection.children.length === 1
+          && wrapperSection.children[0].children.length === 0);
+      if (isEmpty) {
+        wrapperSection.remove();
+      }
+    }
+  });
+}
+
+/**
+ * Updates grid-columns structure after Universal Editor changes.
+ * @param {Element} main The main content element
+ */
+function updateGridColumns(main) {
+  if (!main) return;
+
+  setTimeout(() => {
+    unwrapGridColumns(main);
+    decorateSectionsColumn(main);
+  }, 100);
+}
 
 async function applyChanges(event) {
   // redecorate default content and blocks on patches (in the properties rail)
@@ -41,6 +97,7 @@ async function applyChanges(event) {
       await loadSections(newMain);
       element.remove();
       newMain.style.display = null;
+      updateGridColumns(newMain);
       // eslint-disable-next-line no-use-before-define
       attachEventListners(newMain);
       return true;
@@ -75,10 +132,12 @@ async function applyChanges(event) {
           decorateIcons(newSection);
           decorateRichtext(newSection);
           decorateSections(parentElement);
+          decorateSectionsColumn(parentElement);
           decorateBlocks(parentElement);
           await loadSections(parentElement);
           element.remove();
           newSection.style.display = null;
+          updateGridColumns(parentElement);
         } else {
           element.replaceWith(...newElements);
           decorateButtons(parentElement);

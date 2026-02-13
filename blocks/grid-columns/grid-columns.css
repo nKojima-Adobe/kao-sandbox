@@ -1,0 +1,35 @@
+/*
+ * Grid-Columns child block styles.
+ * NOTE: This file styles the "columns" child block that can live INSIDE a grid-columns container.
+ * The grid-columns grid container itself is styled in styles/styles.css.
+ */
+
+.columns > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.columns > div > div {
+    order: 1;
+}
+
+.columns > div > .columns-img-col {
+    order: 0;
+}
+
+.columns > div > .columns-img-col img {
+    display: block;
+}
+
+@media (width >= 800px) {
+    .columns > div {
+        align-items: center;
+        flex-direction: unset;
+        gap: 24px;
+    }
+
+    .columns > div > div {
+        flex: 1;
+        order: unset;
+    }
+}
