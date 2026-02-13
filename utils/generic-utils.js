@@ -83,3 +83,25 @@ export function processRichHtmlWithIconsAndDecode(html) {
   if (!html || typeof html !== 'string') return '';
   return html;
 }
+
+/**
+ * Normalize alt text by trimming and cleaning whitespace.
+ * @param {string} altText - The alt text to normalize
+ * @returns {string} Normalized alt text
+ */
+export function normalizeAltText(altText) {
+  if (!altText || typeof altText !== 'string') return '';
+  return altText.trim().replace(/\s+/g, ' ');
+}
+
+/**
+ * Decode HTML entities in a string.
+ * @param {string} text - Text with HTML entities
+ * @returns {string} Decoded text
+ */
+export function decodeHtmlEntities(text) {
+  if (!text || typeof text !== 'string') return '';
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+}

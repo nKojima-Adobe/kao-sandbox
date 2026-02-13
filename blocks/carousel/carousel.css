@@ -1,0 +1,1508 @@
+/* ==========================================================================
+   Carousel COMPONENT STYLES
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CSS CUSTOM PROPERTIES
+   Centralizes all configuration for easy theming and maintenance
+   ========================================================================== */
+
+.carousel {
+  /* Component Sizing */
+  --carousel-nav-size-sm: 32px;
+  --carousel-nav-size-lg: 40px;
+  --carousel-nav-icon-size: 20px;
+  --carousel-dot-size: 8px;
+  --carousel-dot-border-radius: 2px;
+  --carousel-dot-gap: 2px;
+  --carousel-video-control-size: 56px;
+  --carousel-video-control-icon-size: 16px;
+  
+  /* Spacing System */
+  --carousel-spacer-medium: 20px;
+  --carousel-gap-mobile: 12px;
+  --carousel-gap-desktop: 20px;
+  
+  /* Z-Index Scale */
+  --carousel-z-base: 0;
+  --carousel-z-content: 1;
+  --carousel-z-overlay: 2;
+  --carousel-z-dots: 2;
+  --carousel-z-fade-overlay: 8;
+  --carousel-z-controls: 9;
+  
+  /* Animation Timing */
+  --carousel-transition-fade: 800ms;
+  --carousel-transition-animation: 1200ms;
+  --carousel-transition-smooth: 300ms;
+  
+  /* Easing Functions */
+  --carousel-easing-smooth: cubic-bezier(0.54, 0.31, 0.1, 1.1);
+  --carousel-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --carousel-easing-out: ease-out;
+  
+  /* Color Palette */
+  --carousel-overlay-bg: linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 70%) 100%);
+  --carousel-dot-bg: rgb(255 255 255 / 60%);
+  --carousel-dot-active-bg: rgb(255 255 255 / 100%);
+  
+  /* Layout Positioning */
+  --carousel-nav-top-tablet: 33%;
+  --carousel-grid-nav-top-tablet: 25%;
+  --carousel-nav-top-desktop: 45%;
+  --carousel-grid-nav-top-desktop: 35%;
+  
+  /* Button Spacing */
+  --carousel-cta-padding-mobile: 5px 8px;
+  --carousel-cta-padding-desktop: 5px 12px;
+  
+  /* Responsive Aspect Ratios (Mobile-first) */
+  --carousel-aspect-ratio: 4 / 5;
+  --carousel-aspect-ratio-image: 16 / 9;
+  
+  /* Responsive Edge Spacing (Mobile-first) */
+  --carousel-edge-spacing: var(--spacer-04);
+  --carousel-expand-padding: 20px;
+  
+  /* Image-only layout margins (Mobile-first) */
+  --carousel-image-overflow: -20px;
+  
+  /* Grid Column Width Calculations (Mobile-first: 4-column grid) */
+
+  /* Formula: ((container-width - padding - gaps) / total-columns) * span + included-gaps */
+  --carousel-grid-padding-mobile: 20px;        /* Left padding on mobile */
+  --carousel-grid-columns-mobile: 4;           /* Total grid columns on mobile */
+  --carousel-grid-gap-mobile: 20px;            /* Gap between columns on mobile */
+  --carousel-grid-gaps-count-mobile: 3;        /* Number of gaps (columns - 1) */
+  --carousel-medium-span-mobile: 3;            /* Columns to span for medium layout */
+  --carousel-medium-gaps-mobile: 2;            /* Gaps included in medium span */
+  --carousel-large-span-mobile: 4;             /* Columns to span for large layout */
+  --carousel-large-gaps-mobile: 3;             /* Gaps included in large span */
+}
+
+html.adobe-ue-edit .carousel-wrapper div p[data-aue-prop="layout"] {
+  display: none;
+}
+
+/* ==========================================================================
+   AUTHORING MODE STYLES
+   In Universal Editor, content is cloned from original rows to carousel-items.
+   Original rows are hidden visually but kept in DOM for UE editing.
+   The carousel-container provides the styled preview.
+   ========================================================================== */
+
+/* Hide original rows visually in authoring mode (content is cloned to carousel-items)
+ * Using visibility and position to keep them in DOM for UE component tree
+ * Note: aria-hidden and inert attributes are set via JS to prevent screen reader duplicates */
+html.adobe-ue-edit .carousel > div:not(.carousel-container) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Hide video content in image-only layouts in authoring mode
+ * Hide rows containing video-js elements, video elements, or Brightcove scripts */
+html.adobe-ue-edit .carousel.carousel-layout-image-only-medium > div:has(video),
+html.adobe-ue-edit .carousel.carousel-layout-image-only-large > div:has(video),
+html.adobe-ue-edit .carousel.carousel-layout-image-only-medium > div:has(video-js),
+html.adobe-ue-edit .carousel.carousel-layout-image-only-large > div:has(video-js),
+html.adobe-ue-edit .carousel.carousel-layout-image-only-medium > div:has(script[src*="brightcove"]),
+html.adobe-ue-edit .carousel.carousel-layout-image-only-large > div:has(script[src*="brightcove"]),
+html.adobe-ue-edit .carousel.carousel-layout-image-only-medium > div[data-carousel-filtered="video-content"],
+html.adobe-ue-edit .carousel.carousel-layout-image-only-large > div[data-carousel-filtered="video-content"] {
+  display: none;
+}
+
+/* Image-only layouts: Extend beyond container for edge-to-edge scrolling */
+.carousel.carousel-layout-image-only-large,
+.carousel.carousel-layout-image-only-medium {
+  --carousel-image-breakout: min(var(--carousel-image-overflow), calc(50% - 50vw));
+
+  margin-right: var(--carousel-image-breakout);
+  width: calc(100% - var(--carousel-image-breakout));
+}
+
+/* Screen Reader Only Content (Accessibility) */
+.carousel .carousel-live-region {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Container Structure */
+.carousel .carousel-container {
+  position: relative;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Flexible Height System */
+.carousel,
+.carousel .carousel-container,
+.carousel .carousel-viewport {
+  height: auto;
+}
+
+/* Focus States (Accessibility) */
+.carousel .carousel-container:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--spacer-01) var(--nec-sky-60);
+  border-radius: var(--border-radius-2);
+}
+
+.carousel .carousel-container:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Viewport Configuration */
+.carousel .carousel-viewport {
+  overflow: hidden; /* Default: no scrolling, fade transitions only */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Image-only layouts: Enable horizontal scrolling */
+.carousel.carousel-layout-image-only-medium .carousel-viewport,
+.carousel.carousel-layout-image-only-large .carousel-viewport {
+  overflow: visible;
+}
+
+/* Track Container */
+.carousel .carousel-track {
+  position: relative;
+  width: 100%;
+  height: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Default Item State (Fade-based carousels) */
+.carousel .carousel-track .carousel-item {
+  width: 100%;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--carousel-transition-fade) ease-out, 
+              visibility 0s var(--carousel-transition-fade);
+  z-index: var(--carousel-z-base);
+  position: absolute;
+  inset: 0;
+}
+
+/* Active Item State */
+.carousel .carousel-track .carousel-item.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--carousel-transition-fade) ease-out, 
+              visibility 0s 0s;
+  z-index: var(--carousel-z-content);
+  position: relative;
+  inset: auto;
+}
+
+/* Gradient Overlay for Visual Depth */
+.carousel .carousel-track .carousel-item::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  background: var(--carousel-overlay-bg);
+  border-radius: var(--border-radius-2);
+}
+
+/* Slide Link (Full-slide clickable area) */
+.carousel .carousel-slide-link {
+  position: absolute;
+  inset: 0;
+  z-index: var(--carousel-z-content);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.carousel .carousel-slide-link:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 var(--spacer-01) var(--nec-sky-60);
+}
+
+/* Content Overlay */
+.carousel .carousel-overlay {
+  z-index: var(--carousel-z-overlay);
+  pointer-events: none; /* Allow clicks to pass through to slide link */
+  transition: left var(--carousel-transition-animation) var(--carousel-easing-standard),
+              right var(--carousel-transition-animation) var(--carousel-easing-standard);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Enable pointer events for all interactive elements in overlay */
+.carousel .carousel-overlay a,
+.carousel .carousel-overlay button,
+.carousel .carousel-overlay [role="button"],
+.carousel .carousel-overlay [tabindex]:not([tabindex="-1"]) {
+  pointer-events: auto;
+}
+
+/* Title Styling with Line Clamping */
+.carousel .carousel-title {
+  font-size: var(--font-scale-06);
+  line-height: var(--line-height-md);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Description Styling with Line Clamping */
+.carousel .carousel-description {
+  margin: var(--spacer-03) 0 0 0;
+  font-size: var(--font-scale-03);
+  line-height: var(--line-height-xl);
+  font-weight: var(--font-weight-medium);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.carousel .carousel-cta {
+  opacity: 0;
+  transition-delay: 0ms;
+}
+
+.carousel .carousel-overlay .carousel-cta {
+  pointer-events: auto;
+  position: relative;
+  z-index: 3;
+}
+
+.carousel .carousel-cta.button {
+  padding: var(--carousel-cta-padding-mobile);
+  margin: var(--spacer-04) 0 0 0;
+}
+
+.carousel .carousel-cta.button:focus,
+.carousel .carousel-cta.button:focus-visible {
+  color: var(--nec-blue-50);
+  background-color: var(--nec-sky-05);
+  border: 1px solid var(--nec-sky-05);
+  outline: solid 3px var(--nec-gray-0);
+  box-shadow: 0 0 0 5px var(--nec-sky-60);
+  outline-offset: -1px;
+}
+
+/* Base Media Styling */
+.carousel .carousel-item picture,
+.carousel .carousel-item picture img,
+.carousel .carousel-item iframe,
+.carousel .carousel-item video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--carousel-aspect-ratio);
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--border-radius-2);
+}
+
+/* Video Elements */
+.carousel .carousel-media-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel .carousel-media-bg iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Media Containers */
+.carousel .carousel-media,
+.carousel .carousel-media-bg {
+  position: relative;
+}
+
+/* Video Player Wrapper */
+.carousel .carousel-media-bg .video-js,
+.carousel .carousel-media-bg video-js {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: var(--border-radius-2);
+}
+
+/* Full-width Layout Media Styling */
+.carousel.carousel-layout-full-grid,
+.carousel.carousel-layout-full-width,
+.carousel.carousel-layout-full-width .carousel-item picture,
+.carousel.carousel-layout-full-width .carousel-item picture img,
+.carousel.carousel-layout-full-width .carousel-item video,
+.carousel.carousel-layout-full-width .carousel-media-bg {
+  border-radius: var(--border-radius-2);
+}
+
+.carousel .carousel-video-control {
+  position: absolute;
+  z-index: var(--carousel-z-controls);
+  width: 30px;
+  height: 30px;
+  top: var(--spacer-04);
+  right: var(--carousel-spacer-medium);
+  display: flex;
+  border: none;
+  border-radius: var(--border-radius-1);
+  background-color: var(--states-overlay-gray-50);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background-color var(--transition-xs) ease-out,
+              right var(--carousel-transition-animation) var(--carousel-easing-standard);
+  pointer-events: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.carousel .carousel-video-control:hover {
+  background-color: rgb(41 46 61 / 70%);
+}
+
+.carousel .carousel-video-control:active {
+  background-color: rgb(41 46 61 / 90%);
+}
+
+.carousel .carousel-video-control:focus-visible {
+  outline: 2px solid var(--nec-sky-60);
+  outline-offset: 2px;
+}
+
+/* Play/Pause Icons */
+.carousel .carousel-video-control-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+.carousel .carousel-video-control-pause::before,
+.carousel .carousel-video-control-pause::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 11px;
+  background-color: var(--nec-gray-0);
+}
+
+.carousel .carousel-video-control-pause::before {
+  left: 5px;
+}
+
+.carousel .carousel-video-control-pause::after {
+  right: 4px;
+}
+
+.carousel .carousel-video-control-play::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-40%, -50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 0 6px 8px;
+  border-color: transparent transparent transparent white;
+}
+
+/* Base Navigation Button Styling */
+.carousel .carousel-nav {
+  background: var(--nec-gray-0);
+  box-shadow: none;
+  border-radius: var(--border-radius-1);
+  transition: opacity var(--transition-medium) ease-out;
+  width: var(--carousel-nav-size-sm);
+  height: var(--carousel-nav-size-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.carousel .carousel-nav:focus-visible {
+  outline: solid 3px var(--nec-gray-0);
+  box-shadow: 0 0 0 5px var(--nec-sky-60);
+  border: solid 1px var(--nec-blue-50);
+}
+
+.carousel-layout-image-only-medium .carousel-nav:focus-visible,
+.carousel-layout-image-only-large .carousel-nav:focus-visible {
+  box-shadow: none;
+  outline: 2px solid var(--nec-sky-60);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.carousel-layout-image-only-medium .carousel-nav,
+/* stylelint-disable-next-line no-descending-specificity */
+.carousel-layout-image-only-large .carousel-nav {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
+  background-color: transparent;
+}
+
+.carousel-layout-image-only-medium .carousel-nav:hover,
+.carousel-layout-image-only-medium .carousel-nav:focus,
+.carousel-layout-image-only-medium .carousel-nav:focus-visible,
+.carousel-layout-image-only-large .carousel-nav:hover,
+.carousel-layout-image-only-large .carousel-nav:focus,
+.carousel-layout-image-only-large .carousel-nav:focus-visible {
+  filter: brightness(0) saturate(100%) invert(13%) sepia(79%) saturate(5187%) hue-rotate(235deg) brightness(88%) contrast(108%);
+}
+
+.carousel-layout-image-only-medium .carousel-next,
+.carousel-layout-image-only-large .carousel-next {
+  background-image: url('../../icons/forward.svg');
+}
+
+.carousel-layout-image-only-medium .carousel-prev,
+.carousel-layout-image-only-large .carousel-prev {
+  background-image: url('../../icons/backward.svg');
+}
+
+.carousel-layout-image-only-medium .carousel-nav > span.icon,
+.carousel-layout-image-only-large .carousel-nav > span.icon {
+  display: none;
+}
+
+.carousel-layout-full-width .carousel-nav:focus-visible,
+.carousel-layout-full-grid .carousel-nav:focus-visible {
+  outline-offset: 1px;
+  outline: solid 2px var(--nec-gray-0);
+}
+
+/* Navigation Icon Containers */
+.carousel .carousel-nav .icon {
+  width: var(--carousel-nav-icon-size);
+  height: var(--carousel-nav-icon-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel .carousel-nav .icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.carousel .carousel-overlay .icon img {
+  /* for white icons */
+  filter: brightness(0) invert(1);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.carousel .carousel-nav .icon img {
+  margin-left: 0;
+  height: var(--carousel-nav-icon-size);
+  width: var(--carousel-nav-icon-size);
+  display: block;
+  transition: all var(--transition-medium) ease-out;
+}
+
+/* Full Grid/Width Layouts: Positioned Navigation */
+.carousel.carousel-layout-full-grid .carousel-nav,
+.carousel.carousel-layout-full-width .carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateZ(0);
+  border: 1px solid var(--nec-gray-0);
+  z-index: var(--carousel-z-controls);
+  pointer-events: auto;
+  color: var(--nec-gray-90);
+  opacity: 0;
+  place-items: center;
+  visibility: visible; /* Keep visible for keyboard focus, use opacity for hiding */
+  will-change: opacity;
+  backface-visibility: hidden;
+  contain: layout style;
+}
+
+/* Image-Only Layouts: Static Navigation */
+.carousel.carousel-layout-image-only-medium .carousel-nav,
+.carousel.carousel-layout-image-only-large .carousel-nav {
+  opacity: 0.2;
+  visibility: visible;
+  position: static;
+  transform: none;
+  border: 1px solid var(--nec-blue-50);
+  color: var(--nec-blue-50);
+}
+
+.carousel.carousel-layout-full-grid:hover .carousel-nav,
+.carousel.carousel-layout-full-width:hover .carousel-nav {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(-50%) translateZ(0);
+}
+
+.carousel.carousel-layout-full-grid:focus-within .carousel-nav,
+.carousel.carousel-layout-full-width:focus-within .carousel-nav {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(-50%) translateZ(0);
+}
+
+/* Make nav buttons visible and focusable when focused (keyboard navigation) */
+.carousel.carousel-layout-full-grid .carousel-nav:focus-visible,
+.carousel.carousel-layout-full-width .carousel-nav:focus-visible,
+.carousel.carousel-layout-full-grid .carousel-nav:focus,
+.carousel.carousel-layout-full-width .carousel-nav:focus {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.carousel.carousel-layout-image-only-medium .carousel-nav:disabled,
+.carousel.carousel-layout-image-only-large .carousel-nav:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
+.carousel.carousel-layout-image-only-medium .carousel-nav:hover:not(:disabled),
+.carousel.carousel-layout-image-only-large .carousel-nav:hover:not(:disabled) {
+  border-color: var(--nec-blue-50);
+  opacity: 1;
+}
+
+.carousel .carousel-prev {
+  left: var(--carousel-edge-spacing);
+  transition: opacity var(--transition-medium) ease-out,
+              left var(--carousel-transition-animation) var(--carousel-easing-standard);
+}
+
+.carousel .carousel-next {
+  right: var(--carousel-edge-spacing);
+  transition: opacity var(--transition-medium) ease-out,
+              right var(--carousel-transition-animation) var(--carousel-easing-standard);
+}
+
+.carousel .carousel-dots {
+  position: absolute;
+  display: flex;
+  gap: var(--carousel-dot-gap);
+  z-index: var(--carousel-z-dots);
+  pointer-events: auto;
+  left: var(--spacer-04);
+  right: auto;
+  bottom: var(--spacer-04);
+  transition: right var(--carousel-transition-animation) var(--carousel-easing-standard);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.carousel .carousel-dot {
+  width: var(--carousel-dot-size);
+  height: var(--carousel-dot-size);
+  border-radius: var(--carousel-dot-border-radius);
+  background: var(--carousel-dot-bg);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: all var(--transition-medium) ease-out;
+}
+
+.carousel .carousel-dot.is-active {
+  background: var(--carousel-dot-active-bg);
+}
+
+.carousel .carousel-dot:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--nec-sky-60);
+}
+
+.carousel .carousel-dot:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Image-Only Layouts: Hide Dots */
+.carousel.carousel-layout-image-only-medium .carousel-dots,
+.carousel.carousel-layout-image-only-large .carousel-dots {
+  display: none;
+}
+
+/* ==========================================================================
+   ANIMATIONS & TRANSITIONS
+   ========================================================================== */
+
+/* Text Entrance Animations */
+.carousel .carousel-title,
+.carousel .carousel-description {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition: all var(--carousel-transition-animation) var(--carousel-easing-smooth);
+  transition-delay: 0ms;
+}
+
+html[lang="ja"] .carousel .carousel-title {
+  line-height: var(--line-height-ja-lg);
+}
+
+html[lang="ja"] .carousel .carousel-description {
+  line-height: var(--line-height-ja-xxl);
+}
+
+/* Image-Only Layouts: Disable Text Animations */
+.carousel.carousel-layout-image-only-medium .carousel-item .carousel-title,
+.carousel.carousel-layout-image-only-large .carousel-item .carousel-title,
+.carousel.carousel-layout-image-only-medium .carousel-item .carousel-description,
+.carousel.carousel-layout-image-only-large .carousel-item .carousel-description,
+.carousel.carousel-layout-image-only-medium .carousel-item .carousel-cta,
+.carousel.carousel-layout-image-only-large .carousel-item .carousel-cta {
+  display: none;
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* Active Slide Animations */
+.carousel .carousel-track .carousel-item.is-active .carousel-title {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0ms;
+}
+
+.carousel .carousel-track .carousel-item.is-active .carousel-description {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 1200ms;
+}
+
+.carousel .carousel-track .carousel-item.is-active .carousel-cta {
+  opacity: 1;
+  transition: opacity var(--carousel-transition-animation) var(--carousel-easing-smooth);
+  transition-delay: 1950ms;
+}
+
+.carousel .carousel-track .carousel-item.is-active .carousel-cta:hover {
+  transition: all var(--transition-medium) ease-out;
+}
+
+/* ==========================================================================
+   6. LAYOUT VARIANTS
+   ========================================================================== */
+
+/* --- Full Grid Layout --- */
+.carousel.carousel-layout-full-grid {
+  width: 100%;
+  overflow: hidden;
+  padding: var(--carousel-expand-padding) 0 0;
+  will-change: margin, width, padding;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: layout style;
+  transition: margin var(--carousel-transition-animation) var(--carousel-easing-standard),
+              width var(--carousel-transition-animation) var(--carousel-easing-standard),
+              padding var(--carousel-transition-animation) var(--carousel-easing-standard);
+}
+
+.carousel.carousel-layout-full-grid .carousel-track {
+  grid-auto-columns: 100%;
+}
+
+/* calc(50% - 50vw) = negative margin to extend element to viewport edges */
+.carousel.carousel-layout-full-grid.carousel-expanded {
+  margin: 0 calc(50% - 50vw);
+  padding: 0;
+  width: 100vw;
+  will-change: margin, width, padding;
+  contain: layout style;
+}
+
+/* --- Full Width Layout --- */
+
+/* Full-width breakout: Break out of container to full viewport width */
+
+/* calc(50% - 50vw) = negative margin to extend element to viewport edges */
+.carousel.carousel-layout-full-width {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+  overflow: hidden;
+}
+
+.carousel.carousel-layout-full-width .carousel-track {
+  grid-auto-columns: 100%;
+}
+
+.carousel.carousel-layout-full-width .carousel-item picture,
+.carousel.carousel-layout-full-width .carousel-item picture img,
+.carousel.carousel-layout-full-width .carousel-item video,
+.carousel.carousel-layout-full-width .carousel-media-bg {
+  width: 100%;
+}
+
+.carousel .carousel-track .carousel-item .carousel-media,
+.carousel .carousel-track .carousel-item .carousel-media-bg {
+  position: relative;
+}
+
+.carousel.carousel-layout-full-width .carousel-overlay {
+  max-width: var(--viewport-xl);
+}
+
+/* --- Image-Only Layouts: Horizontal Scrolling Grid --- */
+.carousel.carousel-layout-image-only-medium .carousel-track,
+.carousel.carousel-layout-image-only-large .carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--carousel-gap-mobile);
+  position: relative;
+  width: 100%;
+  overflow: auto hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  contain: layout style paint;
+}
+
+/* Image-Only Medium: 3 columns visible (2-column width each) */
+
+/* Calculation breakdown:
+ * - 100% = full container width
+ * - 20px = left padding (--carousel-grid-padding-mobile)
+ * - (3 * 20px) = total gaps between 4 columns (--carousel-grid-gaps-count-mobile * --carousel-grid-gap-mobile)
+ * - / 4 = divide by total columns (--carousel-grid-columns-mobile)
+ * - * 3 = multiply by columns to span (--carousel-medium-span-mobile)
+ * - + (2 * 20px) = add back gaps included in span (--carousel-medium-gaps-mobile * --carousel-grid-gap-mobile)
+ */
+.carousel.carousel-layout-image-only-medium .carousel-track {
+  grid-auto-columns: calc(
+    (var(--carousel-grid-reference-width, 100%) - var(--carousel-grid-padding-mobile) - (var(--carousel-grid-gaps-count-mobile) * var(--carousel-grid-gap-mobile))) 
+    / var(--carousel-grid-columns-mobile) 
+    * var(--carousel-medium-span-mobile) 
+    + (var(--carousel-medium-gaps-mobile) * var(--carousel-grid-gap-mobile))
+  );
+}
+
+/* Image-Only Large: Full width (4-column width) */
+
+/* Calculation breakdown:
+ * - 100% = full container width
+ * - 20px = left padding (--carousel-grid-padding-mobile)
+ * - (3 * 20px) = total gaps between 4 columns (--carousel-grid-gaps-count-mobile * --carousel-grid-gap-mobile)
+ * - / 4 = divide by total columns (--carousel-grid-columns-mobile)
+ * - * 4 = multiply by columns to span (--carousel-large-span-mobile)
+ * - + (3 * 20px) = add back gaps included in span (--carousel-large-gaps-mobile * --carousel-grid-gap-mobile)
+ */
+.carousel.carousel-layout-image-only-large .carousel-track {
+  grid-auto-columns: calc(
+    (var(--carousel-grid-reference-width, 100%) - var(--carousel-grid-padding-mobile) - (var(--carousel-grid-gaps-count-mobile) * var(--carousel-grid-gap-mobile))) 
+    / var(--carousel-grid-columns-mobile) 
+    * var(--carousel-large-span-mobile) 
+    + (var(--carousel-large-gaps-mobile) * var(--carousel-grid-gap-mobile))
+  );
+}
+
+/* Hide Scrollbar (WebKit) */
+.carousel.carousel-layout-image-only-medium .carousel-track::-webkit-scrollbar,
+.carousel.carousel-layout-image-only-large .carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Image-Only: Item Configuration */
+.carousel.carousel-layout-image-only-medium .carousel-item,
+.carousel.carousel-layout-image-only-large .carousel-item {
+  width: auto;
+  min-width: 0;
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  inset: auto;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: transform var(--transition-medium) ease-out, 
+              opacity var(--transition-medium) ease-out;
+}
+
+/* Image-Only: Image Styling with Smooth Animations */
+.carousel.carousel-layout-image-only-medium .carousel-item picture,
+.carousel.carousel-layout-image-only-medium .carousel-item picture img,
+.carousel.carousel-layout-image-only-large .carousel-item picture,
+.carousel.carousel-layout-image-only-large .carousel-item picture img {
+  aspect-ratio: var(--carousel-aspect-ratio-image);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
+  transition: transform var(--carousel-transition-smooth) var(--carousel-easing-out), 
+              opacity var(--carousel-transition-smooth) var(--carousel-easing-out);
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
+}
+
+.carousel .carousel-nav:hover .icon img,
+.carousel .carousel-nav:focus-visible .icon img {
+  filter: brightness(0) saturate(100%) invert(13%) sepia(79%) saturate(5187%) hue-rotate(235deg) brightness(88%) contrast(108%);
+}
+
+/* Image-Only: Layout-Specific Overrides */
+.carousel.carousel-layout-image-only-medium .carousel-overlay,
+.carousel.carousel-layout-image-only-large .carousel-overlay {
+  display: none;
+}
+
+.carousel.carousel-layout-image-only-medium .carousel-slide-link,
+.carousel.carousel-layout-image-only-large .carousel-slide-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.carousel.carousel-layout-image-only-medium .carousel-item::after,
+.carousel.carousel-layout-image-only-large .carousel-item::after {
+  display: none;
+}
+
+/* Image-Only: Navigation Wrapper */
+.carousel.carousel-layout-image-only-medium .carousel-buttons,
+.carousel.carousel-layout-image-only-large .carousel-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Fade Overlay Performance Optimization */
+.carousel .carousel-fade-overlay {
+  contain: layout style;
+}
+
+
+/* ==========================================================================
+   7. RESPONSIVE BREAKPOINTS (Mobile-First Approach)
+   ========================================================================== */
+
+/* --- MOBILE: < 800px --- */
+@media (width <= 799px) {
+  /* Touch Gestures: Full-Grid/Width Layouts */
+  .carousel .carousel-viewport {
+    touch-action: pan-y pinch-zoom;
+    user-select: none;
+    cursor: grab;
+  }
+
+  .carousel.carousel-layout-full-grid .carousel-nav, .carousel.carousel-layout-full-width .carousel-nav,
+  .carousel.carousel-layout-full-grid:hover .carousel-nav, .carousel.carousel-layout-full-width:hover .carousel-nav,
+  .carousel.carousel-layout-full-grid:focus .carousel-nav, .carousel.carousel-layout-full-width:focus .carousel-nav,
+  .carousel.carousel-layout-full-grid:focus-within .carousel-nav, .carousel.carousel-layout-full-width:focus-within .carousel-nav {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transform: translateY(-50%) translateZ(0);
+  }
+
+  .carousel .carousel-viewport:active {
+    cursor: grabbing;
+  }
+
+  .carousel .carousel-track {
+    touch-action: pan-y pinch-zoom;
+  }
+
+  /* Touch Gestures: Image-Only Layouts */
+  .carousel.carousel-layout-image-only-medium .carousel-track,
+  .carousel.carousel-layout-image-only-large .carousel-track {
+    touch-action: pan-x pan-y;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .carousel.carousel-layout-image-only-medium .carousel-track:active,
+  .carousel.carousel-layout-image-only-large .carousel-track:active {
+    cursor: grabbing;
+  }
+
+  .carousel.carousel-layout-image-only-medium .carousel-item,
+  .carousel.carousel-layout-image-only-large .carousel-item {
+    pointer-events: auto;
+    touch-action: pan-x pan-y;
+    user-select: none;
+  }
+
+  /* Mobile Layout: Text Below Image */
+  .carousel .carousel-track .carousel-item.is-active {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .carousel.carousel-layout-image-only-medium .carousel-track .carousel-item,
+  .carousel.carousel-layout-image-only-large .carousel-track .carousel-item {
+    display: block;
+  }
+
+  /* Mobile Media Sizing */
+  .carousel .carousel-media,
+  .carousel .carousel-media-bg {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .carousel.carousel-layout-full-width .carousel-item .carousel-media,
+  .carousel.carousel-layout-full-grid .carousel-item .carousel-media,
+  .carousel.carousel-layout-full-width .carousel-item .carousel-media-bg,
+  .carousel.carousel-layout-full-grid .carousel-item .carousel-media-bg {
+    height: auto;
+    aspect-ratio: var(--carousel-aspect-ratio);
+  }
+
+  /* Mobile Overlay Styling */
+  .carousel .carousel-overlay {
+    position: relative;
+    padding: var(--carousel-spacer-medium);
+    background: var(--nec-gray-0);
+    color: var(--nec-gray-90);
+  }
+
+  .carousel .carousel-description {
+    color: var(--nec-gray-80, #5a5a5a);
+  }
+
+  /* Mobile Gradient Overlay */
+  .carousel .carousel-track .carousel-item::after {
+    inset: 0 0 auto;
+    aspect-ratio: var(--carousel-aspect-ratio);
+  }
+}
+
+/* --- TABLET/DESKTOP: >= 800px --- */
+@media (width >= 800px) {
+  /* Update Responsive Variables */
+  .carousel {
+    --carousel-aspect-ratio: var(--carousel-aspect-ratio-image);
+    --carousel-edge-spacing: var(--spacer-05);
+    --carousel-expand-padding: 40px;
+    --carousel-image-overflow: -40px;
+    
+    /* Grid Column Width Calculations (Tablet: 8-column grid) */
+
+    /* Formula: ((container-width - padding - gaps) / total-columns) * span + included-gaps */
+    --carousel-grid-padding-tablet: 40px;        /* Left + right padding on tablet (20px each) */
+    --carousel-grid-columns-tablet: 8;           /* Total grid columns on tablet */
+    --carousel-grid-gap-tablet: 20px;            /* Gap between columns on tablet */
+    --carousel-grid-gaps-count-tablet: 7;        /* Number of gaps (columns - 1) */
+    --carousel-medium-span-tablet: 2;            /* Columns to span for medium layout */
+    --carousel-medium-gaps-tablet: 1;            /* Gaps included in medium span */
+    --carousel-large-span-tablet: 4;             /* Columns to span for large layout */
+    --carousel-large-gaps-tablet: 3;             /* Gaps included in large span */
+  }
+
+  .carousel.carousel-layout-image-only-large,
+  .carousel.carousel-layout-image-only-medium {
+    --carousel-image-breakout: min(var(--carousel-image-overflow), calc(50% - 50vw));
+
+    margin-right: var(--carousel-image-breakout);
+    width: calc(100% - var(--carousel-image-breakout));
+  }
+
+  /* Tablet Border Radius */
+  .carousel .carousel-track .carousel-item picture,
+  .carousel .carousel-track .carousel-item picture img,
+  .carousel .carousel-track .carousel-item iframe,
+  .carousel .carousel-track .carousel-item video,
+  .carousel .carousel-slide-link {
+    border-radius: var(--border-radius-2);
+  }
+
+  /* Tablet Gradient Overlay */
+  .carousel .carousel-track .carousel-item::after {
+    inset: 0;
+  }
+
+  /* Tablet Overlay Positioning */
+  .carousel .carousel-overlay {
+    position: absolute;
+    left: var(--spacer-05);
+    right: var(--spacer-05);
+    bottom: var(--spacer-05);
+    max-width: var(--viewport-xl);
+    transition: left var(--carousel-transition-animation) var(--carousel-easing-standard),
+                right var(--carousel-transition-animation) var(--carousel-easing-standard);
+  }
+
+  /* Tablet Typography */
+  .carousel .carousel-title {
+    font-size: var(--font-scale-07);
+    color: var(--nec-gray-0);
+    max-width: calc(var(--grid-column-tab-width-6) + (var(--grid-gutter) * 5));
+  }
+
+  .carousel .carousel-description {
+    color: var(--text-inverse, #fff);
+    max-width: calc(var(--grid-column-tab-width-6) + (var(--grid-gutter) * 5));
+  }
+
+  .carousel .carousel-cta.button {
+    padding: var(--carousel-cta-padding-desktop);
+    margin-top: var(--spacer-05);
+  }
+
+  /* Tablet Media Sizing */
+  .carousel .carousel-item:not(.is-active) .carousel-media-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .carousel .carousel-item.is-active .carousel-media,
+  .carousel .carousel-item.is-active .carousel-media-bg {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--carousel-aspect-ratio);
+  }
+
+  /* Tablet Video Controls */
+  .carousel .carousel-video-control {
+    display: flex;
+    width: var(--carousel-nav-size-sm);
+    height: var(--carousel-nav-size-sm);
+    top: var(--spacer-05);
+    right: var(--carousel-spacer-medium);
+  }
+
+  /* Tablet Navigation */
+  .carousel-wrapper .carousel .carousel-nav {
+    display: grid;
+    cursor: pointer;
+    opacity: 1;
+  }
+
+  .carousel-wrapper .carousel .carousel-prev,
+  .carousel-wrapper .carousel .carousel-next {
+    top: var(--carousel-nav-top-tablet);
+  }
+
+  .carousel.carousel-layout-full-grid .carousel-prev,
+  .carousel.carousel-layout-full-grid .carousel-next {
+    top: var(--carousel-grid-nav-top-tablet);
+  }
+
+  /* Tablet Pagination */
+  .carousel .carousel-dots {
+    left: auto;
+    right: var(--spacer-05);
+    bottom: var(--spacer-05);
+  }
+
+  /* Tablet Full-Width Layouts */
+
+  /* Full-width breakout: Break out of container to full viewport width */
+  .carousel.carousel-layout-full-width {
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    width: 100vw;
+  }
+
+  .carousel.carousel-layout-full-width .carousel-overlay,
+  .carousel.carousel-layout-full-grid.carousel-expanded .carousel-overlay {
+    margin: 0 auto;
+    left: var(--spacer-07);
+    right: var(--spacer-07);
+  }
+
+  /* Full-width breakout: Break out of container to full viewport width */
+  .carousel.carousel-layout-full-grid.carousel-expanded {
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    width: 100vw;
+  }
+
+  .carousel.carousel-layout-full-width,
+  .carousel.carousel-layout-full-grid.carousel-expanded {
+    --carousel-edge-spacing: var(--spacer-07);
+  }
+
+  .carousel.carousel-layout-full-width .carousel-dots,
+  .carousel.carousel-layout-full-grid.carousel-expanded .carousel-dots {
+    right: var(--spacer-07);
+  }
+
+  .carousel.carousel-layout-full-width .carousel-video-control,
+  .carousel.carousel-layout-full-grid.carousel-expanded .carousel-video-control {
+    right: var(--spacer-07);
+  }
+
+  /* Tablet Image-Only Grid Calculations */
+
+  /* Medium layout: 2 columns visible */
+
+  /* Calculation breakdown:
+   * - 100% = full container width
+   * - 40px = left + right padding (--carousel-grid-padding-tablet)
+   * - (7 * 20px) = total gaps between 8 columns (--carousel-grid-gaps-count-tablet * --carousel-grid-gap-tablet)
+   * - / 8 = divide by total columns (--carousel-grid-columns-tablet)
+   * - * 2 = multiply by columns to span (--carousel-medium-span-tablet)
+   * - + 20px = add back gap included in span (--carousel-medium-gaps-tablet * --carousel-grid-gap-tablet)
+   */
+  .carousel.carousel-layout-image-only-medium .carousel-track {
+    grid-auto-columns: calc(
+      (var(--carousel-grid-reference-width, 100%) - var(--carousel-grid-padding-tablet) - (var(--carousel-grid-gaps-count-tablet) * var(--carousel-grid-gap-tablet))) 
+      / var(--carousel-grid-columns-tablet) 
+      * var(--carousel-medium-span-tablet) 
+      + (var(--carousel-medium-gaps-tablet) * var(--carousel-grid-gap-tablet))
+    );
+    gap: var(--carousel-gap-desktop);
+  }
+
+  /* Large layout: 4 columns visible */
+
+  /* Calculation breakdown:
+   * - 100% = full container width
+   * - 40px = left + right padding (--carousel-grid-padding-tablet)
+   * - (7 * 20px) = total gaps between 8 columns (--carousel-grid-gaps-count-tablet * --carousel-grid-gap-tablet)
+   * - / 8 = divide by total columns (--carousel-grid-columns-tablet)
+   * - * 4 = multiply by columns to span (--carousel-large-span-tablet)
+   * - + (3 * 20px) = add back gaps included in span (--carousel-large-gaps-tablet * --carousel-grid-gap-tablet)
+   */
+  .carousel.carousel-layout-image-only-large .carousel-track {
+    grid-auto-columns: calc(
+      (var(--carousel-grid-reference-width, 100%) - var(--carousel-grid-padding-tablet) - (var(--carousel-grid-gaps-count-tablet) * var(--carousel-grid-gap-tablet))) 
+      / var(--carousel-grid-columns-tablet) 
+      * var(--carousel-large-span-tablet) 
+      + (var(--carousel-large-gaps-tablet) * var(--carousel-grid-gap-tablet))
+    );
+    gap: var(--carousel-gap-desktop);
+  }
+}
+
+/* --- LARGE DESKTOP: >= 1080px --- */
+@media (width >= 1080px) {
+  /* Update Responsive Variables */
+  .carousel {
+    --carousel-edge-spacing: var(--spacer-06);
+    --carousel-expand-padding: 80px;
+    --carousel-image-overflow: -80px;
+    
+    /* Grid Column Width Calculations (Desktop: 12-column grid) */
+
+    /* Formula: ((container-width - padding - gaps) / total-columns) * span + included-gaps */
+    --carousel-grid-padding-desktop: 80px;        /* Left + right padding on desktop (40px each) */
+    --carousel-grid-columns-desktop: 12;          /* Total grid columns on desktop */
+    --carousel-grid-gap-desktop: 20px;            /* Gap between columns on desktop */
+    --carousel-grid-gaps-count-desktop: 11;       /* Number of gaps (columns - 1) */
+    --carousel-medium-span-desktop: 2;            /* Columns to span for medium layout */
+    --carousel-medium-gaps-desktop: 1;            /* Gaps included in medium span */
+    --carousel-large-span-desktop: 4;             /* Columns to span for large layout */
+    --carousel-large-gaps-desktop: 3;             /* Gaps included in large span */
+  }
+
+  .carousel .carousel-overlay {
+    left: var(--spacer-06);
+    right: var(--spacer-06);
+    bottom: var(--spacer-06);
+  }
+
+
+  .carousel.carousel-layout-image-only-large,
+  .carousel.carousel-layout-image-only-medium {
+    --carousel-image-breakout: min(var(--carousel-image-overflow), calc(50% - 50vw));
+    --carousel-grid-reference-width: min(calc(100vw - 160px), var(--viewport-xl));
+
+    margin-right: var(--carousel-image-breakout);
+    width: calc(100% - var(--carousel-image-breakout));
+  }
+
+  /* Desktop Typography */
+  .carousel .carousel-title {
+    font-size: var(--font-scale-08);
+    max-width: calc(var(--grid-column-width-6) + (var(--grid-gutter) * 5));
+  }
+
+  .carousel .carousel-description {
+    max-width: calc(var(--grid-column-width-6) + (var(--grid-gutter) * 5));
+  }
+
+  .carousel .carousel-cta {
+    margin-top: var(--spacer-06);
+  }
+
+  /* Desktop Video Controls */
+  .carousel .carousel-video-control {
+    width: var(--carousel-nav-size-lg);
+    height: var(--carousel-nav-size-lg);
+    top: var(--spacer-07);
+    right: var(--spacer-07);
+  }
+
+  .carousel .carousel-video-control-pause::before {
+    left: var(--spacer-03);
+  }
+
+  .carousel .carousel-video-control-pause::after {
+    right: 11px;
+  }
+
+  /* Desktop Navigation */
+  .carousel .carousel-nav {
+    top: var(--carousel-nav-top-desktop);
+    transform: translateY(-50%);
+    width: var(--carousel-nav-size-lg);
+    height: var(--carousel-nav-size-lg);
+  }
+
+  .carousel-wrapper .carousel .carousel-nav {
+    opacity: 0;
+  }
+
+  .carousel.carousel-layout-full-grid .carousel-nav {
+    top: var(--carousel-grid-nav-top-desktop);
+  }
+
+  /* Desktop Pagination */
+  .carousel .carousel-dots {
+    right: var(--spacer-06);
+    bottom: var(--spacer-06);
+  }
+
+  /* calc(50% - 50vw) = negative margin to extend element to viewport edges */
+  .carousel.carousel-layout-full-width,
+  .carousel.carousel-layout-full-grid.carousel-expanded {
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    width: 100vw;
+
+    --carousel-edge-spacing: var(--spacer-12);
+  }
+
+  .carousel.carousel-layout-full-width .carousel-dots,
+  .carousel.carousel-layout-full-grid.carousel-expanded .carousel-dots {
+    right: var(--spacer-12);
+  }
+
+  .carousel.carousel-layout-full-width .carousel-overlay,
+  .carousel.carousel-layout-full-grid.carousel-expanded .carousel-overlay {
+    left: var(--spacer-12);
+    right: var(--spacer-12);
+  }
+
+  .carousel.carousel-layout-full-width .carousel-video-control,
+  .carousel.carousel-layout-full-grid.carousel-expanded .carousel-video-control {
+    right: var(--spacer-12);
+  }
+
+  /* Desktop Image-Only Grid Calculations */
+
+  /* Medium layout: 2 columns visible */
+
+  /* Calculation breakdown:
+   * - 100% = full container width
+   * - 80px = left + right padding (--carousel-grid-padding-desktop)
+   * - (11 * 20px) = total gaps between 12 columns (--carousel-grid-gaps-count-desktop * --carousel-grid-gap-desktop)
+   * - / 12 = divide by total columns (--carousel-grid-columns-desktop)
+   * - * 2 = multiply by columns to span (--carousel-medium-span-desktop)
+   * - + 20px = add back gap included in span (--carousel-medium-gaps-desktop * --carousel-grid-gap-desktop)
+   */
+  .carousel.carousel-layout-image-only-medium .carousel-track {
+    grid-auto-columns: calc(
+      (var(--carousel-grid-reference-width, 100%) - (var(--carousel-grid-gaps-count-desktop) * var(--carousel-grid-gap-desktop))) 
+      / var(--carousel-grid-columns-desktop) 
+      * var(--carousel-medium-span-desktop) 
+      + (var(--carousel-medium-gaps-desktop) * var(--carousel-grid-gap-desktop))
+    );
+    gap: var(--carousel-gap-desktop);
+  }
+
+  /* Large layout: 4 columns visible */
+
+  /* Calculation breakdown:
+   * - 100% = full container width
+   * - 80px = left + right padding (--carousel-grid-padding-desktop)
+   * - (11 * 20px) = total gaps between 12 columns (--carousel-grid-gaps-count-desktop * --carousel-grid-gap-desktop)
+   * - / 12 = divide by total columns (--carousel-grid-columns-desktop)
+   * - * 4 = multiply by columns to span (--carousel-large-span-desktop)
+   * - + (3 * 20px) = add back gaps included in span (--carousel-large-gaps-desktop * --carousel-grid-gap-desktop)
+   */
+  .carousel.carousel-layout-image-only-large .carousel-track {
+    grid-auto-columns: calc(
+      (var(--carousel-grid-reference-width, 100%) - (var(--carousel-grid-gaps-count-desktop) * var(--carousel-grid-gap-desktop))) 
+      / var(--carousel-grid-columns-desktop) 
+      * var(--carousel-large-span-desktop) 
+      + (var(--carousel-large-gaps-desktop) * var(--carousel-grid-gap-desktop))
+    );
+    gap: var(--carousel-gap-desktop);
+  }
+
+  .carousel.carousel-layout-image-only-medium .carousel-nav,
+  .carousel.carousel-layout-image-only-large .carousel-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .side-navigation-content-wrapper .carousel.carousel-layout-full-width,
+  .side-navigation-content-wrapper .carousel.carousel-layout-full-grid.carousel-expanded,
+  .grid-columns .carousel.carousel-layout-full-width,
+  .grid-columns .carousel.carousel-layout-full-grid.carousel-expanded {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+
+    --carousel-edge-spacing: var(--spacer-06);
+  }
+
+  .side-navigation-content-wrapper .carousel.carousel-layout-full-width .carousel-dots,
+  .grid-columns .carousel.carousel-layout-full-width .carousel-dots,
+  .side-navigation-content-wrapper .carousel.carousel-layout-full-grid.carousel-expanded .carousel-dots,
+  .grid-columns .carousel.carousel-layout-full-grid.carousel-expanded .carousel-dots {
+    right: var(--spacer-06);
+  }
+
+  .side-navigation-content-wrapper .carousel.carousel-layout-full-width .carousel-overlay,
+  .grid-columns .carousel.carousel-layout-full-width .carousel-overlay,
+  .side-navigation-content-wrapper .carousel.carousel-layout-full-grid.carousel-expanded .carousel-overlay,
+  .grid-columns .carousel.carousel-layout-full-grid.carousel-expanded .carousel-overlay {
+    left: var(--spacer-06);
+    right: var(--spacer-06);
+  }
+
+  .side-navigation-content-wrapper .carousel.carousel-layout-full-width .carousel-video-control,
+  .grid-columns .carousel.carousel-layout-full-width .carousel-video-control,
+  .side-navigation-content-wrapper .carousel.carousel-layout-full-grid.carousel-expanded .carousel-video-control,
+  .grid-columns .carousel.carousel-layout-full-grid.carousel-expanded .carousel-video-control {
+    right: var(--spacer-06);
+  }
+
+}
+
+@media (width >= 1888px) {
+  .carousel.carousel-layout-image-only-large,
+  .carousel.carousel-layout-image-only-medium {
+    --carousel-grid-reference-width: var(--viewport-xl);
+  }
+}
+
+/* ==========================================================================
+   8. ACCESSIBILITY FEATURES
+   ========================================================================== */
+
+/* --- Hover Capability Detection --- */
+@media (hover: hover) {
+  .carousel .carousel-nav:focus-visible,
+  .carousel .carousel-container:hover .carousel-nav {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (hover: none) {
+  .carousel .carousel-nav {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* --- Reduced Motion Preferences --- */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable All Animations */
+  .carousel .carousel-track .carousel-item .carousel-title,
+  .carousel .carousel-track .carousel-item .carousel-description,
+  .carousel .carousel-track .carousel-item .carousel-cta {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .carousel .carousel-nav,
+  .carousel .carousel-dot {
+    transition: none;
+  }
+
+  .carousel .carousel-video-control:hover,
+  .carousel .carousel-video-control:active,
+  .carousel .carousel-nav:hover,
+  .carousel .carousel-nav:active {
+    transform: none;
+  }
+
+  /* Disable Smooth Scrolling */
+  .carousel .carousel-viewport {
+    scroll-behavior: auto;
+  }
+
+  .carousel.carousel-layout-image-only-medium .carousel-track,
+  .carousel.carousel-layout-image-only-large .carousel-track {
+    scroll-behavior: auto;
+    transform: none;
+    perspective: none;
+  }
+
+  .carousel.carousel-layout-image-only-medium .carousel-item,
+  .carousel.carousel-layout-image-only-large .carousel-item,
+  .carousel.carousel-layout-image-only-medium .carousel-item picture,
+  .carousel.carousel-layout-image-only-medium .carousel-item picture img,
+  .carousel.carousel-layout-image-only-large .carousel-item picture,
+  .carousel.carousel-layout-image-only-large .carousel-item picture img {
+    transform: none;
+    will-change: auto;
+    transition: none;
+  }
+
+  /* Disable Full-Grid Expansion Animation */
+  .carousel.carousel-layout-full-grid {
+    transition: none;
+  }
+}
+
+/* --- High Contrast Mode Support --- */
+@media (prefers-contrast: more) {
+  .carousel .carousel-video-control {
+    background-color: rgb(0 0 0 / 80%);
+    border: 2px solid currentcolor;
+  }
+
+  .carousel .carousel-video-control:hover {
+    background-color: rgb(0 0 0 / 90%);
+  }
+
+  .carousel .carousel-video-control:focus-visible {
+    outline: 3px solid;
+    outline-offset: 3px;
+  }
+
+  .carousel .carousel-nav {
+    border: 2px solid currentcolor;
+  }
+
+  .carousel .carousel-dot {
+    border: 2px solid currentcolor;
+  }
+}
