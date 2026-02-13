@@ -263,10 +263,11 @@
         }
       },
       {
-        "component": "richtext",
+        "component": "reference",
         "name": "mediaVideo",
-        "label": "Video (JS Embed Code)",
+        "label": "Video",
         "valueType": "string",
+        "multi": false,
         "required": false,
         "condition": {
           "and": [

@@ -84,35 +84,6 @@ export const HERO_FADE_START_PX = 300;
  */
 export const HERO_IO_THRESHOLDS = [0, 1];
 
-/**
- * Brightcove attributes to extract from video elements
- */
-export const HERO_BRIGHTCOVE_ATTRIBUTES = [
-  'data-account',
-  'data-player',
-  'data-embed',
-  'data-video-id',
-];
-
-/**
- * Video attributes for hero videos
- */
-export const HERO_VIDEO_ATTRIBUTES = {
-  CONTROLS: 'controls',
-  AUTOPLAY: 'autoplay',
-  MUTED: 'muted',
-  PLAYSINLINE: 'playsinline',
-  LOOP: 'loop',
-};
-
-/**
- * Console warning patterns to suppress
- */
-export const HERO_CONSOLE_PATTERNS = [
-  /robustness level/i,
-  /videojs\.plugin\(\) is deprecated/i,
-];
-
 // Default caption for accessibility when no caption is provided
 export const HERO_DEFAULT_VIDEO_CAPTION = 'Hero video content';
 
@@ -139,8 +110,6 @@ export default {
   HERO_FIELD_MAP,
   HERO_FADE_START_PX,
   HERO_IO_THRESHOLDS,
-  HERO_BRIGHTCOVE_ATTRIBUTES,
-  HERO_VIDEO_ATTRIBUTES,
-  HERO_CONSOLE_PATTERNS,
+  HERO_DEFAULT_VIDEO_CAPTION,
   generateHeroUID,
 };

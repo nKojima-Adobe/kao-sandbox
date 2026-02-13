@@ -31,11 +31,10 @@ A flexible hero component that displays primary content at the top of a webpage 
 
 ### Features:
 - Two Layouts: Text-only or contains-media
-- Media Support: Images and videos with Brightcove integration
-- Accessibility: Full WCAG 2.1 AA compliance with VTT captions
+- Media Support: Images and DAM videos (native HTML5 video)
+- Accessibility: Full WCAG 2.1 AA compliance
 - Responsive: Mobile-first design with tablet and desktop breakpoints
 - CTA Support: Optional call-to-action buttons
-- Video Captions: Automatic VTT track generation for accessibility
 
 ### CSS Classes:
 - \`.hero\` - Main block
@@ -169,13 +168,13 @@ const createBlock = (args) => {
   const mediaVideoRow = document.createElement('div');
   const mediaVideoCell = document.createElement('div');
   if (args.mediaType === 'video' && args.layout === 'contains-media') {
-    const videoJs = document.createElement('video-js');
-    videoJs.setAttribute('data-account', '4598493582001');
-    videoJs.setAttribute('data-player', 'VkljVUbZtx');
-    videoJs.setAttribute('data-embed', 'default');
-    videoJs.setAttribute('data-video-id', '6379184097112');
-    videoJs.className = 'video-js';
-    mediaVideoCell.appendChild(videoJs);
+    const video = document.createElement('video');
+    video.src = 'https://delivery-p150422-e1918841.adobeaemcloud.com/adobe/assets/sample-video.mp4';
+    video.autoplay = true;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    mediaVideoCell.appendChild(video);
   }
   mediaVideoRow.appendChild(mediaVideoCell);
   block.appendChild(mediaVideoRow);
