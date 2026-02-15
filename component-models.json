@@ -806,6 +806,10 @@
     ]
   },
   {
+    "id": "sns-share-links",
+    "fields": []
+  },
+  {
     "id": "sns-share-link",
     "fields": [
       {
