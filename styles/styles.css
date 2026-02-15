@@ -310,7 +310,7 @@ main > .grid-columns > .section,
 .grid-columns {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--grid-gutter);
+  gap: 0;
 }
 
 /* First section/grid-columns spacing */
@@ -359,8 +359,7 @@ main > .grid-columns > div {
   .grid-columns {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    gap: var(--grid-gutter);
-    row-gap: 0;
+    gap: 0;
   }
 
   .grid-columns .span-col-1:not([class*="tablet-span-col-"]) { grid-column: span 1; }
@@ -394,8 +393,7 @@ main > .grid-columns > div {
   .grid-columns {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    gap: var(--grid-gutter);
-    row-gap: 0;
+    gap: 0;
   }
 
   .grid-columns [class^="span-col-"] {

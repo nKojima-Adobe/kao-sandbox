@@ -5,3 +5,25 @@
   height: auto;
   display: block;
 }
+
+/* Image width percentage variants */
+.image.image-width-20 picture { width: 20%; }
+.image.image-width-25 picture { width: 25%; }
+.image.image-width-30 picture { width: 30%; }
+.image.image-width-40 picture { width: 40%; }
+.image.image-width-50 picture { width: 50%; }
+.image.image-width-60 picture { width: 60%; }
+.image.image-width-70 picture { width: 70%; }
+.image.image-width-75 picture { width: 75%; }
+.image.image-width-80 picture { width: 80%; }
+.image.image-width-90 picture { width: 90%; }
+.image.image-width-100 picture { width: 100%; }
+
+.image[class*="image-width-"] picture {
+  display: block;
+}
+
+.image[class*="image-width-"] img {
+  width: 100%;
+  height: auto;
+}
