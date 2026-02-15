@@ -1,0 +1,22 @@
+/* ===== Image Block: GKC Home variant ===== */
+
+.image.gkc-home .image-link {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.image.gkc-home .image-link picture img {
+  display: block;
+  width: 100%;
+  transition: opacity 0.2s ease-out;
+}
+
+.image.gkc-home .image-link:hover picture img {
+  opacity: 0.85;
+}
+
+.image.gkc-home .image-link:focus-visible {
+  outline: 2px solid var(--nec-sky-60, #0078d4);
+  outline-offset: 2px;
+}

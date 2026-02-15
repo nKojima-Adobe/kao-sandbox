@@ -17,8 +17,7 @@
       "cards",
       "columns",
       "fragment",
-      "carousel",
-      "sns-share-links"
+      "carousel"
     ]
   },
   {
@@ -60,14 +59,7 @@
       "cards",
       "columns",
       "fragment",
-      "carousel",
-      "sns-share-links"
-    ]
-  },
-  {
-    "id": "sns-share-links",
-    "components": [
-      "sns-share-link"
+      "carousel"
     ]
   }
 ]

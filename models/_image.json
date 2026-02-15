@@ -7,7 +7,9 @@
         "xwalk": {
           "page": {
             "resourceType": "core/franklin/components/image/v1/image",
-            "template": {}
+            "template": {
+              "model": "image"
+            }
           }
         }
       }
@@ -27,6 +29,29 @@
           "component": "text",
           "name": "imageAlt",
           "label": "Alt Text"
+        },
+        {
+          "component": "multiselect",
+          "name": "style",
+          "label": "Style",
+          "options": [
+            {
+              "name": "Variant",
+              "children": [
+                { "name": "GKC Home", "value": "gkc-home" }
+              ]
+            }
+          ]
+        },
+        {
+          "component": "aem-content",
+          "name": "link",
+          "label": "Link",
+          "valueType": "string",
+          "description": "URL the user is redirected to when the image is clicked",
+          "condition": {
+            "in": ["gkc-home", { "var": "style" }]
+          }
         }
       ]
     }
