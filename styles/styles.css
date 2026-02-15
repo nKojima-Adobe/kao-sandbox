@@ -450,20 +450,17 @@ main > .grid-columns > div {
   text-align: left;
 }
 
-/* ===== BOTTOM-ALIGN-TEXT VARIANT: Content pinned to bottom with configurable offset ===== */
+/* ===== BACKGROUND-BLACK VARIANT ===== */
 
-/* Section becomes a positioning context that fills available height */
-.grid-columns .section.bottom-align-text {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-  padding-bottom: var(--bottom-offset, 0);
+.grid-columns .section.background-black {
+  background-color: #000;
+  color: #fff;
 }
 
-/* Ensure text stays left-aligned by default within the bottom-aligned container */
-.grid-columns .section.bottom-align-text > div > .default-content-wrapper,
-.grid-columns .section.bottom-align-text > div > [class$="-wrapper"] {
-  text-align: left;
+.grid-columns .section.background-black a {
+  color: #fff;
+}
+
+.grid-columns .section.background-black a:hover {
+  color: #ccc;
 }

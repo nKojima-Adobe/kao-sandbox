@@ -563,12 +563,7 @@ function decorateSections(main) {
       const meta = readBlockConfig(sectionMeta);
       Object.keys(meta).forEach((key) => {
         const normalizedKey = key.toLowerCase().replace(/-/g, '');
-        if (normalizedKey === 'bottomoffset') {
-          const offsetVal = parseInt(meta[key], 10);
-          if (!Number.isNaN(offsetVal)) {
-            section.style.setProperty('--bottom-offset', `${offsetVal}px`);
-          }
-        } else if (normalizedKey === 'bottommargin') {
+        if (normalizedKey === 'bottommargin') {
           if (meta[key]) {
             const rawValue = meta[key].trim();
             const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
@@ -603,18 +598,6 @@ function decorateSections(main) {
         }
       });
       sectionMeta.parentNode.remove();
-    }
-
-    // Check data attributes for bottomOffset
-    const bottomOffsetData = section.dataset.bottomoffset
-      || section.dataset.bottomOffset
-      || section.getAttribute('data-bottomoffset')
-      || section.getAttribute('data-bottom-offset');
-    if (bottomOffsetData) {
-      const offsetVal = parseInt(bottomOffsetData, 10);
-      if (!Number.isNaN(offsetVal)) {
-        section.style.setProperty('--bottom-offset', `${offsetVal}px`);
-      }
     }
 
     // Check data attributes for bottomMargin

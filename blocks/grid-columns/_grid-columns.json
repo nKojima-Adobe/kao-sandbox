@@ -73,8 +73,13 @@
             {
               "name": "Layout Variant",
               "children": [
-                { "name": "KAO Home 1 (Centered Blocks)", "value": "kao-home-1" },
-                { "name": "Bottom Align Text", "value": "bottom-align-text" }
+                { "name": "KAO Home 1 (Centered Blocks)", "value": "kao-home-1" }
+              ]
+            },
+            {
+              "name": "Background",
+              "children": [
+                { "name": "Background Black", "value": "background-black" }
               ]
             },
             {
@@ -86,16 +91,6 @@
               ]
             }
           ]
-        },
-        {
-          "component": "number",
-          "name": "bottomOffset",
-          "label": "Bottom Offset (px)",
-          "valueType": "number",
-          "description": "Distance in pixels from the bottom edge for content placement",
-          "condition": {
-            "in": ["bottom-align-text", { "var": "style" }]
-          }
         },
         {
           "component": "select",

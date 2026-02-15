@@ -1,0 +1,24 @@
+/* ===== Text Block: Bottom Align Text variant ===== */
+
+/*
+ * When 'Bottom Align Text' is selected, the text block positions its content
+ * at the bottom of the available space, with a configurable pixel offset.
+ */
+.text.bottom-align-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  padding-bottom: var(--bottom-offset, 0);
+}
+
+/* Text stays left-aligned by default */
+.text.bottom-align-text p,
+.text.bottom-align-text h1,
+.text.bottom-align-text h2,
+.text.bottom-align-text h3,
+.text.bottom-align-text h4,
+.text.bottom-align-text h5,
+.text.bottom-align-text h6 {
+  text-align: left;
+}
