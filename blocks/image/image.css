@@ -29,6 +29,12 @@
   overflow: hidden;
 }
 
+/* Ensure intermediate EDS wrapper divs pass the height chain down */
+.image.gkc-home-card.gkc-home-card > div,
+.image.gkc-home-card.gkc-home-card > div > div {
+  height: 100%;
+}
+
 .image.gkc-home-card.gkc-home-card picture {
   display: block;
   width: 100%;
