@@ -1,0 +1,7 @@
+/* Image block styles */
+
+.image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

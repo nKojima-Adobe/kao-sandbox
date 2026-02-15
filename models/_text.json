@@ -21,7 +21,7 @@
       "fields": [
         {
           "component": "multiselect",
-          "name": "classes",
+          "name": "style",
           "label": "Style",
           "options": [
             {
@@ -39,7 +39,7 @@
           "valueType": "number",
           "description": "Distance in pixels from the bottom edge for content placement",
           "condition": {
-            "in": ["bottom-align-text", { "var": "classes" }]
+            "in": ["bottom-align-text", { "var": "style" }]
           }
         }
       ]
