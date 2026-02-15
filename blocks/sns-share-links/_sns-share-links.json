@@ -36,18 +36,17 @@
       "id": "sns-share-link",
       "fields": [
         {
-          "component": "select",
+          "component": "reference",
+          "name": "image",
+          "label": "Icon Image",
           "valueType": "string",
-          "name": "sns",
-          "label": "SNS Platform",
-          "required": true,
-          "options": [
-            { "name": "Facebook", "value": "facebook" },
-            { "name": "X", "value": "x" },
-            { "name": "LinkedIn", "value": "linkedin" },
-            { "name": "LINE", "value": "line" },
-            { "name": "Copy URL", "value": "copy" }
-          ]
+          "multi": false
+        },
+        {
+          "component": "aem-content",
+          "name": "link",
+          "label": "Link",
+          "valueType": "string"
         }
       ]
     }
