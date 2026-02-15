@@ -1,0 +1,154 @@
+{
+  "definitions": [
+    {
+      "title": "Carousel",
+      "id": "carousel",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Carousel",
+              "filter": "carousel",
+              "model": "carousel"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Carousel Item",
+      "id": "carousel-item",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Carousel Item",
+              "model": "carousel-item"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "carousel",
+      "fields": [
+        {
+          "component": "select",
+          "name": "layout",
+          "value": "full-grid",
+          "label": "Layout Options",
+          "valueType": "string",
+          "options": [
+            { "name": "Full Grid", "value": "full-grid" },
+            { "name": "Full Width", "value": "full-width" },
+            { "name": "Image Only (Medium)", "value": "image-only-medium" },
+            { "name": "Image Only (Large)", "value": "image-only-large" },
+            { "name": "KAO Home", "value": "kao-home" }
+          ],
+          "default": "full-grid"
+        }
+      ]
+    },
+    {
+      "id": "carousel-item",
+      "fields": [
+        {
+          "component": "select",
+          "name": "mediaType",
+          "label": "Media Type",
+          "value": "image",
+          "valueType": "string",
+          "options": [
+            { "name": "Image", "value": "image" },
+            { "name": "Video", "value": "video" }
+          ],
+          "default": "image"
+        },
+        {
+          "component": "reference",
+          "name": "mediaImage",
+          "label": "Image",
+          "valueType": "string",
+          "multi": false,
+          "required": false,
+          "condition": {
+            "===": [{ "var": "mediaType" }, "image"]
+          }
+        },
+        {
+          "component": "reference",
+          "name": "mediaVideo",
+          "label": "Video",
+          "valueType": "string",
+          "multi": false,
+          "required": false,
+          "condition": {
+            "===": [{ "var": "mediaType" }, "video"]
+          }
+        },
+        {
+          "component": "text",
+          "name": "altText",
+          "label": "Alt Text",
+          "valueType": "string",
+          "required": true,
+          "validation": {
+            "customErrorMsg": "Please enter alt text"
+          }
+        },
+        {
+          "component": "aem-content",
+          "name": "link",
+          "label": "Link",
+          "valueType": "string",
+          "valueFormat": "regexp",
+          "validation": {
+            "regExp": "^(https?://[^\\s/$.?#].[^\\s]*|/[^\\s]*|#[^\\s]*|mailto:[^\\s@]+@[^\\s@]+\\.[^\\s@]+|tel:[+]?[0-9\\s\\-\\(\\)]+)$",
+            "customErrorMsg": "Please enter a valid URL format"
+          }
+        },
+        {
+          "component": "text",
+          "name": "title",
+          "label": "Title",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "description",
+          "label": "Description",
+          "valueType": "string"
+        },
+        {
+          "component": "aem-content",
+          "name": "cta-link",
+          "label": "CTA Button Link",
+          "valueType": "string",
+          "valueFormat": "regexp",
+          "validation": {
+            "regExp": "^(https?://[^\\s/$.?#].[^\\s]*|/[^\\s]*|#[^\\s]*|mailto:[^\\s@]+@[^\\s@]+\\.[^\\s@]+|tel:[+]?[0-9\\s\\-\\(\\)]+)$",
+            "customErrorMsg": "Please enter a valid URL format"
+          }
+        },
+        {
+          "component": "text",
+          "name": "cta-text",
+          "label": "CTA Button Text",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "carousel",
+      "components": [
+        "carousel-item"
+      ]
+    }
+  ]
+}

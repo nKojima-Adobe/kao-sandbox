@@ -28,4 +28,14 @@ export function normalizeText(text) {
   return normalized;
 }
 
-export default { normalizeText };
+/**
+ * Extract a video-js element from a container.
+ * Stub: returns null since Brightcove is not used in this project.
+ * @param {HTMLElement} container - The container to search
+ * @returns {HTMLElement|null} The video-js element or null
+ */
+export function extractVideoJsElement() {
+  return null;
+}
+
+export default { normalizeText, extractVideoJsElement };
