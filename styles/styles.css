@@ -447,27 +447,13 @@ main > .section.gkc-home img {
   width: 100%;
 }
 
-/* ===== GKC-HOME VARIANT: Grid-columns — remove all margins ===== */
+/* ===== GKC-HOME VARIANT: Grid-columns — no margins, centered blocks, left-aligned text ===== */
 
 main > .grid-columns:has(.gkc-home) {
   margin: 0;
 }
 
 .grid-columns .section.gkc-home > div {
-  max-width: 100%;
-  padding: 0;
-  margin: 0;
-}
-
-/* ===== KAO-HOME-1 VARIANT: Full-width, centered blocks, left-aligned text ===== */
-
-/* Grid container goes edge-to-edge when any section has kao-home-1 */
-main > .grid-columns:has(.kao-home-1) {
-  margin-inline: 0;
-}
-
-/* Remove inner wrapper constraints for full-bleed */
-.grid-columns .section.kao-home-1 > div {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -476,9 +462,8 @@ main > .grid-columns:has(.kao-home-1) {
   margin: 0;
 }
 
-/* Blocks and default-content-wrappers get a constrained width and center themselves */
-.grid-columns .section.kao-home-1 > div > .default-content-wrapper,
-.grid-columns .section.kao-home-1 > div > [class$="-wrapper"] {
+.grid-columns .section.gkc-home > div > .default-content-wrapper,
+.grid-columns .section.gkc-home > div > [class$="-wrapper"] {
   width: fit-content;
   max-width: 100%;
   text-align: left;

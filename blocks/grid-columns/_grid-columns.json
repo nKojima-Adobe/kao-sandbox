@@ -73,8 +73,7 @@
             {
               "name": "Layout Variant",
               "children": [
-                { "name": "KAO Home 1 (Centered Blocks)", "value": "kao-home-1" },
-                { "name": "GKC Home (No Margins)", "value": "gkc-home" }
+                { "name": "GKC Home", "value": "gkc-home" }
               ]
             },
             {
