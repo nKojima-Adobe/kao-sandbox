@@ -24,36 +24,32 @@
 /* ===== Image Block: GKC Home Card variant (60vw x 20vw) ===== */
 
 .image.gkc-home-card.gkc-home-card {
+  position: relative;
   width: 60vw;
   height: 20vw;
   overflow: hidden;
 }
 
-/* Ensure intermediate EDS wrapper divs pass the height chain down */
-.image.gkc-home-card.gkc-home-card > div,
-.image.gkc-home-card.gkc-home-card > div > div {
-  height: 100%;
+.image.gkc-home-card.gkc-home-card .image-link {
+  position: absolute;
+  inset: 0;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .image.gkc-home-card.gkc-home-card picture {
+  position: absolute;
+  inset: 0;
   display: block;
-  width: 100%;
-  height: 100%;
 }
 
 .image.gkc-home-card.gkc-home-card.gkc-home-card picture img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: filter 0.2s ease-out;
-}
-
-.image.gkc-home-card.gkc-home-card .image-link {
-  display: block;
-  width: 100%;
-  height: 100%;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .image.gkc-home-card.gkc-home-card .image-link:hover picture img {
