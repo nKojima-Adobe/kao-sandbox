@@ -143,7 +143,23 @@
           }
         },
         {
-          "title": "Hero",
+          "title": "Grid Columns",
+          "id": "grid-columns",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/section/v1/section",
+                "template": {
+                  "name": "Grid Columns",
+                  "model": "grid-columns",
+                  "filter": "grid-columns"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Hero-Test",
           "id": "hero",
           "plugins": {
             "xwalk": {

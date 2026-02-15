@@ -131,7 +131,7 @@
     overflow: hidden;
 }
 
-.hero-media :is(picture, img, video-js, .video-js) {
+.hero-media :is(picture, img, video) {
     width: 100%;
     height: auto;
     aspect-ratio: 1 / 1;
@@ -180,12 +180,12 @@
 }
 
 /* Video element accessibility */
-video-js:focus {
+.hero-media-video video:focus {
     outline: 2px solid var(--nec-sky-50);
     outline-offset: 2px;
 }
 
-video-js:focus:not(:focus-visible) {
+.hero-media-video video:focus:not(:focus-visible) {
     outline: none;
 }
 

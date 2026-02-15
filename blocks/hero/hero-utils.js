@@ -5,8 +5,6 @@ import {
   HERO_FIELD_MAP,
   HERO_FADE_START_PX,
   HERO_IO_THRESHOLDS,
-  HERO_BRIGHTCOVE_ATTRIBUTES,
-  HERO_VIDEO_ATTRIBUTES,
 } from './hero-constants.js';
 import { HERO_SCROLL_TEXT } from '../../constants/placeholders-constants.js';
 import { decorateIcons } from '../../scripts/aem.js';
@@ -16,93 +14,9 @@ import {
   processContentWithIconsAndLink,
   processRichHtmlWithIconsAndDecode,
 } from '../../utils/generic-utils.js';
-import { normalizeText } from '../video/video-utils.js';
 
 // Note: theme/text helpers live in utils/generic-utils.js.
 // This file exports only Hero-specific utilities (not constants).
-
-/**
- * Create video-js element from attribute extraction
- * (Based on video block implementation)
- * @param {string} normalized - Normalized HTML string
- * @returns {HTMLElement} video-js element
- */
-function heroCreateVideoJsFromAttributes(normalized) {
-  const brightcoveAttributes = HERO_BRIGHTCOVE_ATTRIBUTES;
-
-  const getAttr = (name) => {
-    const re = new RegExp(`${name}="([^"]+)"`, 'i');
-    const m = normalized.match(re);
-    return m ? m[1] : '';
-  };
-
-  const el = document.createElement('video-js');
-  brightcoveAttributes.forEach((attr) => {
-    const value = getAttr(attr);
-    if (value) el.setAttribute(attr, value);
-  });
-
-  if (/\bcontrols\b/i.test(normalized)) {
-    el.setAttribute(HERO_VIDEO_ATTRIBUTES.CONTROLS, '');
-  }
-
-  el.className = 'video-js';
-  return el;
-}
-
-/**
- * Extract video-js element from authored content
- * (Based on video block implementation)
- * @param {HTMLElement} row - The row containing video embed code
- * @returns {HTMLElement|null} video-js element or null
- */
-export function heroExtractVideoJsElement(row) {
-  // First try to find existing video-js element
-  let videoJsEl = row.querySelector('video-js');
-  if (videoJsEl) return videoJsEl;
-
-  // Fallback 1: richtext wrapper that outputs real HTML
-  const rtWrapper = row.querySelector('[data-aue-type="richtext"], div');
-  if (rtWrapper) {
-    videoJsEl = rtWrapper.querySelector('video-js');
-    if (videoJsEl) return videoJsEl;
-
-    // If wrapper contains only text (escaped snippet), attempt to parse it
-    const raw = rtWrapper.innerText || rtWrapper.textContent || '';
-    const normalized = normalizeText(raw);
-
-    if (/<\s*video-js[\s\S]*<\s*\/\s*video-js\s*>/i.test(normalized)) {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(normalized, 'text/html');
-      const candidate = doc.querySelector('video-js');
-      if (candidate) {
-        candidate.classList.add('video-js');
-        return candidate;
-      }
-    }
-  }
-
-  // Fallback 2: reconstruct <video-js> from escaped richtext text nodes
-  const combined = row.textContent || '';
-  if (/video-js/i.test(combined)) {
-    const normalized = normalizeText(combined);
-
-    try {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(normalized, 'text/html');
-      const candidate = doc.querySelector('video-js');
-      if (candidate) {
-        candidate.classList.add('video-js');
-        return candidate;
-      }
-    } catch (e) {
-      // Fallback to attribute extraction if DOMParser parsing fails
-      return heroCreateVideoJsFromAttributes(normalized);
-    }
-  }
-
-  return null;
-}
 
 /**
  * Parse content from AEM rows into structured data
@@ -172,8 +86,23 @@ export function heroParseContent(rows) {
           break;
         }
         case 'mediaVideo': {
-          if (text || html) {
-            content.mediaVideo = heroExtractVideoJsElement(row);
+          const video = cell.querySelector('video');
+          const source = cell.querySelector('source');
+          const videoLink = cell.querySelector('a');
+          if (video) {
+            content.mediaVideo = video;
+          } else if (source) {
+            content.mediaVideo = source.closest('video') || source;
+          } else if (videoLink) {
+            // DAM reference delivered as a link
+            const videoEl = document.createElement('video');
+            videoEl.src = videoLink.href;
+            content.mediaVideo = videoEl;
+          } else if (text && /\.(mp4|webm|ogg)(\?|$)/i.test(text)) {
+            // Plain text URL to video
+            const videoEl = document.createElement('video');
+            videoEl.src = text;
+            content.mediaVideo = videoEl;
           }
           break;
         }
@@ -300,11 +229,12 @@ export function heroBuildMediaWrapper(mediaElement, mediaAlt, mediaCaption) {
 }
 
 /**
- * Build video wrapper for video-js element
+ * Build video wrapper for native DAM video element
+ * @param {HTMLVideoElement} videoElement - The video element from DAM
  * @param {string} mediaCaption - Caption text
  * @returns {HTMLDivElement} wrapper for video
  */
-export function heroBuildVideoWrapper(mediaCaption) {
+export function heroBuildVideoWrapper(videoElement, mediaCaption) {
   // Validate mediaCaption (should be string if provided)
   let sanitizedMediaCaption = mediaCaption;
   if (mediaCaption !== undefined && typeof mediaCaption !== 'string') {
@@ -316,10 +246,25 @@ export function heroBuildVideoWrapper(mediaCaption) {
   const videoWrapper = document.createElement('div');
   videoWrapper.className = `${HERO_CSS_CLASSES.MEDIA} ${HERO_CSS_CLASSES.MEDIA_VIDEO}`;
 
-  // Add caption placeholder if exists (used as textContent in hero.js – no sanitizeText
-  // so / is not escaped to &#x2F;)
+  // Configure video for hero: autoplay, muted, loop, inline
+  if (videoElement) {
+    const video = videoElement.cloneNode(true);
+    video.autoplay = true;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.setAttribute('playsinline', '');
+    video.removeAttribute('controls');
+    videoWrapper.appendChild(video);
+  }
+
+  // Add caption if exists
   if (sanitizedMediaCaption) {
-    videoWrapper.dataset.caption = sanitizedMediaCaption;
+    const captionEl = document.createElement('p');
+    captionEl.className = HERO_CSS_CLASSES.CAPTION;
+    captionEl.innerHTML = sanitizedMediaCaption;
+    decorateIcons(captionEl);
+    videoWrapper.appendChild(captionEl);
   }
 
   return videoWrapper;

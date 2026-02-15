@@ -2,7 +2,8 @@
   {
     "id": "main",
     "components": [
-      "section"
+      "section",
+      "grid-columns"
     ]
   },
   {
@@ -37,6 +38,20 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "grid-columns",
+    "components": [
+      "text",
+      "heading",
+      "image",
+      "button",
+      "title",
+      "hero",
+      "cards",
+      "columns",
+      "fragment"
     ]
   }
 ]

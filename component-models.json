@@ -190,6 +190,174 @@
     ]
   },
   {
+    "id": "grid-columns",
+    "fields": [
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "columns",
+        "label": "Column Span",
+        "options": [
+          {
+            "name": "1 Column",
+            "value": "span-col-1"
+          },
+          {
+            "name": "2 Columns",
+            "value": "span-col-2"
+          },
+          {
+            "name": "3 Columns",
+            "value": "span-col-3"
+          },
+          {
+            "name": "4 Columns",
+            "value": "span-col-4"
+          },
+          {
+            "name": "5 Columns",
+            "value": "span-col-5"
+          },
+          {
+            "name": "6 Columns",
+            "value": "span-col-6"
+          },
+          {
+            "name": "7 Columns",
+            "value": "span-col-7"
+          },
+          {
+            "name": "8 Columns",
+            "value": "span-col-8"
+          },
+          {
+            "name": "9 Columns",
+            "value": "span-col-9"
+          },
+          {
+            "name": "10 Columns",
+            "value": "span-col-10"
+          },
+          {
+            "name": "11 Columns",
+            "value": "span-col-11"
+          },
+          {
+            "name": "12 Columns",
+            "value": "span-col-12"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "tablet-columns",
+        "label": "Tablet Column Span",
+        "options": [
+          {
+            "name": "1 Column",
+            "value": "tablet-span-col-1"
+          },
+          {
+            "name": "2 Columns",
+            "value": "tablet-span-col-2"
+          },
+          {
+            "name": "3 Columns",
+            "value": "tablet-span-col-3"
+          },
+          {
+            "name": "4 Columns",
+            "value": "tablet-span-col-4"
+          },
+          {
+            "name": "5 Columns",
+            "value": "tablet-span-col-5"
+          },
+          {
+            "name": "6 Columns",
+            "value": "tablet-span-col-6"
+          },
+          {
+            "name": "7 Columns",
+            "value": "tablet-span-col-7"
+          },
+          {
+            "name": "8 Columns",
+            "value": "tablet-span-col-8"
+          }
+        ]
+      },
+      {
+        "component": "multiselect",
+        "name": "style",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Style",
+            "children": [
+              {
+                "name": "Left Align",
+                "value": "left-align-text"
+              },
+              {
+                "name": "Center Align",
+                "value": "center-align-text"
+              },
+              {
+                "name": "Right Align",
+                "value": "right-align-text"
+              }
+            ]
+          },
+          {
+            "name": "Layout Hidden",
+            "children": [
+              {
+                "name": "Desktop Hide",
+                "value": "desktop-hide"
+              },
+              {
+                "name": "Tablet Hide",
+                "value": "tablet-hide"
+              },
+              {
+                "name": "Mobile Hide",
+                "value": "mobile-hide"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "bottomMargin",
+        "label": "Bottom Margin",
+        "value": "0px",
+        "valueType": "string",
+        "default": "0px",
+        "options": [
+          {
+            "name": "None (0px)",
+            "value": "0px"
+          },
+          {
+            "name": "Spacing07 (Mobile 24px, Tablet 32px, Desktop 40px)",
+            "value": "Spacing07"
+          },
+          {
+            "name": "Spacing12 (Mobile 64px, Tablet 72px, Desktop 80px)",
+            "value": "Spacing12"
+          },
+          {
+            "name": "Spacing14 (Mobile 80px, Tablet 96px, Desktop 120px)",
+            "value": "Spacing14"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "hero",
     "fields": [
       {
@@ -263,10 +431,11 @@
         }
       },
       {
-        "component": "richtext",
+        "component": "reference",
         "name": "mediaVideo",
-        "label": "Video (JS Embed Code)",
+        "label": "Video",
         "valueType": "string",
+        "multi": false,
         "required": false,
         "condition": {
           "and": [

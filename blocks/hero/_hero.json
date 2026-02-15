@@ -1,7 +1,7 @@
 {
   "definitions": [
     {
-      "title": "Hero",
+      "title": "Hero-Test",
       "id": "hero",
       "plugins": {
         "xwalk": {
@@ -91,10 +91,11 @@
           }
         },
         {
-          "component": "richtext",
+          "component": "reference",
           "name": "mediaVideo",
-          "label": "Video (JS Embed Code)",
+          "label": "Video",
           "valueType": "string",
+          "multi": false,
           "required": false,
           "condition": {
             "and": [
