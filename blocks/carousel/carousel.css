@@ -1577,7 +1577,15 @@ html[lang="ja"] .carousel .carousel-description {
   user-select: none;
 }
 
-/* Images fill full height and width of the carousel container */
+/* Images fill full height and width — remove all aspect-ratio constraints */
+.carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-track .carousel-item,
+.carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-track .carousel-item .carousel-media,
+.carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-track .carousel-item .carousel-media-bg,
+.carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-track .carousel-item::after {
+  aspect-ratio: auto;
+  height: 100%;
+}
+
 .carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-track .carousel-item picture,
 .carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-track .carousel-item picture img {
   width: 100%;
