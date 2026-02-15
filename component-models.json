@@ -212,6 +212,10 @@
           {
             "name": "Highlight",
             "value": "highlight"
+          },
+          {
+            "name": "GKC Home (No Margins)",
+            "value": "gkc-home"
           }
         ]
       }
@@ -532,6 +536,10 @@
               {
                 "name": "KAO Home 1 (Centered Blocks)",
                 "value": "kao-home-1"
+              },
+              {
+                "name": "GKC Home (No Margins)",
+                "value": "gkc-home"
               }
             ]
           },

@@ -431,6 +431,34 @@ main > .grid-columns > div {
   }
 }
 
+/* ===== GKC-HOME VARIANT: Section — remove all margins, full-width images ===== */
+
+main > .section.gkc-home {
+  margin: 0;
+}
+
+main > .section.gkc-home > div {
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+main > .section.gkc-home img {
+  width: 100%;
+}
+
+/* ===== GKC-HOME VARIANT: Grid-columns — remove all margins ===== */
+
+main > .grid-columns:has(.gkc-home) {
+  margin: 0;
+}
+
+.grid-columns .section.gkc-home > div {
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
 /* ===== KAO-HOME-1 VARIANT: Full-width, centered blocks, left-aligned text ===== */
 
 /* Grid container goes edge-to-edge when any section has kao-home-1 */
