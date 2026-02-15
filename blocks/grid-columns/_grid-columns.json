@@ -101,11 +101,11 @@
             {
               "name": "Column Height",
               "children": [
-                { "name": "20vh", "value": "col-height-20vh" },
-                { "name": "40vh", "value": "col-height-40vh" },
-                { "name": "60vh", "value": "col-height-60vh" },
-                { "name": "80vh", "value": "col-height-80vh" },
-                { "name": "100vh", "value": "col-height-100vh" }
+                { "name": "20vw", "value": "col-height-20vw" },
+                { "name": "40vw", "value": "col-height-40vw" },
+                { "name": "60vw", "value": "col-height-60vw" },
+                { "name": "80vw", "value": "col-height-80vw" },
+                { "name": "100vw", "value": "col-height-100vw" }
               ]
             },
             {

@@ -502,8 +502,8 @@ main > .grid-columns:has(.kao-home-1) {
   overflow: hidden;
 }
 
-.grid-columns .section.col-height-20vh { height: 20vh; }
-.grid-columns .section.col-height-40vh { height: 40vh; }
-.grid-columns .section.col-height-60vh { height: 60vh; }
-.grid-columns .section.col-height-80vh { height: 80vh; }
-.grid-columns .section.col-height-100vh { height: 100vh; }
+.grid-columns .section.col-height-20vw { height: 20vw; }
+.grid-columns .section.col-height-40vw { height: 40vw; }
+.grid-columns .section.col-height-60vw { height: 60vw; }
+.grid-columns .section.col-height-80vw { height: 80vw; }
+.grid-columns .section.col-height-100vw { height: 100vw; }
