@@ -101,16 +101,11 @@
             {
               "name": "Column Height",
               "children": [
-                { "name": "200px", "value": "col-height-200" },
-                { "name": "300px", "value": "col-height-300" },
-                { "name": "400px", "value": "col-height-400" },
-                { "name": "500px", "value": "col-height-500" },
-                { "name": "600px", "value": "col-height-600" },
-                { "name": "700px", "value": "col-height-700" },
-                { "name": "800px", "value": "col-height-800" },
-                { "name": "50vh (half screen)", "value": "col-height-50vh" },
-                { "name": "75vh (3/4 screen)", "value": "col-height-75vh" },
-                { "name": "100vh (full screen)", "value": "col-height-100vh" }
+                { "name": "20vh", "value": "col-height-20vh" },
+                { "name": "40vh", "value": "col-height-40vh" },
+                { "name": "60vh", "value": "col-height-60vh" },
+                { "name": "80vh", "value": "col-height-80vh" },
+                { "name": "100vh", "value": "col-height-100vh" }
               ]
             },
             {
