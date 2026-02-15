@@ -432,3 +432,38 @@ main > .grid-columns > div {
     display: none;
   }
 }
+
+/* ===== KAO-HOME-1 VARIANT: Centered blocks, left-aligned text ===== */
+
+/* Center all content wrappers within the section */
+.grid-columns .section.kao-home-1 > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Blocks and default-content-wrappers get a constrained width and center themselves */
+.grid-columns .section.kao-home-1 > div > .default-content-wrapper,
+.grid-columns .section.kao-home-1 > div > [class$="-wrapper"] {
+  width: fit-content;
+  max-width: 100%;
+  text-align: left;
+}
+
+/* ===== BOTTOM-ALIGN-TEXT VARIANT: Content pinned to bottom with configurable offset ===== */
+
+/* Section becomes a positioning context that fills available height */
+.grid-columns .section.bottom-align-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  padding-bottom: var(--bottom-offset, 0);
+}
+
+/* Ensure text stays left-aligned by default within the bottom-aligned container */
+.grid-columns .section.bottom-align-text > div > .default-content-wrapper,
+.grid-columns .section.bottom-align-text > div > [class$="-wrapper"] {
+  text-align: left;
+}
