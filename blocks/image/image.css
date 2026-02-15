@@ -9,11 +9,11 @@
 .image.gkc-home .image-link picture img {
   display: block;
   width: 100%;
-  transition: opacity 0.2s ease-out;
+  transition: filter 0.2s ease-out;
 }
 
 .image.gkc-home .image-link:hover picture img {
-  opacity: 0.85;
+  filter: brightness(0.7) saturate(0.8);
 }
 
 .image.gkc-home .image-link:focus-visible {
