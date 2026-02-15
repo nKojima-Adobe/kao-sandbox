@@ -431,13 +431,21 @@ main > .grid-columns > div {
   }
 }
 
-/* ===== KAO-HOME-1 VARIANT: Centered blocks, left-aligned text ===== */
+/* ===== KAO-HOME-1 VARIANT: Full-width, centered blocks, left-aligned text ===== */
 
-/* Center all content wrappers within the section */
+/* Grid container goes edge-to-edge when any section has kao-home-1 */
+main > .grid-columns:has(.kao-home-1) {
+  margin-inline: 0;
+}
+
+/* Remove inner wrapper constraints for full-bleed */
 .grid-columns .section.kao-home-1 > div {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 /* Blocks and default-content-wrappers get a constrained width and center themselves */
@@ -487,3 +495,20 @@ main > .grid-columns > div {
 .grid-columns .section.image-width-80 picture { width: 80%; }
 .grid-columns .section.image-width-90 picture { width: 90%; }
 .grid-columns .section.image-width-100 picture { width: 100%; }
+
+/* ===== COLUMN HEIGHT VARIANTS ===== */
+
+.grid-columns .section[class*="col-height-"] {
+  overflow: hidden;
+}
+
+.grid-columns .section.col-height-200 { height: 200px; }
+.grid-columns .section.col-height-300 { height: 300px; }
+.grid-columns .section.col-height-400 { height: 400px; }
+.grid-columns .section.col-height-500 { height: 500px; }
+.grid-columns .section.col-height-600 { height: 600px; }
+.grid-columns .section.col-height-700 { height: 700px; }
+.grid-columns .section.col-height-800 { height: 800px; }
+.grid-columns .section.col-height-50vh { height: 50vh; }
+.grid-columns .section.col-height-75vh { height: 75vh; }
+.grid-columns .section.col-height-100vh { height: 100vh; }
