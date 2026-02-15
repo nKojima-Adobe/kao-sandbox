@@ -1362,6 +1362,14 @@ function buildSlideFromRow(
   itemMeta = mergeMetadata(itemMeta, fetchedMetadata);
 
   const media = buildMediaElement(temp, itemMeta, item);
+
+  // Skip slides that have no visual media (image or video) — prevents blank slides
+  const hasImage = item.querySelector('picture, img') || temp.querySelector('picture, img');
+  const hasVideo = item.querySelector('video, video-js, iframe') || temp.querySelector('video, video-js, iframe');
+  if (!media && !hasImage && !hasVideo) {
+    return null;
+  }
+
   configureMedia(media, itemMeta, item, placeholders, shouldLoadMedia);
 
   const overlay = buildOverlay(temp, itemMeta);
