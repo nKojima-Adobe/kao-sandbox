@@ -1512,6 +1512,13 @@ html[lang="ja"] .carousel .carousel-description {
 
 /* Autoplay-only crossfade: no navigation controls, simultaneous fade-in/fade-out */
 
+/* Full-height cascade for container, viewport, track */
+.carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-track,
+.carousel.carousel-layout-kao-home .carousel-container .carousel-viewport,
+.carousel.carousel-layout-kao-home .carousel-container.carousel-container {
+  height: 100%;
+}
+
 /* Hide all navigation UI */
 .carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-nav,
 .carousel.carousel-layout-kao-home .carousel-container .carousel-dots,
@@ -1536,6 +1543,7 @@ html[lang="ja"] .carousel .carousel-description {
   transition: opacity 1.2s ease-in-out;
   z-index: calc(var(--carousel-z-content) + 1);
   position: relative;
+  height: 100%;
 }
 
 /* Outgoing slide (crossfade: stays visible while fading out) */
@@ -1546,6 +1554,7 @@ html[lang="ja"] .carousel .carousel-description {
   z-index: var(--carousel-z-content);
   position: absolute;
   inset: 0;
+  height: 100%;
 }
 
 /* Disable text/CTA animations for clean crossfade */
@@ -1558,7 +1567,7 @@ html[lang="ja"] .carousel .carousel-description {
 }
 
 /* Ensure track has relative positioning for absolute children */
-.carousel.carousel-layout-kao-home .carousel-track {
+.carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-track {
   position: relative;
 }
 
@@ -1566,4 +1575,13 @@ html[lang="ja"] .carousel .carousel-description {
 .carousel.carousel-layout-kao-home {
   cursor: default;
   user-select: none;
+}
+
+/* Images fill full height and width of the carousel container */
+.carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-track .carousel-item picture,
+.carousel.carousel-layout-kao-home .carousel-container .carousel-viewport .carousel-track .carousel-item picture img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
 }
