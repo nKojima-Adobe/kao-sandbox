@@ -468,6 +468,7 @@ main > .grid-columns > div {
 /* Constrain images within grid-columns sections to a percentage of the container */
 .grid-columns .section[class*="image-width-"] picture {
   display: block;
+  margin-inline: auto;
 }
 
 .grid-columns .section[class*="image-width-"] img {
