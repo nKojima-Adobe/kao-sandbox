@@ -1,10 +1,11 @@
 /**
  * Image block decorator.
- * For the GKC Home variant, wraps the image in a clickable link.
+ * For GKC Home variants, wraps the image in a clickable link.
  * @param {HTMLElement} block The image block element
  */
 export default function decorate(block) {
-  const isGkcHome = block.classList.contains('gkc-home');
+  const isGkcHome = block.classList.contains('gkc-home')
+    || block.classList.contains('gkc-home-card');
   if (!isGkcHome) return;
 
   // The link value is stored as a data attribute by xwalk rendering
