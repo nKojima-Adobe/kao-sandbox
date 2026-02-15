@@ -36,63 +36,6 @@
         "component": "text",
         "name": "imageAlt",
         "label": "Alt Text"
-      },
-      {
-        "component": "select",
-        "name": "classes",
-        "label": "Image Width",
-        "valueType": "string",
-        "description": "Width of the image as a percentage of the container",
-        "options": [
-          {
-            "name": "Auto (default)",
-            "value": ""
-          },
-          {
-            "name": "20%",
-            "value": "image-width-20"
-          },
-          {
-            "name": "25%",
-            "value": "image-width-25"
-          },
-          {
-            "name": "30%",
-            "value": "image-width-30"
-          },
-          {
-            "name": "40%",
-            "value": "image-width-40"
-          },
-          {
-            "name": "50%",
-            "value": "image-width-50"
-          },
-          {
-            "name": "60%",
-            "value": "image-width-60"
-          },
-          {
-            "name": "70%",
-            "value": "image-width-70"
-          },
-          {
-            "name": "75%",
-            "value": "image-width-75"
-          },
-          {
-            "name": "80%",
-            "value": "image-width-80"
-          },
-          {
-            "name": "90%",
-            "value": "image-width-90"
-          },
-          {
-            "name": "100%",
-            "value": "image-width-100"
-          }
-        ]
       }
     ]
   },
@@ -558,6 +501,55 @@
               {
                 "name": "Background Black",
                 "value": "background-black"
+              }
+            ]
+          },
+          {
+            "name": "Image Width",
+            "children": [
+              {
+                "name": "Image 20%",
+                "value": "image-width-20"
+              },
+              {
+                "name": "Image 25%",
+                "value": "image-width-25"
+              },
+              {
+                "name": "Image 30%",
+                "value": "image-width-30"
+              },
+              {
+                "name": "Image 40%",
+                "value": "image-width-40"
+              },
+              {
+                "name": "Image 50%",
+                "value": "image-width-50"
+              },
+              {
+                "name": "Image 60%",
+                "value": "image-width-60"
+              },
+              {
+                "name": "Image 70%",
+                "value": "image-width-70"
+              },
+              {
+                "name": "Image 75%",
+                "value": "image-width-75"
+              },
+              {
+                "name": "Image 80%",
+                "value": "image-width-80"
+              },
+              {
+                "name": "Image 90%",
+                "value": "image-width-90"
+              },
+              {
+                "name": "Image 100%",
+                "value": "image-width-100"
               }
             ]
           },
