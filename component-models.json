@@ -127,6 +127,15 @@
                 "value": "bottom-align-text"
               }
             ]
+          },
+          {
+            "name": "Border",
+            "children": [
+              {
+                "name": "Border",
+                "value": "text-border"
+              }
+            ]
           }
         ]
       },
