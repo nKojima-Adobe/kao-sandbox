@@ -148,7 +148,8 @@
         "cards",
         "columns",
         "fragment",
-        "carousel"
+        "carousel",
+        "sns-share-links"
       ]
     }
   ]

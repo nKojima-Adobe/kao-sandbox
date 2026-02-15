@@ -105,3 +105,11 @@ export function decodeHtmlEntities(text) {
   textarea.innerHTML = text;
   return textarea.value;
 }
+
+/**
+ * Checks if the Clipboard API is available (requires HTTPS context).
+ * @returns {boolean} True if clipboard write is supported
+ */
+export function isClipboardSupported() {
+  return !!(navigator.clipboard && navigator.clipboard.writeText);
+}
