@@ -80,16 +80,9 @@
       "image",
       "button",
       "title",
-      "announcement",
-      "redirect-button",
-      "header-start",
-      "hero",
-      "cards",
-      "columns",
-      "fragment",
-      "carousel",
+      "tab-list",
       "horizontal-line",
-      "tab-list"
+      "cards"
     ]
   }
 ]
