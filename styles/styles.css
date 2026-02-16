@@ -172,6 +172,10 @@ main > div {
   margin: 40px 16px;
 }
 
+main > *:first-child {
+  margin-top: 0;
+}
+
 input,
 textarea,
 select,
