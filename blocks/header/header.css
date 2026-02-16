@@ -271,7 +271,7 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections ul {
     display: flex;
-    gap: 40px;
+    gap: 72px;
     margin: 0;
     justify-content: center;
   }
