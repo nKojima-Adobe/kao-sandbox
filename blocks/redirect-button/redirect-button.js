@@ -1,14 +1,41 @@
 import { decorateIcons } from '../../scripts/aem.js';
 
 /**
+ * Field mapping: row index to field name (must match model field order).
+ */
+const FIELD_MAP = { 0: 'iconName', 1: 'text', 2: 'link' };
+
+/**
+ * Parse block rows into a structured content object.
+ * @param {NodeListOf<Element>} rows The block's child row elements
+ * @returns {Object} Parsed field values
+ */
+function parseContent(rows) {
+  const content = { iconName: '', text: '', link: '' };
+  rows.forEach((row, index) => {
+    const cell = row.querySelector(':scope > div');
+    if (!cell) return;
+    const field = FIELD_MAP[index];
+    if (!field) return;
+
+    if (field === 'link') {
+      const a = cell.querySelector('a');
+      content.link = a ? a.href : cell.textContent.trim();
+    } else {
+      content[field] = cell.textContent.trim();
+    }
+  });
+  return content;
+}
+
+/**
  * Redirect Button block decorator.
  * Builds a bordered rectangular button with an optional icon, text, and link.
  * @param {HTMLElement} block The redirect-button block element
  */
 export default function decorate(block) {
-  const iconName = block.getAttribute('data-icon-name') || block.getAttribute('data-iconname') || '';
-  const text = block.getAttribute('data-text') || block.textContent.trim() || '';
-  const link = block.getAttribute('data-link') || '';
+  const rows = block.querySelectorAll(':scope > div');
+  const { iconName, text, link } = parseContent(rows);
 
   block.textContent = '';
 
