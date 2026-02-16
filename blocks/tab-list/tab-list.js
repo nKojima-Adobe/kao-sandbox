@@ -274,18 +274,27 @@ export default async function decorate(block) {
     block.addEventListener('scrollend', updateFades, { passive: true });
   }
 
-  window.addEventListener('resize', updateFades);
+  let windowResizeTimer;
+  const debouncedWindowResize = () => {
+    clearTimeout(windowResizeTimer);
+    windowResizeTimer = setTimeout(updateFades, 100);
+  };
+  window.addEventListener('resize', debouncedWindowResize);
 
   let resizeObserver;
   if (window.ResizeObserver) {
-    resizeObserver = new ResizeObserver(updateFades);
+    let resizeTimer;
+    resizeObserver = new ResizeObserver(() => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateFades, 100);
+    });
     resizeObserver.observe(block);
     resizeObserver.observe(tabList);
   }
 
   const eventHandlers = [
     { element: block, event: 'scroll', handler: updateFades },
-    { element: window, event: 'resize', handler: updateFades },
+    { element: window, event: 'resize', handler: debouncedWindowResize },
   ];
 
   if ('onscrollend' in window) {

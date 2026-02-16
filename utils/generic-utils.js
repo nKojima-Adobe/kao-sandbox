@@ -123,7 +123,8 @@ export function isClipboardSupported() {
 export function enableHorizontalScroll(element, options = {}) {
   const { smooth = false } = options;
   element.addEventListener('wheel', (e) => {
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+    const hasOverflow = element.scrollWidth > element.clientWidth;
+    if (hasOverflow && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
       e.preventDefault();
       element.scrollBy({
         left: e.deltaY,
