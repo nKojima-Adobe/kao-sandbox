@@ -246,6 +246,10 @@
     .section.hidden[role="tabpanel"] p {
         max-width: calc(50% - 20px);
     }
+
+    .section[role="tabpanel"].center-content p {
+        max-width: 100%;
+    }
 }
 
 /* Desktop — even more spacing */
