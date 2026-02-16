@@ -187,6 +187,38 @@
     ]
   },
   {
+    "id": "redirect-button",
+    "fields": [
+      {
+        "component": "text",
+        "name": "iconName",
+        "label": "Icon Name",
+        "valueType": "string",
+        "description": "Name of the SVG icon file in /icons/ (e.g. \"facebook\" loads /icons/facebook.svg)"
+      },
+      {
+        "component": "text",
+        "name": "text",
+        "label": "Button Text",
+        "valueType": "string",
+        "required": true,
+        "validation": {
+          "customErrorMsg": "Please enter button text"
+        }
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link",
+        "valueType": "string",
+        "required": true,
+        "validation": {
+          "customErrorMsg": "Please enter a link URL"
+        }
+      }
+    ]
+  },
+  {
     "id": "section",
     "fields": [
       {
