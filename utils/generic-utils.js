@@ -115,10 +115,10 @@ export function isClipboardSupported() {
 }
 
 /**
- * Enable horizontal scrolling via mouse wheel on an element.
- * @param {HTMLElement} element - The element to enable horizontal scroll on
+ * Enable horizontal scrolling with mouse wheel on an element.
+ * @param {HTMLElement} element - Element to enable horizontal scroll on
  * @param {Object} options - Options
- * @param {boolean} options.smooth - Use smooth scroll behavior
+ * @param {boolean} options.smooth - Use smooth scrolling
  */
 export function enableHorizontalScroll(element, options = {}) {
   const { smooth = false } = options;
@@ -134,8 +134,8 @@ export function enableHorizontalScroll(element, options = {}) {
 }
 
 /**
- * Auto-clean event listeners when block element is removed from the DOM.
- * @param {HTMLElement} element - The element to watch
+ * Auto-clean event listeners when an element is removed from the DOM.
+ * @param {HTMLElement} element - Element to watch
  * @param {Array} handlers - Array of { element, event, handler } objects
  */
 export function setupEventListenerCleanup(element, handlers) {
@@ -161,9 +161,9 @@ export function setupEventListenerCleanup(element, handlers) {
 
 /**
  * Safely set innerHTML with icon support (:icon-name: syntax).
- * @param {HTMLElement} element - Target element
- * @param {Object} options - Options with text property
- * @param {string} options.text - Text that may contain :icon: syntax
+ * @param {HTMLElement} element - Element to set content on
+ * @param {Object} options - Options
+ * @param {string} options.text - Text that may contain :icon-name: syntax
  */
 export function setSafeInlineTextWithIcons(element, { text }) {
   if (!text) return;

@@ -3,8 +3,7 @@
     "id": "main",
     "components": [
       "section",
-      "grid-columns",
-      "tab-panel"
+      "grid-columns"
     ]
   },
   {
@@ -24,18 +23,6 @@
       "carousel",
       "horizontal-line",
       "tab-list"
-    ]
-  },
-  {
-    "id": "tab-panel",
-    "components": [
-      "text",
-      "image",
-      "button",
-      "title",
-      "tab-list",
-      "horizontal-line",
-      "cards"
     ]
   },
   {
@@ -83,6 +70,18 @@
       "carousel",
       "horizontal-line",
       "tab-list"
+    ]
+  },
+  {
+    "id": "tab-panel",
+    "components": [
+      "text",
+      "image",
+      "button",
+      "title",
+      "tab-list",
+      "horizontal-line",
+      "cards"
     ]
   }
 ]

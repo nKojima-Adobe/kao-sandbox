@@ -1,15 +1,6 @@
-/**
- * Utility functions for tab-list component
- */
-
 const FADE_DETECTION_THRESHOLD = 5;
 const MINIMUM_PADDING = 20;
 
-/**
- * Scrolls a tab button into view smoothly
- * @param {HTMLElement} tab - The tab button element to scroll into view
- * @param {Function} callback - Optional callback to run after scroll
- */
 export function scrollTabIntoView(tab, callback) {
   const container = tab.closest('.tab-list');
   if (!container) return;
@@ -49,12 +40,6 @@ export function scrollTabIntoView(tab, callback) {
   }
 }
 
-/**
- * Updates fade effects based on scroll position and overflow state
- * @param {HTMLElement} container - The tab-list container element
- * @param {HTMLElement} fadeLeft - The left fade overlay element
- * @param {HTMLElement} fadeRight - The right fade overlay element
- */
 export function updateFadeEffects(container, fadeLeft, fadeRight) {
   const tabList = container.querySelector('ul[role="tablist"]');
   if (!tabList) return;

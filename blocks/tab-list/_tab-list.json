@@ -8,7 +8,7 @@
           "page": {
             "resourceType": "core/franklin/components/section/v1/section",
             "template": {
-              "name": "Tab Panel",
+              "name": "Tab",
               "model": "tab-panel",
               "filter": "tab-panel",
               "tab-label": "Tab"

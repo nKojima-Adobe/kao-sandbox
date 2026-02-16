@@ -11,6 +11,7 @@ import {
   loadSection,
   loadSections,
   loadCSS,
+  readBlockConfig,
 } from './aem.js';
 
 /**
@@ -63,48 +64,44 @@ async function loadFonts() {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-function buildAutoBlocks() {
-  try {
-    // TODO: add auto block, if needed
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Auto Blocking failed', error);
-  }
-}
-
 /**
  * Auto-creates tab-list blocks for consecutive tab-panel sections.
  * @param {Element} main The main element
  */
 function buildTabs(main) {
   function getTabLabel(section) {
-    return section.dataset.tabLabel;
+    const metadataBlock = section.querySelector('.section-metadata');
+    const metadata = metadataBlock ? readBlockConfig(metadataBlock) : {};
+    return metadata['tab-label'];
   }
 
-  const children = [...main.children];
-  for (let i = 0; i < children.length; i += 1) {
-    const section = children[i];
+  for (let i = 0; i < main.children.length; i += 1) {
+    const section = main.children[i];
     const tabLabel = getTabLabel(section);
-    const nextSection = i < children.length - 1 ? children[i + 1] : null;
-    const nextTabLabel = nextSection ? getTabLabel(nextSection) : null;
+    const previousSection = i > 0 ? main.children[i - 1] : null;
+    const previousTabLabel = previousSection ? getTabLabel(previousSection) : null;
 
-    // Last tab-panel in a consecutive group (next section is not a tab-panel)
-    if (tabLabel && !nextTabLabel) {
-      // Check if a standalone tab-list section already exists after this group
-      const sectionAfter = section.nextElementSibling;
-      const isStandaloneTabList = sectionAfter
-        && !getTabLabel(sectionAfter)
-        && sectionAfter.querySelector('.tab-list');
-
-      if (!isStandaloneTabList) {
+    if (tabLabel && !previousTabLabel) {
+      let previousBlock = previousSection?.lastElementChild;
+      if (previousBlock?.matches('.section-metadata')) previousBlock = previousBlock.previousElementSibling;
+      if (!previousBlock?.matches('.tab-list')) {
         const tabListBlock = document.createElement('div');
         tabListBlock.className = 'tab-list block';
         const newSection = document.createElement('div');
         newSection.className = 'section';
         newSection.appendChild(tabListBlock);
-        section.after(newSection);
+        section.before(newSection);
       }
     }
+  }
+}
+
+function buildAutoBlocks() {
+  try {
+    // TODO: add auto block, if needed
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Auto Blocking failed', error);
   }
 }
 
@@ -119,8 +116,8 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
-  decorateSectionsColumn(main);
   buildTabs(main);
+  decorateSectionsColumn(main);
   decorateBlocks(main);
 }
 

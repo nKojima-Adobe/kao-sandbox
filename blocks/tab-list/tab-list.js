@@ -10,31 +10,18 @@ import { trackElementInteraction } from '../../scripts/analytics/data-layer.js';
 
 let tabsIdx = 0;
 
-/**
- * Convert CMS-generated icon paths to icon syntax.
- * @param {string} text - Text that may contain icon paths
- * @returns {string} Text with icon paths converted to :icon: syntax
- */
 function convertIconPathsToSyntax(text) {
   if (!text || typeof text !== 'string') return text;
-
   const fullPathMatch = text.match(/^[/\w.-]*\/icons\/([a-zA-Z0-9-]+)\.svg$/);
   if (fullPathMatch) {
     return `:${fullPathMatch[1]}:`;
   }
-
   return text.replace(/[/\w.-]*\/icons\/([a-zA-Z0-9-]+)\.svg/g, ':$1:');
 }
 
-/**
- * Strip same-origin URL prefixes from authored text.
- * @param {string} text
- * @returns {string}
- */
 function stripSameOriginPrefixes(text) {
   if (!text || typeof text !== 'string') return text;
   if (typeof window === 'undefined' || !window.location?.origin) return text;
-
   try {
     const { origin } = window.location;
     const escapedOrigin = origin.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -45,16 +32,10 @@ function stripSameOriginPrefixes(text) {
   }
 }
 
-/**
- * Extract text content from HTML that may contain anchor tags.
- * @param {string} html - HTML string that may contain anchor tags
- * @returns {string} Text content with icon syntax preserved
- */
 function extractTextFromHtml(html) {
   if (!html || typeof html !== 'string') return html;
   if (!html.includes('<') || !html.includes('>')) return html;
   if (typeof document === 'undefined') return html;
-
   try {
     const parser = new DOMParser();
     const doc = parser.parseFromString(`<div>${html}</div>`, 'text/html');
@@ -66,23 +47,14 @@ function extractTextFromHtml(html) {
   }
 }
 
-/**
- * Normalize authored tab label text.
- * @param {string} rawLabel
- * @returns {string}
- */
 export function normalizeTabLabel(rawLabel) {
   const htmlExtracted = extractTextFromHtml(String(rawLabel || ''));
   const decoded = decodeCmsText(htmlExtracted);
   if (!decoded) return '';
-
   const withoutOrigin = stripSameOriginPrefixes(decoded);
   return convertIconPathsToSyntax(withoutOrigin);
 }
 
-/**
- * Creates a tab button element with proper ARIA attributes
- */
 function createTabButton(tabId, tabLabel, tabPanelIds, isSelected, clickHandler) {
   const button = document.createElement('button');
   button.id = tabId;
@@ -92,7 +64,6 @@ function createTabButton(tabId, tabLabel, tabPanelIds, isSelected, clickHandler)
   button.setAttribute('aria-controls', tabPanelIds);
   setSafeInlineTextWithIcons(button, { text: tabLabel });
   decorateIcons(button);
-
   button.querySelectorAll('span.icon img').forEach((img) => {
     img.onerror = () => {
       const iconSpan = img.closest('span.icon');
@@ -101,7 +72,6 @@ function createTabButton(tabId, tabLabel, tabPanelIds, isSelected, clickHandler)
       }
     };
   });
-
   button.addEventListener('click', clickHandler);
   return button;
 }
@@ -142,6 +112,7 @@ export function changeTabs(e, updateFadeCallback, tabsData = null) {
     .forEach((t) => t.setAttribute('aria-selected', false));
 
   targetTab.setAttribute('aria-selected', true);
+
   scrollTabIntoView(targetTab, updateFadeCallback);
 
   document
@@ -153,61 +124,30 @@ export function changeTabs(e, updateFadeCallback, tabsData = null) {
   });
 }
 
-/**
- * Decorate the tab-list block.
- * @param {Element} block the tab-list block
- */
 export default async function decorate(block) {
-  const section = block.closest('.section');
-
-  // If this tab-list lives inside a tab-panel section, skip decoration.
-  // The standalone auto-created tab-list (from buildTabs) handles everything.
-  if (section && section.dataset.tabLabel) {
-    block.style.display = 'none';
-    return;
-  }
-
   let listPosition = 'left';
+
   const tabPanels = [];
-
-  // Look backward for preceding tab-panel sections
-  let prevSection = section.previousElementSibling;
-  while (prevSection) {
-    const { tabLabel } = prevSection.dataset;
-    if (tabLabel) {
-      tabPanels.unshift([normalizeTabLabel(tabLabel), prevSection]);
-      prevSection = prevSection.previousElementSibling;
-    } else {
-      break;
-    }
-  }
-
-  // Also look forward for following tab-panel sections
+  const section = block.closest('.section');
   let nextSection = section.nextElementSibling;
   while (nextSection) {
     const { tabLabel } = nextSection.dataset;
     if (tabLabel) {
-      tabPanels.push([normalizeTabLabel(tabLabel), nextSection]);
+      const normalizedLabel = normalizeTabLabel(tabLabel);
+      tabPanels.push([normalizedLabel, nextSection]);
       nextSection = nextSection.nextElementSibling;
     } else {
       break;
     }
   }
 
-  // Read listPosition from the block's own content (set via dialog)
-  if (block.children && block.children.length > 0) {
-    const firstRow = block.children[0];
-    const val = firstRow?.textContent?.trim().toLowerCase();
-    if (val === 'center' || val === 'left') {
-      listPosition = val;
-    }
-  }
-
-  // Move the tab-list section before the first panel so the tab bar renders above content
   if (tabPanels.length > 0) {
-    const firstPanel = tabPanels[0][1];
-    if (section !== firstPanel) {
-      firstPanel.parentNode.insertBefore(section, firstPanel);
+    const lastTabPanel = tabPanels[tabPanels.length - 1][1];
+    const tabListBlock = lastTabPanel.querySelector('.tab-list');
+
+    if (tabListBlock && tabListBlock.children && tabListBlock.children.length > 0) {
+      const rows = [...tabListBlock.children];
+      listPosition = rows[0].textContent.trim();
     }
   }
 
@@ -304,6 +244,7 @@ export default async function decorate(block) {
 
       tabs[tabFocus].setAttribute('tabindex', 0);
       tabs[tabFocus].focus();
+
       scrollTabIntoView(tabs[tabFocus], updateFades);
     } else if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
