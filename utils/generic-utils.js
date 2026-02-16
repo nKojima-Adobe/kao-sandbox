@@ -113,3 +113,60 @@ export function decodeHtmlEntities(text) {
 export function isClipboardSupported() {
   return !!(navigator.clipboard && navigator.clipboard.writeText);
 }
+
+/**
+ * Enable horizontal scrolling via mouse wheel on an element.
+ * @param {HTMLElement} element - The element to enable horizontal scroll on
+ * @param {Object} options - Options
+ * @param {boolean} options.smooth - Use smooth scroll behavior
+ */
+export function enableHorizontalScroll(element, options = {}) {
+  const { smooth = false } = options;
+  element.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      e.preventDefault();
+      element.scrollBy({
+        left: e.deltaY,
+        behavior: smooth ? 'smooth' : 'auto',
+      });
+    }
+  }, { passive: false });
+}
+
+/**
+ * Auto-clean event listeners when block element is removed from the DOM.
+ * @param {HTMLElement} element - The element to watch
+ * @param {Array} handlers - Array of { element, event, handler } objects
+ */
+export function setupEventListenerCleanup(element, handlers) {
+  element.cleanup = () => {
+    handlers.forEach(({ element: el, event, handler }) => {
+      el.removeEventListener(event, handler);
+    });
+  };
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.removedNodes.forEach((node) => {
+        if (node === element || node.contains?.(element)) {
+          element.cleanup();
+          observer.disconnect();
+        }
+      });
+    });
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
+/**
+ * Safely set innerHTML with icon support (:icon-name: syntax).
+ * @param {HTMLElement} element - Target element
+ * @param {Object} options - Options with text property
+ * @param {string} options.text - Text that may contain :icon: syntax
+ */
+export function setSafeInlineTextWithIcons(element, { text }) {
+  if (!text) return;
+  const html = text.replace(/:([a-zA-Z0-9-]+):/g, '<span class="icon icon-$1"></span>');
+  element.innerHTML = html;
+}

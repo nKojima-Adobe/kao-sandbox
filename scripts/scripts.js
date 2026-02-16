@@ -11,6 +11,7 @@ import {
   loadSection,
   loadSections,
   loadCSS,
+  readBlockConfig,
 } from './aem.js';
 
 /**
@@ -73,6 +74,38 @@ function buildAutoBlocks() {
 }
 
 /**
+ * Auto-creates tab-list blocks for consecutive tab-panel sections.
+ * @param {Element} main The main element
+ */
+function buildTabs(main) {
+  function getTabLabel(section) {
+    const metadataBlock = section.querySelector('.section-metadata');
+    const metadata = metadataBlock ? readBlockConfig(metadataBlock) : {};
+    return metadata['tab-label'];
+  }
+
+  for (let i = 0; i < main.children.length; i += 1) {
+    const section = main.children[i];
+    const tabLabel = getTabLabel(section);
+    const previousSection = i > 0 ? main.children[i - 1] : null;
+    const previousTabLabel = previousSection ? getTabLabel(previousSection) : null;
+
+    if (tabLabel && !previousTabLabel) {
+      let previousBlock = previousSection?.lastElementChild;
+      if (previousBlock?.matches('.section-metadata')) previousBlock = previousBlock.previousElementSibling;
+      if (!previousBlock?.matches('.tab-list')) {
+        const tabListBlock = document.createElement('div');
+        tabListBlock.className = 'tab-list block';
+        const newSection = document.createElement('div');
+        newSection.className = 'section';
+        newSection.appendChild(tabListBlock);
+        section.before(newSection);
+      }
+    }
+  }
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -84,6 +117,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateSectionsColumn(main);
+  buildTabs(main);
   decorateBlocks(main);
 }
 

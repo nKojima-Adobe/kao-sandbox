@@ -58,7 +58,10 @@
         "cards",
         "columns",
         "fragment",
-        "carousel"
+        "carousel",
+        "horizontal-line",
+        "tab-list",
+        "tab-panel"
       ]
     }
   ]

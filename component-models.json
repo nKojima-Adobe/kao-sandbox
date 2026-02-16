@@ -904,5 +904,46 @@
         }
       }
     ]
+  },
+  {
+    "id": "horizontal-line",
+    "fields": []
+  },
+  {
+    "id": "tab-list",
+    "fields": [
+      {
+        "component": "select",
+        "name": "listPosition",
+        "label": "List Position",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Left-aligned",
+            "value": "left"
+          },
+          {
+            "name": "Center-aligned",
+            "value": "center"
+          }
+        ],
+        "default": "left"
+      }
+    ]
+  },
+  {
+    "id": "tab-panel",
+    "fields": [
+      {
+        "component": "text",
+        "name": "tab-label",
+        "label": "Tab Label",
+        "valueType": "string",
+        "required": true,
+        "validation": {
+          "customErrorMsg": "Please enter a tab label"
+        }
+      }
+    ]
   }
 ]

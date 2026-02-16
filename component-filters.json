@@ -20,7 +20,22 @@
       "cards",
       "columns",
       "fragment",
-      "carousel"
+      "carousel",
+      "horizontal-line",
+      "tab-list",
+      "tab-panel"
+    ]
+  },
+  {
+    "id": "tab-panel",
+    "components": [
+      "text",
+      "image",
+      "button",
+      "title",
+      "tab-list",
+      "horizontal-line",
+      "cards"
     ]
   },
   {
@@ -65,7 +80,10 @@
       "cards",
       "columns",
       "fragment",
-      "carousel"
+      "carousel",
+      "horizontal-line",
+      "tab-list",
+      "tab-panel"
     ]
   }
 ]
