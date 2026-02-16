@@ -207,12 +207,20 @@
           {
             "name": "GKC Home (No Margins)",
             "value": "gkc-home"
-          },
-          {
-            "name": "Text Border",
-            "value": "text-border"
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "announcement",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
       }
     ]
   },

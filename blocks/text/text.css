@@ -11,15 +11,6 @@
   height: 100%;
   padding-bottom: var(--bottom-offset, 0);
 }
-
-/* ===== Section: Text Border variant ===== */
-
-.section.text-border .text-wrapper .text {
-  border: 1px solid var(--nec-gray-30, #b3b3b3);
-  border-radius: var(--border-radius-1, 4px);
-  padding: 16px;
-}
-
 /* Text stays left-aligned by default */
 .text.bottom-align-text p,
 .text.bottom-align-text h1,

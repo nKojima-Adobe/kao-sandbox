@@ -37,10 +37,6 @@
             {
               "name": "GKC Home (No Margins)",
               "value": "gkc-home"
-            },
-            {
-              "name": "Text Border",
-              "value": "text-border"
             }
           ]
         }
@@ -55,6 +51,7 @@
         "image",
         "button",
         "title",
+        "announcement",
         "hero",
         "cards",
         "columns",

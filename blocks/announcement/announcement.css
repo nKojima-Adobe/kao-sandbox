@@ -1,0 +1,5 @@
+.announcement {
+  border: 1px solid var(--nec-gray-30, #b3b3b3);
+  border-radius: var(--border-radius-1, 4px);
+  padding: 16px;
+}
