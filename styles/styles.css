@@ -469,10 +469,6 @@ main > .grid-columns:has(.gkc-home) {
   text-align: left;
 }
 
-.grid-columns .section.gkc-home > div > .cards-wrapper {
-  width: 100%;
-}
-
 /* ===== BACKGROUND-BLACK VARIANT ===== */
 
 .grid-columns .section.background-black {
