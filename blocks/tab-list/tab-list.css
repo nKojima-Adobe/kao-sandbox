@@ -194,14 +194,30 @@
 }
 
 /* Center Content variant for tab panels */
-.section.hidden[role="tabpanel"].center-content,
-.section.hidden[role="tabpanel"].center-content > .default-content-wrapper {
+.section[role="tabpanel"].center-content {
+    text-align: center;
+}
+
+.section[role="tabpanel"].center-content > .default-content-wrapper {
     text-align: center;
     align-items: center;
 }
 
-.section.hidden[role="tabpanel"].center-content > .default-content-wrapper p {
-    max-width: none;
+.section[role="tabpanel"].center-content > .default-content-wrapper p,
+.section[role="tabpanel"].center-content > .default-content-wrapper h1,
+.section[role="tabpanel"].center-content > .default-content-wrapper h2,
+.section[role="tabpanel"].center-content > .default-content-wrapper h3,
+.section[role="tabpanel"].center-content > .default-content-wrapper h4,
+.section[role="tabpanel"].center-content > .default-content-wrapper h5,
+.section[role="tabpanel"].center-content > .default-content-wrapper h6 {
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+.section[role="tabpanel"].center-content > [class*="-wrapper"] {
+    text-align: center;
+    align-items: center;
 }
 
 /* Tab panel animation */
