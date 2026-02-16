@@ -60,7 +60,8 @@
         "fragment",
         "carousel",
         "horizontal-line",
-        "tab-list"
+        "tab-list",
+        "accordion"
       ]
     }
   ]

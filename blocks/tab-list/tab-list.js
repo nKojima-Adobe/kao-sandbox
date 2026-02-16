@@ -194,13 +194,12 @@ export default async function decorate(block) {
   // Combine: preceding panels first, then following panels
   tabPanels.push(...precedingPanels, ...followingPanels);
 
-  if (tabPanels.length > 0) {
-    const lastTabPanel = tabPanels[tabPanels.length - 1][1];
-    const tabListBlock = lastTabPanel.querySelector('.tab-list');
-
-    if (tabListBlock && tabListBlock.children && tabListBlock.children.length > 0) {
-      const rows = [...tabListBlock.children];
-      listPosition = rows[0].textContent.trim();
+  // Read listPosition from the block's own content (set via dialog)
+  if (block.children && block.children.length > 0) {
+    const firstRow = block.children[0];
+    const val = firstRow?.textContent?.trim().toLowerCase();
+    if (val === 'center' || val === 'left') {
+      listPosition = val;
     }
   }
 
