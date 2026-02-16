@@ -3,7 +3,8 @@
     "id": "main",
     "components": [
       "section",
-      "grid-columns"
+      "grid-columns",
+      "tab-panel"
     ]
   },
   {

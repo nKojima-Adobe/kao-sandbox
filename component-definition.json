@@ -78,6 +78,23 @@
               }
             }
           }
+        },
+        {
+          "title": "Tab Panel",
+          "id": "tab-panel",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/section/v1/section",
+                "template": {
+                  "name": "Tab",
+                  "model": "tab-panel",
+                  "filter": "tab-panel",
+                  "tab-label": "Tab"
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -247,23 +264,6 @@
                 "template": {
                   "name": "Hero",
                   "model": "hero"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Tab Panel",
-          "id": "tab-panel",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/section/v1/section",
-                "template": {
-                  "name": "Tab",
-                  "model": "tab-panel",
-                  "filter": "tab-panel",
-                  "tab-label": "Tab"
                 }
               }
             }
