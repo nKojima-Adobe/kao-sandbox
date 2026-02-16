@@ -68,6 +68,22 @@
           "validation": {
             "customErrorMsg": "Please enter a tab label"
           }
+        },
+        {
+          "component": "multiselect",
+          "name": "style",
+          "label": "Style",
+          "options": [
+            {
+              "name": "Layout",
+              "children": [
+                {
+                  "name": "Center Content",
+                  "value": "center-content"
+                }
+              ]
+            }
+          ]
         }
       ]
     }

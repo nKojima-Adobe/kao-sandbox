@@ -193,6 +193,17 @@
     height: 40px;
 }
 
+/* Center Content variant for tab panels */
+.section.hidden[role="tabpanel"].center-content,
+.section.hidden[role="tabpanel"].center-content > .default-content-wrapper {
+    text-align: center;
+    align-items: center;
+}
+
+.section.hidden[role="tabpanel"].center-content > .default-content-wrapper p {
+    max-width: none;
+}
+
 /* Tab panel animation */
 @keyframes fade-up {
     from {
