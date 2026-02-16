@@ -25,3 +25,8 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+/* Product Card variant */
+.cards.product-card {
+  margin-bottom: 100px;
+}
