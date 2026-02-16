@@ -127,15 +127,6 @@
                 "value": "bottom-align-text"
               }
             ]
-          },
-          {
-            "name": "Border",
-            "children": [
-              {
-                "name": "Border",
-                "value": "text-border"
-              }
-            ]
           }
         ]
       },
@@ -216,6 +207,10 @@
           {
             "name": "GKC Home (No Margins)",
             "value": "gkc-home"
+          },
+          {
+            "name": "Text Border",
+            "value": "text-border"
           }
         ]
       }
