@@ -90,10 +90,13 @@ function buildTabs(main) {
 
     // Last tab-panel in a consecutive group (next section is not a tab-panel)
     if (tabLabel && !nextTabLabel) {
-      // Check if there's already a tab-list block after this group
+      // Check if a standalone tab-list section already exists after this group
       const sectionAfter = section.nextElementSibling;
-      const hasTabList = sectionAfter?.querySelector('.tab-list');
-      if (!hasTabList) {
+      const isStandaloneTabList = sectionAfter
+        && !getTabLabel(sectionAfter)
+        && sectionAfter.querySelector('.tab-list');
+
+      if (!isStandaloneTabList) {
         const tabListBlock = document.createElement('div');
         tabListBlock.className = 'tab-list block';
         const newSection = document.createElement('div');

@@ -158,19 +158,24 @@ export function changeTabs(e, updateFadeCallback, tabsData = null) {
  * @param {Element} block the tab-list block
  */
 export default async function decorate(block) {
-  let listPosition = 'left';
-
-  const tabPanels = [];
   const section = block.closest('.section');
 
+  // If this tab-list lives inside a tab-panel section, skip decoration.
+  // The standalone auto-created tab-list (from buildTabs) handles everything.
+  if (section && section.dataset.tabLabel) {
+    block.style.display = 'none';
+    return;
+  }
+
+  let listPosition = 'left';
+  const tabPanels = [];
+
   // Look backward for preceding tab-panel sections
-  const precedingPanels = [];
   let prevSection = section.previousElementSibling;
   while (prevSection) {
     const { tabLabel } = prevSection.dataset;
     if (tabLabel) {
-      const normalizedLabel = normalizeTabLabel(tabLabel);
-      precedingPanels.unshift([normalizedLabel, prevSection]);
+      tabPanels.unshift([normalizeTabLabel(tabLabel), prevSection]);
       prevSection = prevSection.previousElementSibling;
     } else {
       break;
@@ -178,28 +183,16 @@ export default async function decorate(block) {
   }
 
   // Also look forward for following tab-panel sections
-  const followingPanels = [];
   let nextSection = section.nextElementSibling;
   while (nextSection) {
     const { tabLabel } = nextSection.dataset;
     if (tabLabel) {
-      const normalizedLabel = normalizeTabLabel(tabLabel);
-      followingPanels.push([normalizedLabel, nextSection]);
+      tabPanels.push([normalizeTabLabel(tabLabel), nextSection]);
       nextSection = nextSection.nextElementSibling;
     } else {
       break;
     }
   }
-
-  // If the tab-list's own section has a tabLabel, include it too
-  if (section.dataset.tabLabel) {
-    const normalizedLabel = normalizeTabLabel(section.dataset.tabLabel);
-    // Insert it at the end of preceding panels (it comes after them in DOM order)
-    precedingPanels.push([normalizedLabel, section]);
-  }
-
-  // Combine: preceding panels first, then following panels
-  tabPanels.push(...precedingPanels, ...followingPanels);
 
   // Read listPosition from the block's own content (set via dialog)
   if (block.children && block.children.length > 0) {
@@ -210,10 +203,10 @@ export default async function decorate(block) {
     }
   }
 
-  // Move the tab-list's section before the first tab panel so the tab bar renders above content
+  // Move the tab-list section before the first panel so the tab bar renders above content
   if (tabPanels.length > 0) {
     const firstPanel = tabPanels[0][1];
-    if (section !== firstPanel && section.compareDocumentPosition(firstPanel) & Node.DOCUMENT_POSITION_FOLLOWING) {
+    if (section !== firstPanel) {
       firstPanel.parentNode.insertBefore(section, firstPanel);
     }
   }
