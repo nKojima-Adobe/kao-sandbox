@@ -971,6 +971,15 @@
                 "value": "center-content"
               }
             ]
+          },
+          {
+            "name": "Background",
+            "children": [
+              {
+                "name": "Black Background",
+                "value": "black-background"
+              }
+            ]
           }
         ]
       }

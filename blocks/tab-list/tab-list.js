@@ -10,6 +10,18 @@ import { trackElementInteraction } from '../../scripts/analytics/data-layer.js';
 
 let tabsIdx = 0;
 
+/**
+ * Toggles the page background based on the active tab panel's style.
+ * @param {string[]} panelIds - IDs of the visible tab panel(s)
+ */
+function updatePageBackground(panelIds) {
+  const hasBlackBg = panelIds.some((id) => {
+    const panel = document.getElementById(id);
+    return panel && panel.classList.contains('black-background');
+  });
+  document.body.classList.toggle('page-bg-black', hasBlackBg);
+}
+
 function convertIconPathsToSyntax(text) {
   if (!text || typeof text !== 'string') return text;
   const fullPathMatch = text.match(/^[/\w.-]*\/icons\/([a-zA-Z0-9-]+)\.svg$/);
@@ -122,6 +134,8 @@ export function changeTabs(e, updateFadeCallback, tabsData = null) {
   targetTabPanelIds.forEach((id) => {
     document.querySelector(`#${id}`).removeAttribute('hidden');
   });
+
+  updatePageBackground(targetTabPanelIds);
 }
 
 export default async function decorate(block) {
@@ -222,6 +236,8 @@ export default async function decorate(block) {
   const initialSelectedTab = finalTabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
   if (initialSelectedTab) {
     tabList.dataset.previousTabIndex = finalTabs.indexOf(initialSelectedTab).toString();
+    const initialPanelIds = (initialSelectedTab.getAttribute('aria-controls') || '').split(' ');
+    updatePageBackground(initialPanelIds);
   }
 
   let tabFocus = 0;

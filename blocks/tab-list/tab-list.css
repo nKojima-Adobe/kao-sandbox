@@ -272,3 +272,13 @@ html[lang="ja"] .tab-list ul button {
     line-height: 1.8;
     letter-spacing: 0.05em;
 }
+
+/* Page background transition for tab-panel background variants */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.page-bg-black {
+    --background-color: #000;
+    --text-color: #fff;
+}
