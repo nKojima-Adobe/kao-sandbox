@@ -87,9 +87,9 @@ header nav a:any-link {
   color: #fff;
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 500;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
 }
 
 header nav a:hover {
@@ -215,7 +215,7 @@ header nav[aria-expanded='true'] .nav-sections {
 header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
-  font-size: 13px;
+  font-size: 18px;
 }
 
 header nav .nav-sections ul > li {
