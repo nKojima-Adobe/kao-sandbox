@@ -112,6 +112,13 @@ body.appear {
 
 header {
   height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  margin: 0;
+  padding: 0;
 }
 
 header .header,
@@ -173,7 +180,11 @@ main > div {
 }
 
 main > *:first-child {
-  margin-top: 0;
+  margin-top: 0 !important;
+}
+
+main > *:first-child > * > *:first-child {
+  margin-top: 0 !important;
 }
 
 input,
