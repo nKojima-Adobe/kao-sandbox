@@ -159,19 +159,29 @@ export default async function decorate(block) {
   toggleMenu(nav, navSections, isDesktop.matches);
   isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
 
+  // Extract brand from nav into a separate scrollable banner
+  const brandBanner = document.createElement('div');
+  brandBanner.className = 'brand-banner';
+  if (navBrand) {
+    while (navBrand.firstChild) brandBanner.append(navBrand.firstChild);
+    navBrand.remove();
+  }
+
+  // Build the block: brand-banner (scrollable) above nav-wrapper (sticky)
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
+  block.append(brandBanner);
   block.append(navWrapper);
 
-  // Scroll-trigger: if a header-start marker block exists, hide the header
-  // until the user scrolls past it
+  // Scroll-trigger: if a header-start marker block exists, switch to fixed mode
   const headerEl = block.closest('header');
   if (headerEl) {
     const initScrollTrigger = () => {
       const marker = document.querySelector('.header-start');
       if (!marker) return;
 
+      headerEl.classList.add('header-fixed');
       headerEl.classList.add('header-hidden');
 
       const checkScroll = () => {

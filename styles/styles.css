@@ -111,7 +111,7 @@ body.appear {
 }
 
 header {
-  height: var(--nav-height);
+  height: auto;
 }
 
 header .header,
