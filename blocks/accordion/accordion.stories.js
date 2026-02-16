@@ -2,7 +2,7 @@ import decorate from './accordion.js';
 import { decorateIcons } from '../../scripts/aem.js';
 import '../../styles/styles.css';
 import './accordion.css';
-import './_accordion.json';
+import './_accordion';
 
 export default {
   title: 'Blocks/Accordion',
@@ -19,7 +19,7 @@ Accessible accordion with variants. Titles can include inline icons via ":icon-n
     },
   },
   args: {
-    'accordionHeader': 'Frequently Asked Questions',
+    accordionHeader: 'Frequently Asked Questions',
     styleVariation: 'full-bleed',
     withHeaderIcon: true,
     headerIcon: 'user',
@@ -43,7 +43,7 @@ Accessible accordion with variants. Titles can include inline icons via ":icon-n
     ],
   },
   argTypes: {
-    'accordionHeader': { control: 'text', description: 'Optional heading rendered above the accordion' },
+    accordionHeader: { control: 'text', description: 'Optional heading rendered above the accordion' },
     styleVariation: {
       control: 'select',
       options: ['full-bleed', 'stacked-right'],
@@ -92,7 +92,7 @@ const Template = (args) => {
   const block = document.createElement('div');
   block.className = 'accordion block';
 
-  if (args['accordionHeader']) block.setAttribute('data-accordion-header', tokenizeIcons(args['accordionHeader']));
+  if (args.accordionHeader) block.setAttribute('data-accordion-header', tokenizeIcons(args.accordionHeader));
   const mappedVariation = args.styleVariation === 'full-bleed' ? 'expanded' : args.styleVariation;
   if (mappedVariation) block.setAttribute('data-style-variation', mappedVariation);
 

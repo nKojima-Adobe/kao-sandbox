@@ -191,6 +191,13 @@ export default async function decorate(block) {
     }
   }
 
+  // If the tab-list's own section has a tabLabel, include it too
+  if (section.dataset.tabLabel) {
+    const normalizedLabel = normalizeTabLabel(section.dataset.tabLabel);
+    // Insert it at the end of preceding panels (it comes after them in DOM order)
+    precedingPanels.push([normalizedLabel, section]);
+  }
+
   // Combine: preceding panels first, then following panels
   tabPanels.push(...precedingPanels, ...followingPanels);
 
@@ -200,6 +207,14 @@ export default async function decorate(block) {
     const val = firstRow?.textContent?.trim().toLowerCase();
     if (val === 'center' || val === 'left') {
       listPosition = val;
+    }
+  }
+
+  // Move the tab-list's section before the first tab panel so the tab bar renders above content
+  if (tabPanels.length > 0) {
+    const firstPanel = tabPanels[0][1];
+    if (section !== firstPanel && section.compareDocumentPosition(firstPanel) & Node.DOCUMENT_POSITION_FOLLOWING) {
+      firstPanel.parentNode.insertBefore(section, firstPanel);
     }
   }
 

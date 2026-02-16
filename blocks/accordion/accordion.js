@@ -33,7 +33,7 @@ export default function decorate(block) {
   const rows = [...block.children];
 
   // Apply block-level authored options (from xwalk data attributes if present)
-  const accordionHeader = block.dataset['accordionHeader'] || block.getAttribute('data-accordion-header');
+  const accordionHeader = block.dataset.accordionHeader || block.getAttribute('data-accordion-header');
   const styleVariation = (block.dataset.styleVariation || block.getAttribute('data-style-variation') || '').trim();
   const singleExpand = (block.dataset.singleExpand || block.getAttribute('data-single-expand')) ?? 'false';
   const defaultExpandedIndexAttr = block.dataset.defaultExpandedIndex || block.getAttribute('data-default-expanded-index');
@@ -524,8 +524,8 @@ export default function decorate(block) {
         elementText: accordionTitle,
         additionalData: {
           action,
-          ['accordionIndex']: accordionIndex,
-          ['accordionTitle']: accordionTitle,
+          accordionIndex,
+          accordionTitle,
           totalItems: items.length,
         },
       });
