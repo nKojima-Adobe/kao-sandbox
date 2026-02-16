@@ -11,7 +11,6 @@ import {
   loadSection,
   loadSections,
   loadCSS,
-  readBlockConfig,
 } from './aem.js';
 
 /**
@@ -79,9 +78,7 @@ function buildAutoBlocks() {
  */
 function buildTabs(main) {
   function getTabLabel(section) {
-    const metadataBlock = section.querySelector('.section-metadata');
-    const metadata = metadataBlock ? readBlockConfig(metadataBlock) : {};
-    return metadata['tab-label'];
+    return section.dataset.tabLabel;
   }
 
   for (let i = 0; i < main.children.length; i += 1) {
