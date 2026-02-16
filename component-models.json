@@ -975,5 +975,95 @@
         ]
       }
     ]
+  },
+  {
+    "id": "accordion",
+    "fields": [
+      {
+        "component": "text",
+        "name": "accordionHeader",
+        "label": "Accordion Header",
+        "valueType": "string",
+        "validation": {
+          "minLength": 3,
+          "customErrorMsg": "Please enter the accordion header with at least 3 characters"
+        }
+      },
+      {
+        "component": "select",
+        "name": "styleVariation",
+        "label": "Style Variation",
+        "value": "expanded",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Expanded/Full Bleed",
+            "value": "expanded"
+          },
+          {
+            "name": "Stacked Right",
+            "value": "stacked-right"
+          }
+        ],
+        "default": "expanded"
+      },
+      {
+        "component": "boolean",
+        "name": "singleExpand",
+        "label": "Single Expand",
+        "valueType": "boolean",
+        "description": "When enabled, only one item can be open at a time"
+      },
+      {
+        "component": "number",
+        "name": "defaultExpandedIndex",
+        "label": "Default Expanded Index",
+        "valueType": "number",
+        "description": "Zero-based index of the initially expanded item (-1 for all closed)"
+      }
+    ]
+  },
+  {
+    "id": "accordion-item",
+    "fields": [
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Item Header Title",
+        "valueType": "string",
+        "required": true,
+        "validation": {
+          "minLength": 3,
+          "customErrorMsg": "Please enter the item header title with at least 3 characters"
+        }
+      },
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image",
+        "valueType": "string",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "name": "imageAlt",
+        "label": "Alt Text",
+        "valueType": "string",
+        "required": true,
+        "condition": {
+          "var": "image"
+        },
+        "validation": {
+          "customErrorMsg": "Please provide alt text for the image"
+        }
+      },
+      {
+        "component": "richtext",
+        "name": "content",
+        "label": "Rich Text Content",
+        "valueType": "string",
+        "required": true
+      }
+    ]
   }
 ]

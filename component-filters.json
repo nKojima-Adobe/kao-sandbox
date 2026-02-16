@@ -23,7 +23,8 @@
       "fragment",
       "carousel",
       "horizontal-line",
-      "tab-list"
+      "tab-list",
+      "accordion"
     ]
   },
   {
@@ -70,7 +71,8 @@
       "fragment",
       "carousel",
       "horizontal-line",
-      "tab-list"
+      "tab-list",
+      "accordion"
     ]
   },
   {
@@ -83,6 +85,12 @@
       "tab-list",
       "horizontal-line",
       "cards"
+    ]
+  },
+  {
+    "id": "accordion",
+    "components": [
+      "accordion-item"
     ]
   }
 ]
