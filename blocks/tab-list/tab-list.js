@@ -162,17 +162,37 @@ export default async function decorate(block) {
 
   const tabPanels = [];
   const section = block.closest('.section');
+
+  // Look backward for preceding tab-panel sections
+  const precedingPanels = [];
+  let prevSection = section.previousElementSibling;
+  while (prevSection) {
+    const { tabLabel } = prevSection.dataset;
+    if (tabLabel) {
+      const normalizedLabel = normalizeTabLabel(tabLabel);
+      precedingPanels.unshift([normalizedLabel, prevSection]);
+      prevSection = prevSection.previousElementSibling;
+    } else {
+      break;
+    }
+  }
+
+  // Also look forward for following tab-panel sections
+  const followingPanels = [];
   let nextSection = section.nextElementSibling;
   while (nextSection) {
     const { tabLabel } = nextSection.dataset;
     if (tabLabel) {
       const normalizedLabel = normalizeTabLabel(tabLabel);
-      tabPanels.push([normalizedLabel, nextSection]);
+      followingPanels.push([normalizedLabel, nextSection]);
       nextSection = nextSection.nextElementSibling;
     } else {
       break;
     }
   }
+
+  // Combine: preceding panels first, then following panels
+  tabPanels.push(...precedingPanels, ...followingPanels);
 
   if (tabPanels.length > 0) {
     const lastTabPanel = tabPanels[tabPanels.length - 1][1];

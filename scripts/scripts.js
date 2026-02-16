@@ -81,22 +81,25 @@ function buildTabs(main) {
     return section.dataset.tabLabel;
   }
 
-  for (let i = 0; i < main.children.length; i += 1) {
-    const section = main.children[i];
+  const children = [...main.children];
+  for (let i = 0; i < children.length; i += 1) {
+    const section = children[i];
     const tabLabel = getTabLabel(section);
-    const previousSection = i > 0 ? main.children[i - 1] : null;
-    const previousTabLabel = previousSection ? getTabLabel(previousSection) : null;
+    const nextSection = i < children.length - 1 ? children[i + 1] : null;
+    const nextTabLabel = nextSection ? getTabLabel(nextSection) : null;
 
-    if (tabLabel && !previousTabLabel) {
-      let previousBlock = previousSection?.lastElementChild;
-      if (previousBlock?.matches('.section-metadata')) previousBlock = previousBlock.previousElementSibling;
-      if (!previousBlock?.matches('.tab-list')) {
+    // Last tab-panel in a consecutive group (next section is not a tab-panel)
+    if (tabLabel && !nextTabLabel) {
+      // Check if there's already a tab-list block after this group
+      const sectionAfter = section.nextElementSibling;
+      const hasTabList = sectionAfter?.querySelector('.tab-list');
+      if (!hasTabList) {
         const tabListBlock = document.createElement('div');
         tabListBlock.className = 'tab-list block';
         const newSection = document.createElement('div');
         newSection.className = 'section';
         newSection.appendChild(tabListBlock);
-        section.before(newSection);
+        section.after(newSection);
       }
     }
   }

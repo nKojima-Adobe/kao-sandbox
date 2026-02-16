@@ -1,0 +1,455 @@
+/* stylelint-disable no-descending-specificity */
+.accordion details {
+    border-top: 1px solid var(--nec-gray-20);
+    transition: border-top-color var(--transition-medium) ease-out;
+}
+
+.accordion-item .accordion-item-label {
+    padding-top: var(--spacer-02);
+    padding-bottom: var(--spacer-02);
+}
+
+.accordion.accordion-stacked-right {
+    transition: border-top-color var(--transition-medium) ease-out;
+}
+
+.accordion-block-header {
+    color: var(--nec-gray-80);
+    margin-top: var(--spacer-02);
+    margin-bottom: var(--spacer-02);
+}
+
+.accordion details[open] {
+    border-top-color: var(--nec-gray-60);
+}
+
+.accordion-item-content {
+    word-wrap: break-word;
+    color: var(--nec-gray-80);
+}
+
+.has-media .accordion-item-content {
+    margin-top: var(--spacer-04);
+}
+
+.accordion details summary {
+    position: relative;
+    padding-right: 44px;
+    cursor: pointer;
+    list-style: none;
+    transition: background-color var(--transition-medium) ease-out;
+}
+
+.accordion details summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Icons: crossfade between plus and minus (no rotation) */
+.accordion details summary::before,
+.accordion details summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    transform: translateY(-50%);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 24px 24px;
+    transition: opacity var(--transition-medium) ease-out;
+}
+
+/* plus on ::before, visible by default */
+.accordion details summary::before {
+    background-image: url("../../icons/add.svg");
+    opacity: 1;
+}
+
+/* minus on ::after, hidden by default */
+.accordion details summary::after {
+    background-image: url("../../icons/minus.svg");
+    opacity: 0;
+}
+
+/* when open, fade to minus */
+.accordion details[open] summary::before {
+    opacity: 0;
+}
+
+.accordion details[open] summary::after {
+    opacity: 1;
+}
+
+/* While closing, force plus immediately even though [open] is still set */
+.accordion details.is-closing summary::before {
+    opacity: 1;
+}
+
+.accordion details.is-closing summary::after {
+    opacity: 0;
+}
+
+.accordion details .accordion-item-body {
+    padding: var(--spacer-02) 0 var(--spacing-04);
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: height var(--transition-medium) ease-out,
+        opacity var(--transition-medium) ease-out;
+}
+
+.accordion details[open] .accordion-item-body,
+.accordion details.is-opening .accordion-item-body {
+    background-color: var(--background-color);
+    opacity: 1;
+    overflow: visible;
+}
+
+/* Ensure smooth transitions during closing animation */
+.accordion details.is-closing .accordion-item-body {
+    transition: height var(--transition-medium) ease-out,
+        opacity var(--transition-medium) ease-out;
+}
+
+/* Ensure smooth transitions during opening animation */
+.accordion details.is-opening .accordion-item-body {
+    transition: height var(--transition-medium) ease-out,
+        opacity var(--transition-medium) ease-out;
+}
+
+/* Ensure open accordion items are visible */
+.accordion details[open] .accordion-item-body {
+    display: block;
+}
+
+/* Enforce 16:9 aspect ratio for all images in accordion items */
+.accordion .accordion-item-body picture {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.accordion .accordion-item-body picture img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-2);
+}
+
+/* Add 12px spacing only between media wrapper and the following text wrapper */
+.accordion.accordion-stacked-right
+    details[open]
+    .accordion-item-body
+    > :has(picture, img)
+    + *,
+.accordion.accordion-stacked-right
+    details.is-opening
+    .accordion-item-body
+    > :has(picture, img)
+    + *,
+.accordion.accordion-stacked-right
+    details.is-closing
+    .accordion-item-body
+    > :has(picture, img)
+    + * {
+    margin-top: var(--spacer-04);
+}
+
+.accordion-item-title-text {
+    transition: all var(--transition-medium) ease-out;
+}
+
+.accordion-item-label:hover .accordion-item-title {
+    text-decoration: underline;
+}
+
+.accordion .accordion-item-label h5 {
+    margin: 0;
+    color: var(--nec-gray-80);
+}
+
+.accordion .accordion-item-title {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    position: relative;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+html[lang="ja"] .accordion .accordion-item-title {
+    line-height: var(--line-height-ja-xl);
+}
+
+.accordion .accordion-item-title .icon img {
+    margin-left: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.accordion .accordion-item-title .icon {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    width: 24px;
+    flex-shrink: 0;
+}
+
+.accordion .accordion-item-title .icon:first-child {
+    margin-right: var(--horizontal-gap);
+}
+
+.accordion .accordion-item-title .icon + * {
+    flex: 1;
+    min-width: 0;
+}
+
+.accordion .accordion-item-title .icon + .icon {
+    flex: none;
+}
+
+.accordion .accordion-item-title::before {
+    content: "";
+    flex-shrink: 0;
+    order: -1;
+}
+
+/* Hide the spacer when an icon is present */
+.accordion .accordion-item-title:has(.icon)::before {
+    display: none;
+}
+
+.accordion .accordion-item-body p:last-child {
+    margin-bottom: 0;
+}
+
+.accordion-container {
+    background-color: var(--nec-gray-0);
+}
+
+.accordion-item-content > *,
+.accordion-item-content > p > * {
+    margin-bottom: var(--spacing-04);
+}
+
+.accordion-item-content > p > * {
+    display: inline-block;
+}
+
+.accordion-item-content > *:last-child,
+.accordion-item-content > p > *:last-child {
+    margin-bottom: 0;
+}
+
+@media (min-width: 800px) {
+    .accordion-block-header {
+        margin-bottom: var(--spacer-03);
+    }
+
+    .has-media .accordion-item-content {
+        margin-top: 0;
+    }
+
+    .accordion-item .accordion-item-label{
+        padding-top: var(--spacer-03);
+        padding-bottom: var(--spacer-03);
+    }
+
+    .accordion details .accordion-item-body {
+      padding-top: var(--spacer-01);
+    }
+
+    .accordion.accordion-stacked-right details .accordion-item-body {
+      padding-top: var(--spacer-02);
+    }
+
+    /* Full-bleed tablet: two columns (media left, text right) with 20px gap */
+    .accordion.accordion-expanded details[open] .accordion-item-body.has-media,
+    .accordion.accordion-expanded
+        details.is-opening
+        .accordion-item-body.has-media,
+    .accordion.accordion-expanded
+        details.is-closing
+        .accordion-item-body.has-media {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: var(--horizontal-gap);
+        align-items: start;
+    }
+
+    .accordion.accordion-expanded .accordion-item-media {
+        grid-column: 1;
+    }
+
+    .accordion.accordion-expanded .accordion-item-content {
+        grid-column: 2;
+    }
+
+    /* Ensure full-bleed accordion borders extend full width on tablet */
+    .accordion.accordion-expanded .accordion-list {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .accordion.accordion-expanded details {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    /* Add 16px spacing only between media wrapper and the following text wrapper */
+    .accordion.accordion-stacked-right
+        details[open]
+        .accordion-item-body
+        > :has(picture, img)
+        + *,
+    .accordion.accordion-stacked-right
+        details.is-opening
+        .accordion-item-body
+        > :has(picture, img)
+        + *,
+    .accordion.accordion-stacked-right
+        details.is-closing
+        .accordion-item-body
+        > :has(picture, img)
+        + * {
+        margin-top: var(--spacer-05);
+    }
+}
+
+@media (min-width: 1080px) {
+    .accordion-block-header {
+        margin-bottom: var(--spacer-04);
+    }
+
+    .accordion-item .accordion-item-label {
+        padding-top: var(--spacer-04);
+        padding-bottom: var(--spacer-04);
+    }
+
+    .accordion details .accordion-item-body {
+      padding-top: var(--spacer-02);
+    }
+
+    /* Stacked right layout */
+    .accordion.accordion-stacked-right {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--horizontal-gap);
+        align-items: start;
+        border-top: solid 1px var(--nec-gray-20);
+    }
+
+    .accordion.accordion-stacked-right details .accordion-item-body {
+        padding-top: var(--spacer-01);
+    }
+
+    .accordion.accordion-stacked-right.first-item-open {
+        border-top: solid 1px var(--nec-gray-60);
+    }
+
+    .accordion.accordion-stacked-right .accordion-item:first-child {
+        border-top: 0;
+    }
+
+    /* Right-stacked: header left, list right */
+    .accordion.accordion-stacked-right .accordion-block-header {
+        grid-column: 1;
+        align-self: start;
+    }
+
+    .accordion.accordion-stacked-right .accordion-list {
+        grid-column: 2;
+        min-width: 0;
+    }
+
+    /* Full-bleed desktop: two columns (media left, text right) with 40px gap */
+    .accordion.accordion-expanded details[open] .accordion-item-body.has-media,
+    .accordion.accordion-expanded
+        details.is-opening
+        .accordion-item-body.has-media,
+    .accordion.accordion-expanded
+        details.is-closing
+        .accordion-item-body.has-media {
+        display: grid;
+        grid-template-columns: calc(var(--grid-column-width-5) + var(--grid-margin-lg)) 1fr;
+        column-gap: calc(var(--grid-column-width-1, 0px) + var(--spacer-07));
+        align-items: start;
+    }
+
+    .accordion.accordion-expanded .accordion-item-media {
+        grid-column: 1;
+    }
+
+    .accordion.accordion-expanded .accordion-item-content {
+        grid-column: 2;
+    }
+
+    /* Ensure full-bleed accordion borders extend full width */
+    .accordion.accordion-expanded .accordion-list {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .accordion.accordion-expanded details {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    /* In stacked-right variant on desktop, image above text (vertical stack) */
+
+    /* Base rule first to satisfy specificity order */
+    .accordion.accordion-stacked-right details[open] .accordion-item-body,
+    .accordion.accordion-stacked-right details.is-opening .accordion-item-body,
+    .accordion.accordion-stacked-right details.is-closing .accordion-item-body {
+        display: block;
+    }
+
+    .accordion.accordion-stacked-right
+        details[open]
+        .accordion-item-body:has(img),
+    .accordion.accordion-stacked-right
+        details.is-opening
+        .accordion-item-body:has(img),
+    .accordion.accordion-stacked-right
+        details.is-closing
+        .accordion-item-body:has(img),
+    .accordion.accordion-stacked-right
+        details[open]
+        .accordion-item-body:has(picture),
+    .accordion.accordion-stacked-right
+        details.is-opening
+        .accordion-item-body:has(picture),
+    .accordion.accordion-stacked-right
+        details.is-closing
+        .accordion-item-body:has(picture) {
+        display: block; /* stack naturally: image wrapper first, then text wrapper */
+    }
+
+    /* Add 24px spacing only between media wrapper and the following text wrapper */
+    .accordion.accordion-stacked-right
+        details[open]
+        .accordion-item-body
+        > :has(picture, img)
+        + *,
+    .accordion.accordion-stacked-right
+        details.is-opening
+        .accordion-item-body
+        > :has(picture, img)
+        + *,
+    .accordion.accordion-stacked-right
+        details.is-closing
+        .accordion-item-body
+        > :has(picture, img)
+        + * {
+        margin-top: var(--spacer-06);
+    }
+
+    .accordion .accordion-item-body:has(picture),
+    .accordion .accordion-item-body:has(img) {
+        column-gap: 24px;
+    }
+}
