@@ -207,6 +207,12 @@
     max-width: 100%;
 }
 
+.section[role="tabpanel"].center-content > div {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Tab panel animation */
 @keyframes fade-up {
     from {
