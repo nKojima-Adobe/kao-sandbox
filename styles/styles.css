@@ -316,7 +316,7 @@ main > .grid-columns > .section,
 /* First section/grid-columns spacing */
 main > .section:first-of-type,
 main > .grid-columns:first-of-type {
-  margin-top: var(--spacing-12);
+  margin-top: 0;
 }
 
 /* Reset block margins inside grid */
