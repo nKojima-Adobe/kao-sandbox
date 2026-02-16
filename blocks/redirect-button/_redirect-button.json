@@ -46,6 +46,20 @@
           "validation": {
             "customErrorMsg": "Please enter a link URL"
           }
+        },
+        {
+          "component": "number",
+          "name": "widthVw",
+          "label": "Width (vw)",
+          "valueType": "number",
+          "description": "Width of the block in viewport width units (e.g. 60 = 60vw)"
+        },
+        {
+          "component": "number",
+          "name": "heightVw",
+          "label": "Height (vw)",
+          "valueType": "number",
+          "description": "Height of the block in viewport width units (e.g. 12 = 12vw)"
         }
       ]
     }
