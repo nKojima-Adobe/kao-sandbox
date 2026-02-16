@@ -48,10 +48,6 @@
               {
                 "name": "GKC Home",
                 "value": "gkc-home"
-              },
-              {
-                "name": "GKC Home Card",
-                "value": "gkc-home-card"
               }
             ]
           }
@@ -64,22 +60,10 @@
         "valueType": "string",
         "description": "URL the user is redirected to when the image is clicked",
         "condition": {
-          "or": [
+          "in": [
+            "gkc-home",
             {
-              "in": [
-                "gkc-home",
-                {
-                  "var": "style"
-                }
-              ]
-            },
-            {
-              "in": [
-                "gkc-home-card",
-                {
-                  "var": "style"
-                }
-              ]
+              "var": "style"
             }
           ]
         }
@@ -253,6 +237,27 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "cards",
+    "fields": [
+      {
+        "component": "multiselect",
+        "name": "style",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Variant",
+            "children": [
+              {
+                "name": "GKC Home Card",
+                "value": "gkc-home-card"
+              }
+            ]
+          }
+        ]
       }
     ]
   },

@@ -38,8 +38,7 @@
             {
               "name": "Variant",
               "children": [
-                { "name": "GKC Home", "value": "gkc-home" },
-                { "name": "GKC Home Card", "value": "gkc-home-card" }
+                { "name": "GKC Home", "value": "gkc-home" }
               ]
             }
           ]
@@ -51,10 +50,7 @@
           "valueType": "string",
           "description": "URL the user is redirected to when the image is clicked",
           "condition": {
-            "or": [
-              { "in": ["gkc-home", { "var": "style" }] },
-              { "in": ["gkc-home-card", { "var": "style" }] }
-            ]
+            "in": ["gkc-home", { "var": "style" }]
           }
         }
       ]
