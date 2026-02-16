@@ -241,27 +241,6 @@
     ]
   },
   {
-    "id": "cards",
-    "fields": [
-      {
-        "component": "multiselect",
-        "name": "style",
-        "label": "Style",
-        "options": [
-          {
-            "name": "Variant",
-            "children": [
-              {
-                "name": "GKC Home Card",
-                "value": "gkc-home-card"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
     "id": "carousel",
     "fields": [
       {

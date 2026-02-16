@@ -53,6 +53,7 @@
         "title",
         "hero",
         "cards",
+        "cards-gkc-home-card",
         "columns",
         "fragment",
         "carousel"
