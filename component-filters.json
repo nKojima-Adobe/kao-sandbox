@@ -3,7 +3,8 @@
     "id": "main",
     "components": [
       "section",
-      "grid-columns"
+      "grid-columns",
+      "tab-panel"
     ]
   },
   {
@@ -22,8 +23,7 @@
       "fragment",
       "carousel",
       "horizontal-line",
-      "tab-list",
-      "tab-panel"
+      "tab-list"
     ]
   },
   {
@@ -82,8 +82,7 @@
       "fragment",
       "carousel",
       "horizontal-line",
-      "tab-list",
-      "tab-panel"
+      "tab-list"
     ]
   }
 ]
