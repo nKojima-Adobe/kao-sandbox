@@ -12,9 +12,6 @@
     display: none;
 }
 
-.tab-list.needs-padding:has(ul.position-center) {
-    padding-left: 20px;
-}
 
 /* Wrapper for fade overlays */
 .tab-list-wrapper {

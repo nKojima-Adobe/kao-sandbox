@@ -1,46 +1,57 @@
 const FADE_DETECTION_THRESHOLD = 5;
-const MINIMUM_PADDING = 20;
 
+/**
+ * Scrolls a tab button into view smoothly (only if not already visible)
+ * @param {HTMLElement} tab - The tab button element
+ * @param {Function} callback - Optional callback after scroll
+ */
 export function scrollTabIntoView(tab, callback) {
   const container = tab.closest('.tab-list');
   if (!container) return;
 
-  const tabList = tab.closest('ul[role="tablist"]');
-  const isPositionCenter = tabList && tabList.classList.contains('position-center');
+  const hasOverflow = container.scrollWidth > container.clientWidth;
+  if (!hasOverflow) {
+    if (callback) callback();
+    return;
+  }
 
-  if (isPositionCenter) {
-    const containerRect = container.getBoundingClientRect();
-    const tabRect = tab.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  const tabRect = tab.getBoundingClientRect();
 
-    if (tabRect.left < containerRect.left || tabRect.right > containerRect.right) {
-      tab.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'nearest',
-      });
-    }
-  } else {
+  if (tabRect.left < containerRect.left || tabRect.right > containerRect.right) {
     tab.scrollIntoView({
       behavior: 'smooth',
       block: 'nearest',
-      inline: 'center',
+      inline: 'nearest',
     });
-  }
 
-  if (callback) {
-    if ('onscrollend' in window) {
-      const handleScrollEnd = () => {
+    if (callback) {
+      if ('onscrollend' in window) {
+        container.addEventListener('scrollend', () => callback(), { once: true, passive: true });
+      } else {
         callback();
-        container.removeEventListener('scrollend', handleScrollEnd);
-      };
-      container.addEventListener('scrollend', handleScrollEnd, { once: true, passive: true });
-    } else {
-      callback();
+      }
     }
+  } else if (callback) {
+    callback();
   }
 }
 
+/**
+ * Updates fade overlay visibility based on scroll overflow
+ * @param {HTMLElement} container - The tab-list container element
+ * @param {HTMLElement} fadeLeft - The left fade overlay
+ * @param {HTMLElement} fadeRight - The right fade overlay
+ */
 export function updateFadeEffects(container, fadeLeft, fadeRight) {
+  const hasOverflow = container.scrollWidth > container.clientWidth;
+
+  if (!hasOverflow) {
+    fadeLeft.classList.remove('visible');
+    fadeRight.classList.remove('visible');
+    return;
+  }
+
   const tabList = container.querySelector('ul[role="tablist"]');
   if (!tabList) return;
 
@@ -48,30 +59,13 @@ export function updateFadeEffects(container, fadeLeft, fadeRight) {
   if (tabs.length === 0) return;
 
   const containerRect = container.getBoundingClientRect();
-  const firstTab = tabs[0];
-  const lastTab = tabs[tabs.length - 1];
-
-  const firstTabRect = firstTab.getBoundingClientRect();
-  const lastTabRect = lastTab.getBoundingClientRect();
-
-  const isPositionCenter = tabList.classList.contains('position-center');
-
-  if (isPositionCenter) {
-    const tabListWidth = tabList.scrollWidth;
-    const containerWidth = container.clientWidth;
-    const needsPadding = tabListWidth > (containerWidth - MINIMUM_PADDING);
-
-    if (needsPadding) {
-      container.classList.add('needs-padding');
-    } else {
-      container.classList.remove('needs-padding');
-    }
-  }
+  const firstTabRect = tabs[0].getBoundingClientRect();
+  const lastTabRect = tabs[tabs.length - 1].getBoundingClientRect();
 
   const hasOverflowLeft = firstTabRect.left < containerRect.left - FADE_DETECTION_THRESHOLD;
   const hasOverflowRight = lastTabRect.right > containerRect.right + FADE_DETECTION_THRESHOLD;
 
-  if (hasOverflowLeft && !isPositionCenter) {
+  if (hasOverflowLeft) {
     fadeLeft.classList.add('visible');
   } else {
     fadeLeft.classList.remove('visible');
