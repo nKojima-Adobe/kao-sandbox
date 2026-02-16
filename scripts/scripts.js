@@ -11,7 +11,6 @@ import {
   loadSection,
   loadSections,
   loadCSS,
-  readBlockConfig,
 } from './aem.js';
 
 /**
@@ -70,9 +69,7 @@ async function loadFonts() {
  */
 function buildTabs(main) {
   function getTabLabel(section) {
-    const metadataBlock = section.querySelector('.section-metadata');
-    const metadata = metadataBlock ? readBlockConfig(metadataBlock) : {};
-    return metadata['tab-label'];
+    return section.dataset.tabLabel;
   }
 
   for (let i = 0; i < main.children.length; i += 1) {
@@ -82,14 +79,16 @@ function buildTabs(main) {
     const previousTabLabel = previousSection ? getTabLabel(previousSection) : null;
 
     if (tabLabel && !previousTabLabel) {
-      let previousBlock = previousSection?.lastElementChild;
-      if (previousBlock?.matches('.section-metadata')) previousBlock = previousBlock.previousElementSibling;
-      if (!previousBlock?.matches('.tab-list')) {
+      const hasPrecedingTabList = previousSection?.querySelector('.tab-list');
+      if (!hasPrecedingTabList) {
         const tabListBlock = document.createElement('div');
-        tabListBlock.className = 'tab-list block';
+        tabListBlock.className = 'tab-list';
+        const wrapper = document.createElement('div');
+        wrapper.appendChild(tabListBlock);
         const newSection = document.createElement('div');
         newSection.className = 'section';
-        newSection.appendChild(tabListBlock);
+        newSection.dataset.sectionStatus = 'initialized';
+        newSection.appendChild(wrapper);
         section.before(newSection);
       }
     }
