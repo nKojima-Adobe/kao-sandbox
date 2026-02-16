@@ -167,22 +167,39 @@ export default async function decorate(block) {
   // Scroll-trigger: if a header-start marker block exists, hide the header
   // until the user scrolls past it
   const headerEl = block.closest('header');
-  const headerStartBlock = document.querySelector('.header-start');
+  if (headerEl) {
+    const initScrollTrigger = () => {
+      const marker = document.querySelector('.header-start');
+      if (!marker) return;
 
-  if (headerStartBlock && headerEl) {
-    headerEl.classList.add('header-hidden');
+      headerEl.classList.add('header-hidden');
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          headerEl.classList.add('header-hidden');
-        } else {
+      const checkScroll = () => {
+        const rect = marker.getBoundingClientRect();
+        if (rect.bottom <= 0) {
           headerEl.classList.remove('header-hidden');
+        } else {
+          headerEl.classList.add('header-hidden');
         }
-      },
-      { threshold: 0 },
-    );
+      };
 
-    observer.observe(headerStartBlock);
+      window.addEventListener('scroll', checkScroll, { passive: true });
+      checkScroll();
+    };
+
+    // Deferred: header-start may not be decorated yet when header loads,
+    // so retry after sections have had time to initialize
+    if (document.querySelector('.header-start')) {
+      initScrollTrigger();
+    } else {
+      const retryTimer = setInterval(() => {
+        if (document.querySelector('.header-start')) {
+          clearInterval(retryTimer);
+          initScrollTrigger();
+        }
+      }, 100);
+      // Stop retrying after 5 seconds
+      setTimeout(() => clearInterval(retryTimer), 5000);
+    }
   }
 }
