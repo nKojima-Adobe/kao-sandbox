@@ -127,6 +127,15 @@ export function changeTabs(e, updateFadeCallback, tabsData = null) {
 export default async function decorate(block) {
   let listPosition = 'left';
 
+  // Read listPosition from the block's own content rows (set via UE dialog)
+  const ownRows = [...block.children];
+  if (ownRows.length > 0) {
+    const value = ownRows[0].textContent.trim().toLowerCase();
+    if (value === 'left' || value === 'center') {
+      listPosition = value;
+    }
+  }
+
   const tabPanels = [];
   const section = block.closest('.section');
   let nextSection = section.nextElementSibling;
@@ -138,16 +147,6 @@ export default async function decorate(block) {
       nextSection = nextSection.nextElementSibling;
     } else {
       break;
-    }
-  }
-
-  if (tabPanels.length > 0) {
-    const lastTabPanel = tabPanels[tabPanels.length - 1][1];
-    const tabListBlock = lastTabPanel.querySelector('.tab-list');
-
-    if (tabListBlock && tabListBlock.children && tabListBlock.children.length > 0) {
-      const rows = [...tabListBlock.children];
-      listPosition = rows[0].textContent.trim();
     }
   }
 
