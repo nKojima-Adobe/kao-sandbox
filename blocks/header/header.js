@@ -163,4 +163,26 @@ export default async function decorate(block) {
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
+
+  // Scroll-trigger: if a header-start marker block exists, hide the header
+  // until the user scrolls past it
+  const headerEl = block.closest('header');
+  const headerStartBlock = document.querySelector('.header-start');
+
+  if (headerStartBlock && headerEl) {
+    headerEl.classList.add('header-hidden');
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          headerEl.classList.add('header-hidden');
+        } else {
+          headerEl.classList.remove('header-hidden');
+        }
+      },
+      { threshold: 0 },
+    );
+
+    observer.observe(headerStartBlock);
+  }
 }

@@ -1,9 +1,41 @@
 /* header and nav layout */
-header .nav-wrapper {
-  background-color: var(--background-color);
-  width: 100%;
-  z-index: 2;
+header {
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+header.header-hidden {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+header .header,
+header .header[data-block-status="loaded"] {
+  visibility: visible;
+}
+
+header .nav-wrapper {
+  background-color: #000;
+  color: #fff;
+  width: 100%;
+}
+
+header .nav-wrapper::after {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    #c4a882 0%,
+    #d4b896 25%,
+    #c4a882 50%,
+    #a08060 75%,
+    #c4a882 100%
+  );
 }
 
 header nav {
@@ -28,17 +60,14 @@ header nav[aria-expanded='true'] {
     'tools tools' var(--nav-height) / auto 1fr;
   overflow-y: auto;
   min-height: 100dvh;
+  background-color: #000;
 }
 
 @media (width >= 900px) {
-  header .nav-wrapper {
-    position: relative;
-  }
-
   header nav {
     display: flex;
-    justify-content: space-between;
-    gap: 0 32px;
+    justify-content: center;
+    gap: 0;
     max-width: 1264px;
     padding: 0 32px;
   }
@@ -55,7 +84,17 @@ header nav p {
 }
 
 header nav a:any-link {
-  color: currentcolor;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+}
+
+header nav a:hover {
+  color: #ccc;
+  text-decoration: none;
 }
 
 /* hamburger */
@@ -72,8 +111,8 @@ header nav .nav-hamburger button {
   border: 0;
   border-radius: 0;
   padding: 0;
-  background-color: var(--background-color);
-  color: inherit;
+  background-color: transparent;
+  color: #fff;
   overflow: initial;
   text-overflow: initial;
   white-space: initial;
@@ -92,7 +131,7 @@ header nav .nav-hamburger-icon::before,
 header nav .nav-hamburger-icon::after {
   content: '';
   position: absolute;
-  background: currentcolor;
+  background: #fff;
 }
 
 header nav[aria-expanded='false'] .nav-hamburger-icon,
@@ -100,7 +139,7 @@ header nav[aria-expanded='false'] .nav-hamburger-icon::before,
 header nav[aria-expanded='false'] .nav-hamburger-icon::after {
   height: 2px;
   border-radius: 2px;
-  background: currentcolor;
+  background: #fff;
 }
 
 header nav[aria-expanded='false'] .nav-hamburger-icon::before {
@@ -139,7 +178,7 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   }
 }
 
-/* brand */
+/* brand — hidden on desktop since nav is link-only */
 header .nav-brand {
   grid-area: brand;
   flex-basis: 128px;
@@ -151,6 +190,12 @@ header .nav-brand {
 header nav .nav-brand img {
   width: 128px;
   height: auto;
+}
+
+@media (width >= 900px) {
+  header .nav-brand {
+    display: none;
+  }
 }
 
 /* sections */
@@ -170,7 +215,7 @@ header nav[aria-expanded='true'] .nav-sections {
 header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
-  font-size: var(--body-font-size-s);
+  font-size: 13px;
 }
 
 header nav .nav-sections ul > li {
@@ -187,9 +232,11 @@ header nav .nav-sections ul > li > ul > li {
 
 @media (width >= 900px) {
   header nav .nav-sections {
-    display: block;
+    display: flex;
     visibility: visible;
     white-space: nowrap;
+    justify-content: center;
+    align-items: center;
   }
 
   header nav[aria-expanded='true'] .nav-sections {
@@ -211,7 +258,7 @@ header nav .nav-sections ul > li > ul > li {
     transform: rotate(135deg);
     width: 6px;
     height: 6px;
-    border: 2px solid currentcolor;
+    border: 2px solid #fff;
     border-radius: 0 1px 0 0;
     border-width: 2px 2px 0 0;
   }
@@ -224,8 +271,9 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections ul {
     display: flex;
-    gap: 24px;
+    gap: 40px;
     margin: 0;
+    justify-content: center;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li {
@@ -245,7 +293,7 @@ header nav .nav-sections ul > li > ul > li {
     width: 200px;
     top: 150%;
     padding: 16px;
-    background-color: var(--light-color);
+    background-color: #222;
     white-space: initial;
   }
 
@@ -258,7 +306,7 @@ header nav .nav-sections ul > li > ul > li {
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 8px solid var(--light-color);
+    border-bottom: 8px solid #222;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
@@ -266,7 +314,13 @@ header nav .nav-sections ul > li > ul > li {
   }
 }
 
-/* tools */
+/* tools — hidden on desktop for this design */
 header nav .nav-tools {
   grid-area: tools;
+}
+
+@media (width >= 900px) {
+  header nav .nav-tools {
+    display: none;
+  }
 }
