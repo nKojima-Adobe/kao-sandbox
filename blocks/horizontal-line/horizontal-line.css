@@ -6,8 +6,9 @@
 
 .horizontal-line hr {
   border: none;
-  height: 1px;
-  background-color: #c4c4c4;
+  border-top: 3px dotted #c4c4c4;
+  height: 0;
+  background: none;
   margin: 0;
   width: 100%;
 }
