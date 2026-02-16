@@ -25,3 +25,38 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+/* ===== Cards Block: GKC Home Card variant ===== */
+
+.cards.gkc-home-card > ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10vw;
+}
+
+.cards.gkc-home-card > ul > li {
+  width: 60vw;
+  height: 20vw;
+  overflow: hidden;
+  position: relative;
+  border: none;
+}
+
+.cards.gkc-home-card > ul > li .cards-card-image {
+  position: absolute;
+  inset: 0;
+}
+
+.cards.gkc-home-card > ul > li .cards-card-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cards.gkc-home-card > ul > li img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+  object-fit: cover;
+}
