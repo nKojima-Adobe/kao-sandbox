@@ -174,9 +174,29 @@ export default async function decorate(block) {
   block.append(brandBanner);
   block.append(navWrapper);
 
-  // Scroll-trigger: if a header-start marker block exists, switch to fixed mode
+  // Sticky offset: set negative top on <header> so brand-banner scrolls away
+  // while the nav permanently sticks at the viewport top.
+  // The <header> element's containing block is <body>, which spans the full page,
+  // so sticky positioning works for the entire scroll range.
   const headerEl = block.closest('header');
   if (headerEl) {
+    const updateStickyOffset = () => {
+      if (!headerEl.classList.contains('header-fixed')) {
+        const brandHeight = brandBanner.offsetHeight;
+        if (brandHeight > 0) {
+          headerEl.style.setProperty('--header-sticky-top', `-${brandHeight}px`);
+        }
+      }
+    };
+
+    const brandImg = brandBanner.querySelector('img');
+    if (brandImg && !brandImg.complete) {
+      brandImg.addEventListener('load', updateStickyOffset);
+    }
+    updateStickyOffset();
+    window.addEventListener('resize', updateStickyOffset, { passive: true });
+
+    // Scroll-trigger: if a header-start marker block exists, switch to fixed mode
     const initScrollTrigger = () => {
       const marker = document.querySelector('.header-start');
       if (!marker) return;

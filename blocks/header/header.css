@@ -1,6 +1,7 @@
 /* header and nav layout */
 header {
-  position: relative;
+  position: sticky;
+  top: var(--header-sticky-top, 0px);
   width: 100%;
   z-index: 100;
   height: auto;
@@ -52,13 +53,11 @@ header .brand-banner p {
   margin: 0;
 }
 
-/* Nav wrapper — sticky on default pages, normal in fixed mode */
+/* Nav wrapper */
 header .nav-wrapper {
   background-color: #000;
   color: #fff;
   width: 100%;
-  position: sticky;
-  top: 0;
   z-index: 100;
 }
 
