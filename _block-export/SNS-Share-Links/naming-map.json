@@ -1,0 +1,38 @@
+{
+  "blockType": "single",
+  "originalNames": {
+    "blockName": "sns-share-links",
+    "blockRoot": "sns-share",
+    "childName": "sns-share-link",
+    "classPrefix": "sns-share-links",
+    "childClassPrefix": "sns-share-link",
+    "functionPrefix": "SNS Share Links",
+    "childFunctionPrefix": "SNS Share Link",
+    "variablePrefix": "snsShareLinks",
+    "constantPrefix": "SNS_SHARE_LINKS"
+  },
+  "placeholders": {
+    "{BLOCK_NAME}": "sns-share-links (kebab-case — block name, file names, JSON IDs, block wrapper class)",
+    "{BLOCK_CHILD}": "sns-share-link (kebab-case — singular item class, child JSON IDs/models)",
+    "{BLOCK_ROOT}": "sns-share (kebab-case — common root prefix for derived names: toast, click, animation keyframes)",
+    "{BLOCK_FUNC}": "SNS Share Links (title-case — display titles in Storybook, JSON template names)",
+    "{BLOCK_CHILD_FUNC}": "SNS Share Link (title-case — singular display titles in JSON definitions)"
+  },
+  "rootNamingNote": {
+    "_important": "This block uses a ROOT PREFIX naming pattern. The block wrapper is 'sns-share-links', each item is 'sns-share-link', and derived UI elements use the root prefix 'sns-share' (e.g., 'sns-share-toast', 'sns-share-click', 'sns-share-toast-fade'). When renaming, derive {BLOCK_ROOT} by removing the '-links' suffix from {BLOCK_NAME} (e.g., 'social-share-links' → root 'social-share'; 'share-buttons' → root 'share-button').",
+    "_derivation": "{BLOCK_CHILD} = {BLOCK_ROOT} + '-link'; {BLOCK_NAME} = {BLOCK_ROOT} + '-links'"
+  },
+  "placeholderConstantsNote": {
+    "_important": "The JS file imports 16 SNS_* constants from 'constants/placeholders-constants.js'. These constant NAMES (e.g., SNS_LINKEDIN_NAME) and their camelCase VALUES (e.g., 'snsLinkedinName') are NOT replaced with placeholders because they are shared i18n keys used across the project. See 'placeholders-constants-snippet.js' for the full list. If renaming the block, you MAY optionally rename these constants, but the placeholder key strings MUST match your project's placeholders spreadsheet."
+  },
+  "replacements": [
+    { "type": "block-name", "original": "sns-share-links", "placeholder": "{BLOCK_NAME}", "context": "block wrapper class, file names, JSON IDs, filter IDs" },
+    { "type": "child-name", "original": "sns-share-link", "placeholder": "{BLOCK_CHILD}", "context": "individual share button class, child JSON definition/model IDs" },
+    { "type": "root-prefix", "original": "sns-share", "placeholder": "{BLOCK_ROOT}", "context": "toast class, analytics event, keyframe animation name" },
+    { "type": "display-name", "original": "SNS Share Links", "placeholder": "{BLOCK_FUNC}", "context": "Storybook title, JSON template name" },
+    { "type": "child-display-name", "original": "SNS Share Link", "placeholder": "{BLOCK_CHILD_FUNC}", "context": "JSON definition title, child template name" },
+    { "type": "preserved", "original": "SNS_*", "note": "NOT replaced — 16 placeholder constant names from shared constants file (SNS_LINKEDIN_NAME, SNS_FACEBOOK_SHARE_URL, etc.)" },
+    { "type": "preserved", "original": "getSNSConfig / trackSNSShareClick / extractSNSType", "note": "NOT replaced — internal function names using 'SNS' abbreviation. Rename manually if desired." },
+    { "type": "preserved", "original": ".icon / .icon-*", "note": "NOT replaced — EDS icon system classes" }
+  ]
+}

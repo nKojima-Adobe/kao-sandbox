@@ -1,0 +1,1663 @@
+/* stylelint-disable no-descending-specificity */
+
+/* Accessibility Utilities */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: inherit;
+}
+
+.{BLOCK_NAME}-wrapper {
+  max-width: 100%;
+  overflow: visible; /* Allow focus outlines to be visible */
+}
+
+.{BLOCK_NAME}-header {
+  margin-bottom: var(--spacer-06);
+}
+
+.{BLOCK_NAME}-section-title {
+  margin: 0 0 1rem;
+  font-size: var(--heading-lg, 28px);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: var(--line-height-sm, 1.2);
+}
+
+.{BLOCK_NAME}-section-subtitle {
+  margin: 0 0 1rem;
+  font-size: var(--font-scale-04, 18px);
+  color: var(--nec-gray-60);
+}
+
+/* Alignment Classes */
+.{BLOCK_NAME}-align-left .{BLOCK_NAME}-header {
+  text-align: left;
+}
+
+.{BLOCK_NAME}-align-center .{BLOCK_NAME}-header {
+  text-align: center;
+}
+
+.{BLOCK_NAME}-align-right .{BLOCK_NAME}-header {
+  text-align: right;
+}
+
+/* {BLOCK_FUNC} Grid - Default */
+.{BLOCK_NAME}-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--grid-gutter);
+  align-items: stretch; /* Ensure all {BLOCK_NAME} have equal height */
+  overflow: visible; /* Allow focus outlines to be visible */
+  padding: 4px; /* Space for focus outline (2px outline + 2px offset) */
+  margin: -4px; /* Compensate for padding to maintain layout */
+}
+
+/* When parent {BLOCK_NAME} container has cta-only navigation, modify its {BLOCK_NAME}-grid layout */
+.{BLOCK_NAME}:has(.{BLOCK_NAME}-navigation-container.cta-only) {
+  grid-template-columns: auto;
+}
+
+/* Hide div children of {BLOCK_NAME}-grid that don't have any class */
+.{BLOCK_NAME}-grid > div:not([class]) {
+  display: none;
+}
+
+/* Post {BLOCK_FUNC} Grid - Max 4 columns */
+.{BLOCK_NAME}-grid-post,
+.{BLOCK_NAME}-grid-mixed {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+@media (min-width: 1080px) {
+  .{BLOCK_NAME}-grid-post,
+  .{BLOCK_NAME}-grid-mixed {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* If only 3 {BLOCK_NAME}, use 3 columns */
+  .{BLOCK_NAME}-grid-post:has(.{BLOCK_CHILD}:nth-child(3)):not(:has(.{BLOCK_CHILD}:nth-child(4))),
+  .{BLOCK_NAME}-grid-mixed:has(.{BLOCK_CHILD}:nth-child(3)):not(:has(.{BLOCK_CHILD}:nth-child(4))) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* If only 2 {BLOCK_NAME}, use 2 columns */
+  .{BLOCK_NAME}-grid-post:has(.{BLOCK_CHILD}:nth-child(2)):not(:has(.{BLOCK_CHILD}:nth-child(3))),
+  .{BLOCK_NAME}-grid-mixed:has(.{BLOCK_CHILD}:nth-child(2)):not(:has(.{BLOCK_CHILD}:nth-child(3))) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1079px) {
+  .{BLOCK_NAME}-grid-post,
+  .{BLOCK_NAME}-grid-mixed {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 799px) {
+  .{BLOCK_NAME}-grid-post,
+  .{BLOCK_NAME}-grid-mixed {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .{BLOCK_NAME}-carousel .{BLOCK_NAME}-grid {
+    gap: var(--spacing-05);
+  }
+}
+
+/* Topic {BLOCK_FUNC} Grid - Max 3 columns */
+.{BLOCK_NAME}-grid-topic {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+@media (min-width: 1080px) {
+  .{BLOCK_NAME}-grid-topic {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* If only 2 {BLOCK_NAME}, use 2 columns */
+  .{BLOCK_NAME}-grid-topic:has(.{BLOCK_CHILD}:nth-child(2)):not(:has(.{BLOCK_CHILD}:nth-child(3))) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1079px) {
+  .{BLOCK_NAME}-grid-topic {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile - All {BLOCK_NAME} single column */
+@media (max-width: 799px) {
+  .{BLOCK_NAME}-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .{BLOCK_CHILD}-post .{BLOCK_CHILD}-tags {
+    gap: var(--spacer-02, 8px);
+  }
+
+  .{BLOCK_CHILD}-tags .{BLOCK_CHILD}-tag {
+    margin: var(--spacer-01, 4px);
+    height: 36px;
+  }
+}
+
+
+/* {BLOCK_CHILD_FUNC} Styles */
+.{BLOCK_CHILD} {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible; /* Allow focus outline to be visible */
+  transition: transform var(--transition-medium) ease-out;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.{BLOCK_CHILD}-content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: visible; /* Allow focus outline to be visible */
+}
+
+/* {BLOCK_CHILD_FUNC} Image  */
+.{BLOCK_CHILD}-image {
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--border-radius-1, 8px);
+}
+
+.{BLOCK_CHILD}-image picture {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.{BLOCK_CHILD}-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: transform var(--transition-medium) ease-out;
+  display: block;
+}
+
+/* {BLOCK_CHILD_FUNC} Image Link - Wraps image when linked (legacy, kept for backward compatibility) */
+.{BLOCK_CHILD}-image-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.{BLOCK_CHILD}-image-link:hover img,
+.{BLOCK_CHILD}-image-link:focus img {
+  transform: scale(1.02);
+}
+
+.{BLOCK_CHILD}-image-link:focus-visible {
+  outline: 2px solid var(--nec-sky-60, #2459e6);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-1, 8px);
+}
+
+/* {BLOCK_CHILD_FUNC} Image + Subtitle Link - Wraps both image and subtitle when linked */
+.{BLOCK_CHILD}-image-subtitle-link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  position: relative;
+  gap: 0;
+  overflow: visible; /* Ensure focus outline is visible */
+  transition: none;
+}
+
+/* Hover effect: subtle image scale */
+.{BLOCK_CHILD}-image-subtitle-link:hover .{BLOCK_CHILD}-image img,
+.{BLOCK_CHILD}-image-subtitle-link:focus .{BLOCK_CHILD}-image img {
+  transform: scale(1.02);
+}
+
+/* Hover effect: underline subtitle text */
+.{BLOCK_CHILD}-image-subtitle-link:hover .{BLOCK_CHILD}-subtitle p {
+  text-decoration: underline;
+}
+
+/* Ensure description inside link has no underline (even on hover) */
+.{BLOCK_CHILD}-image-subtitle-link .{BLOCK_CHILD}-description p {
+  text-decoration: none;
+}
+
+/* Focus state: cover both image and subtitle */
+.{BLOCK_CHILD}-image-subtitle-link:focus-visible {
+  outline: 2px solid var(--nec-sky-60, #2459e6);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-1, 8px);
+}
+
+/* Remove default focus from inner elements when link is focused */
+.{BLOCK_CHILD}-image-subtitle-link:focus .{BLOCK_CHILD}-image,
+.{BLOCK_CHILD}-image-subtitle-link:focus .{BLOCK_CHILD}-subtitle {
+  outline: none;
+}
+
+/* Desktop: larger border radius for {BLOCK_CHILD} images */
+@media (min-width: 1080px) {
+  .{BLOCK_CHILD}-image {
+    border-radius: var(--border-radius-2, 12px);
+  }
+
+  .{BLOCK_CHILD}-image-link:focus-visible,
+  .{BLOCK_CHILD}-image-subtitle-link:focus-visible {
+    border-radius: var(--border-radius-2, 12px);
+  }
+}
+
+/* {BLOCK_CHILD_FUNC} Title */
+.{BLOCK_CHILD}-title {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.{BLOCK_CHILD}-title h1,
+.{BLOCK_CHILD}-title h2,
+.{BLOCK_CHILD}-title h3,
+.{BLOCK_CHILD}-title h4,
+.{BLOCK_CHILD}-title h5,
+.{BLOCK_CHILD}-title h6 {
+  margin: 0;
+  font-size: var(--font-scale-05, 20px);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: var(--line-height-md, 1.3);
+  color: var(--nec-gray-90);
+  width: 100%;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--{BLOCK_CHILD}-title-line-clamp);
+  line-clamp: var(--{BLOCK_CHILD}-title-line-clamp);
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Post {BLOCK_CHILD} specific title styling - Figma: Headline/MD */
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-title :is(h1, h2, h3, h4, h5, h6) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  font-size: var(--font-scale-07, 28px); /* Desktop: 28px */
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-md, 1.3);
+  color: var(--nec-gray-90);
+}
+
+/* Post {BLOCK_CHILD} title - Tablet & Mobile: 24px */
+@media (max-width: 1079px) {
+  .{BLOCK_CHILD}-post .{BLOCK_CHILD}-title :is(h1, h2, h3, h4, h5, h6) {
+    font-size: var(--font-scale-06, 24px);
+  }
+
+  .{BLOCK_NAME}.{BLOCK_NAME}-grid:not(.{BLOCK_NAME}-carousel) .{BLOCK_NAME}-grid {
+    gap: var(--spacer-07, 40px) var(--horizontal-gap, 20px);
+  }
+}
+
+/* Post {BLOCK_CHILD} in grid layout - single line title */
+.{BLOCK_NAME}-grid-post .{BLOCK_CHILD}-post .{BLOCK_CHILD}-title :is(h1, h2, h3, h4, h5, h6) {
+  overflow-wrap: break-word;
+}
+
+/* {BLOCK_CHILD_FUNC} Subtitle */
+.{BLOCK_CHILD}-subtitle {
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.{BLOCK_CHILD}-subtitle p {
+  margin: 0;
+  font-size: var(--font-scale-03, 16px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-lg, 1.4);
+  color: var(--nec-gray-60);
+  display: -webkit-box;
+  -webkit-line-clamp: var(--{BLOCK_CHILD}-subtitle-line-clamp);
+  line-clamp: var(--{BLOCK_CHILD}-subtitle-line-clamp);
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+
+/* Topic {BLOCK_CHILD} title with icon support and single line truncation */
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-title {
+  order: 2; /* Position after image (order: 1) but before subtitle */
+  margin: 0 0 0.5rem;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+}
+
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-title h3 {
+  font-size: var(--font-scale-07, 28px);
+  margin: 0;
+
+  /* Flex layout for icon + text */
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-02, 8px);
+  width: 100%;
+  min-width: 0;
+}
+
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-title h3 > p {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacer-02, 8px);
+  min-width: 0;
+  flex: 1;
+  width: 100%;
+}
+
+/* Icon in title should not shrink */
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-title h3 .icon {
+  flex-shrink: 0;
+}
+
+/* Title text truncation (single line with ellipsis) */
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-title h3 .title-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
+}
+
+
+/* Topic {BLOCK_CHILD} subtitle - Figma: Body/Medium with icon support */
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-subtitle {
+  order: 3; /* Position after title (order: 2) */
+  margin: var(--spacer-02) 0;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0; /* Critical for flex child truncation */
+}
+
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-subtitle p,
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-subtitle p p {
+  font-weight: var(--font-weight-medium, 500);
+  font-style: normal;
+  font-size: var(--font-scale-03, 16px);
+  line-height: var(--line-height-xl);
+  letter-spacing: 0;
+  color: var(--neutral-nec-gray-80, #3C4155);
+  margin: 0;
+
+  /* Flex layout for icon + text (horizontal alignment) */
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-02, 8px);
+  width: 100%;
+  min-width: 0; /* Critical for flex child truncation */
+}
+
+/* Remove padding on nested p to avoid double padding */
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-subtitle p p {
+  padding: 0;
+}
+
+/* Icon in subtitle should not shrink */
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-subtitle p .icon {
+  flex-shrink: 0;
+}
+
+/* Subtitle text multi-line truncation (within flex container) */
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-subtitle p .subtitle-text {
+  display: -webkit-box;
+  -webkit-line-clamp: var(--{BLOCK_CHILD}-subtitle-line-clamp);
+  line-clamp: var(--{BLOCK_CHILD}-subtitle-line-clamp);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* Post {BLOCK_CHILD} specific subtitle - Figma: Body/SemiBold */
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-subtitle p {
+  /* Limit subtitle to 2 lines for post {BLOCK_NAME} only */
+  display: -webkit-box;
+  -webkit-line-clamp: var(--{BLOCK_CHILD}-subtitle-line-clamp);
+  line-clamp: var(--{BLOCK_CHILD}-subtitle-line-clamp);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--font-scale-03, 16px);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: var(--line-height-xl, 1.5);
+  color: var(--nec-gray-90);
+}
+
+/* {BLOCK_CHILD_FUNC} Description */
+.{BLOCK_CHILD}-description {
+  margin: 0;
+  margin-bottom: 1.5rem;
+}
+
+/* {BLOCK_CHILD_FUNC} Description - Figma: Body/Reg */
+.{BLOCK_CHILD}-description p {
+  margin: 0 0 1rem;
+  font-size: var(--font-scale-03, 16px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-xl, 1.5);
+  color: var(--nec-gray-80);
+  display: -webkit-box;
+  -webkit-line-clamp: var(--{BLOCK_CHILD}-desc-line-clamp);
+  line-clamp: var(--{BLOCK_CHILD}-desc-line-clamp);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Post {BLOCK_CHILD} specific description styling */
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-description p {
+  /* Limit description to 3 lines for post {BLOCK_NAME} only */
+  display: -webkit-box;
+  -webkit-line-clamp: var(--{BLOCK_CHILD}-desc-line-clamp);
+  line-clamp: var(--{BLOCK_CHILD}-desc-line-clamp);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--font-scale-03, 16px);
+  line-height: var(--line-height-xl, 1.5);
+  color: var(--nec-gray-80);
+  margin: 0;
+}
+
+
+/* {BLOCK_CHILD_FUNC} Tags */
+.{BLOCK_CHILD}-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.{BLOCK_CHILD}-tag {
+  background: var(--states-overlay-gray-70, #292E3DB3);
+  backdrop-filter: blur(50px);
+  color: #fff;
+  height: 32px;
+  transform: rotate(0deg);
+  opacity: 1;
+  border-radius: var(--border-radius-0);
+  padding-right: var(--spacer-02);
+  padding-left: var(--spacer-02);
+  font-weight: var(--font-weight-regular, 400);
+  font-style: normal; /* Regular */
+  font-size: var(--font-scale-02);
+  line-height: var(--line-height-xs-px);
+  letter-spacing: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--transition-medium) ease-out,
+  border-color var(--transition-medium) ease-out,
+  color var(--transition-medium) ease-out;
+}
+
+/* Tag hover and focus states */
+.{BLOCK_CHILD}-tag:hover {
+  background: var(--nec-blue-50);
+  color: #fff;
+}
+
+.{BLOCK_CHILD}-tag:focus {
+  outline: 2px solid var(--nec-blue-50);
+  outline-offset: 2px;
+  background: var(--nec-blue-50);
+  color: #fff;
+}
+
+.{BLOCK_CHILD}-tag:active {
+  background: var(--nec-blue-70);
+}
+
+/* Post {BLOCK_CHILD} specific tag truncation */
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-tag {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* {BLOCK_CHILD_FUNC} icons - basic styling for any icons that may be present */
+.{BLOCK_CHILD} .icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  min-height: 20px;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.{BLOCK_CHILD} .{BLOCK_CHILD}-description .icon {
+  display: inline-block;
+}
+
+.{BLOCK_CHILD} .icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin-left: 0;
+}
+
+/* Topic {BLOCK_CHILD} layout */
+.{BLOCK_CHILD}-topic {
+  transition: transform var(--transition-medium) ease-out;
+}
+
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-image {
+  order: 1;
+  margin: 0;
+}
+
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-content {
+  order: 5; /* Container for all content after individual elements */
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0;
+  min-height: 0; /* Allow content to shrink if needed */
+  min-width: 0; /* Allow flex children to truncate */
+  overflow: visible; /* Allow focus outline to be visible */
+}
+
+/* Topic {BLOCK_CHILD} without image - add border top */
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-content.no-image {
+  border-top: 2px solid var(--nec-gray-10);
+  padding-top: var(--spacer-04);
+}
+
+/* Carousel specific fixes for topic {BLOCK_NAME} */
+.{BLOCK_CHILD}-carousel.{BLOCK_CHILD}-topic {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.{BLOCK_CHILD}-carousel.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: visible; /* Allow focus outline to be visible */
+}
+
+.{BLOCK_CHILD}-carousel.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-description {
+  order: 4;
+  margin: 0;
+}
+
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-description p {
+  /* Limit description to multiple lines with ellipsis */
+  display: -webkit-box;
+  -webkit-line-clamp: var(--{BLOCK_CHILD}-desc-line-clamp);
+  line-clamp: var(--{BLOCK_CHILD}-desc-line-clamp);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.{BLOCK_NAME}-carousel .{BLOCK_CHILD}-topic:not(.no-image) {
+  height: 100%;
+}
+
+
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-links {
+  order: 6;
+  margin-top: var(--spacing-05); /* Consistent spacing from description */
+}
+
+/* Post {BLOCK_CHILD} layout and interactions */
+.{BLOCK_CHILD}-post {
+  transition: transform  var(--transition-medium) ease-out;
+}
+
+/* Pointer cursor only for post {BLOCK_NAME} without buttons (entire {BLOCK_CHILD} is clickable) */
+.{BLOCK_CHILD}-post.{BLOCK_CHILD}-interactive {
+  overflow: visible; /* Allow focus ring to be visible outside {BLOCK_CHILD} boundaries */
+}
+
+/* {BLOCK_CHILD_FUNC} link wrapper - makes entire {BLOCK_CHILD} clickable as a proper link */
+.{BLOCK_CHILD}-post.{BLOCK_CHILD}-interactive a.{BLOCK_CHILD}-link {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  height: auto;
+}
+
+.{BLOCK_CHILD}-post.{BLOCK_CHILD}-interactive a.{BLOCK_CHILD}-link:hover,
+.{BLOCK_CHILD}-post.{BLOCK_CHILD}-interactive a.{BLOCK_CHILD}-link:focus {
+  color: inherit;
+}
+
+.{BLOCK_CHILD}-post.{BLOCK_CHILD}-interactive a.{BLOCK_CHILD}-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--neutral-nec-gray-0, #fff), 0 0 0 4px var(--nec-sky-60, #2459e6);
+  border-radius: var(--border-radius-0, 4px);
+}
+
+/* No pointer cursor for post {BLOCK_NAME} with buttons (only button is clickable) */
+.{BLOCK_CHILD}-post.has-button {
+  cursor: default;
+  overflow: visible; /* Allow focus ring to be visible outside {BLOCK_CHILD} boundaries */
+}
+
+/* {BLOCK_CHILD_FUNC} content link wrapper - makes {BLOCK_CHILD} content clickable (when button is present) */
+.{BLOCK_CHILD}-post.has-button a.{BLOCK_CHILD}-content-link {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
+.{BLOCK_CHILD}-post.has-button a.{BLOCK_CHILD}-content-link:hover,
+.{BLOCK_CHILD}-post.has-button a.{BLOCK_CHILD}-content-link:focus {
+  color: inherit;
+}
+
+.{BLOCK_CHILD}-post.has-button a.{BLOCK_CHILD}-content-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--neutral-nec-gray-0, #fff), 0 0 0 4px var(--nec-sky-60, #2459e6);
+  border-radius: var(--border-radius-0, 4px);
+}
+
+/* Hover effects for content link in {BLOCK_NAME} with buttons */
+.{BLOCK_CHILD}-post.has-button a.{BLOCK_CHILD}-content-link:is(:hover, :focus) .{BLOCK_CHILD}-image img {
+  transform: scale(1.05);
+}
+
+.{BLOCK_CHILD}-post.has-button a.{BLOCK_CHILD}-content-link:is(:hover, :focus) .{BLOCK_CHILD}-title :is(h1, h2, h3, h4, h5, h6) {
+  text-decoration: underline;
+}
+
+.{BLOCK_CHILD}-post.has-button a.{BLOCK_CHILD}-content-link .{BLOCK_CHILD}-title :is(h1, h2, h3, h4, h5, h6) {
+  text-decoration: none;
+}
+
+
+/* Post {BLOCK_CHILD} specific layout */
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-image {
+  order: 1;
+  margin: 0 0 var(--spacing-04);
+}
+
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-content {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0;
+  min-height: 0; /* Allow content to shrink if needed */
+  overflow: visible; /* Allow focus ring to show outside content area */
+}
+
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-tags {
+  order: 0;
+  position: absolute;
+  z-index: 1;
+  gap: 4px;
+  margin-top: var(--spacer-02);
+  margin-left: var(--spacer-02);
+}
+
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-publish-date {
+  order: 2;
+  margin: 0;
+}
+
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-title {
+  order: 3;
+  margin: 0 0 var(--spacing-04);
+}
+
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-subtitle {
+  order: 4;
+  margin: 0;
+}
+
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-description {
+  order: 5;
+  margin: 0;
+}
+
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-buttons {
+  order: 6;
+  margin-top: var(--spacing-06); /* Consistent spacing from description */
+  width: fit-content;
+  overflow: visible; /* Allow focus ring to show at bottom */
+}
+
+
+/* Post {BLOCK_CHILD} - no underline in normal state */
+.{BLOCK_CHILD}-post.{BLOCK_CHILD}-interactive .{BLOCK_CHILD}-link .{BLOCK_CHILD}-title :is(h1, h2, h3, h4, h5, h6) {
+  text-decoration: none;
+}
+
+/* Post {BLOCK_CHILD} hover - image scale effect only when no button (entire {BLOCK_CHILD} is clickable) */
+.{BLOCK_CHILD}-post.{BLOCK_CHILD}-interactive .{BLOCK_CHILD}-link:is(:hover, :focus) .{BLOCK_CHILD}-image img {
+  transform: scale(1.05);
+}
+
+/* Title underline on hover and focus (entire {BLOCK_CHILD} is clickable) */
+.{BLOCK_CHILD}-post.{BLOCK_CHILD}-interactive .{BLOCK_CHILD}-link:is(:hover, :focus) .{BLOCK_CHILD}-title :is(h1, h2, h3, h4, h5, h6) {
+  text-decoration: underline;
+}
+
+/* When buttons present: individual link interactions */
+.{BLOCK_CHILD}-post.has-button .{BLOCK_CHILD}-buttons a {
+  transition: none;
+}
+
+.{BLOCK_CHILD}-post.has-button .{BLOCK_CHILD}-buttons a:hover {
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+}
+
+/* {BLOCK_CHILD_FUNC} Publish Date */
+.{BLOCK_CHILD}-publish-date {
+  margin-bottom: 0.5rem;
+}
+
+/* {BLOCK_CHILD_FUNC} Publish Date - Figma: Headline/XS */
+.{BLOCK_CHILD}-publish-date time {
+  font-size: var(--font-scale-02, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-xs-px);
+  color: var(--nec-gray-90);
+}
+
+.{BLOCK_CHILD}-image img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity var(--transition-medium) ease-out, transform var(--transition-medium) ease-out;
+}
+
+.{BLOCK_CHILD}-image img[loading="lazy"].loaded {
+  opacity: 1;
+}
+
+/* Topic {BLOCK_CHILD} hover - image scale effect only when hovering the image itself */
+.{BLOCK_CHILD}-topic .{BLOCK_CHILD}-image:hover img {
+  transform: scale(1.05);
+}
+
+
+
+
+/* {BLOCK_CHILD_FUNC} Date */
+.{BLOCK_CHILD}-date {
+  margin-bottom: 1rem;
+  font-size: var(--font-scale-02, 14px);
+  color: var(--nec-gray-50);
+  font-weight: var(--font-weight-medium, 500);
+}
+
+
+.{BLOCK_CHILD}-description p:last-child {
+  margin-bottom: 0;
+}
+
+.{BLOCK_CHILD}-description a {
+  color: var(--nec-blue-50);
+  text-decoration: none;
+}
+
+.{BLOCK_CHILD}-description a:hover {
+  text-decoration: underline;
+}
+
+.{BLOCK_CHILD}-link-item {
+  padding: var(--spacing-01, 4px) var(--spacing-02, 8px) var(--spacing-01, 4px) 0;
+}
+
+/* {BLOCK_CHILD_FUNC} Link Item - Figma: Link/sm */
+.{BLOCK_CHILD}-link-item a {
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-02);
+  color: var(--nec-gray-90);
+  font-weight: var(--font-weight-medium);
+  font-style: normal;
+  font-size: var(--font-scale-02, 14px);
+  line-height: var(--line-height-xs-px);
+  letter-spacing: 0;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: auto;
+  text-decoration-skip-ink: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  transition: color var(--transition-medium) ease-out;
+  min-height: 22px;
+}
+
+/* Removed CSS-generated icons - authors can add icons manually using :icon-name: syntax */
+
+.{BLOCK_CHILD}-link-item a:hover {
+  color: var(--nec-blue-70);
+}
+
+.{BLOCK_CHILD}-link-item a:focus-visible {
+  outline: 2px solid var(--nec-sky-60);
+  outline-offset: -2px;
+  border-radius: var(--border-radius-0);
+}
+
+/* Enhanced focus indicators for accessibility */
+.{BLOCK_CHILD}:focus-visible {
+  outline: 2px solid var(--nec-sky-60);
+  outline-offset: 2px;
+}
+
+.{BLOCK_NAME} .carousel-nav:focus-visible {
+  outline: 2px solid var(--nec-sky-60);
+  border: 1px solid var(--nec-sky-60);
+  outline-offset: 2px;
+}
+
+.{BLOCK_NAME} .{BLOCK_CHILD}-interactive:focus-visible {
+  outline: 2px solid var(--nec-sky-60);
+  outline-offset: 2px;
+}
+
+.{BLOCK_CHILD}-buttons .button:focus-visible,
+.{BLOCK_CHILD}-post.has-button .{BLOCK_CHILD}-buttons a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--neutral-nec-gray-0, #fff), 0 0 0 4px var(--nec-sky-60, #2459e6);
+}
+
+.{BLOCK_NAME} .{BLOCK_NAME}-cta-button:focus-visible,
+.{BLOCK_NAME}-navigation-right a:focus-visible {
+  outline: 2px solid var(--nec-sky-60);
+  outline-offset: 2px;
+}
+
+.{BLOCK_CHILD}-link-item a p {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-01, 4px);
+  align-self: stretch;
+}
+
+
+
+
+/* {BLOCK_CHILD_FUNC} AEM Content */
+.{BLOCK_CHILD}-aem-content {
+  background: var(--nec-gray-05);
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: var(--border-radius-0) solid var(--nec-blue-50);
+}
+
+.{BLOCK_CHILD}-aem-content .{BLOCK_CHILD}-title {
+  margin-bottom: 0.5rem;
+}
+
+.{BLOCK_CHILD}-aem-content .{BLOCK_CHILD}-description {
+  font-style: italic;
+  color: var(--nec-gray-60);
+}
+
+/* {BLOCK_CHILD_FUNC} Buttons */
+.{BLOCK_CHILD}-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.{BLOCK_CHILD}-buttons .button {
+  flex: 1;
+  min-width: fit-content;
+  text-align: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-0, 4px);
+  font-weight: var(--font-weight-semibold, 600);
+  text-decoration: none;
+  transition: all var(--transition-medium) ease-out;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.{BLOCK_CHILD}-buttons .button,
+.{BLOCK_CHILD}-buttons .button-primary,
+.{BLOCK_CHILD}-buttons .primary {
+  /* Use default button styles from buttons.css (button-filled equivalent) */
+  box-sizing: border-box;
+  display: flex;
+  height: var(--btn-height);
+  flex-direction: row;
+  align-items: center;
+  place-self: stretch center;
+  background-color: var(--nec-sky-50);
+  border: 1px solid var(--nec-sky-50);
+  color: var(--nec-gray-0);
+  font-size: var(--font-scale-02);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-xs-px);
+  text-decoration: none;
+  cursor: pointer;
+  gap: var(--spacer-01);
+  border-radius: var(--border-radius-0);
+  padding: 0 var(--spacing-04);
+  transition: all var(--transition-medium) ease-out;
+}
+
+.{BLOCK_CHILD}-buttons .button img,
+.{BLOCK_CHILD}-buttons .button-primary img,
+.{BLOCK_CHILD}-buttons .primary img {
+  /* white icon */
+  filter: brightness(0) invert(1);
+  transition: all var(--transition-medium) ease-out;
+}
+
+.{BLOCK_CHILD}-buttons .button:hover,
+.{BLOCK_CHILD}-buttons .button-primary:hover,
+.{BLOCK_CHILD}-buttons .primary:hover {
+  color: var(--nec-gray-0);
+  background-color: var(--nec-blue-50);
+  border: 1px solid var(--nec-blue-50);
+}
+
+.{BLOCK_CHILD}-buttons .button:hover img,
+.{BLOCK_CHILD}-buttons .button-primary:hover img,
+.{BLOCK_CHILD}-buttons .primary:hover img {
+  /* white icon */
+  filter: brightness(0) invert(1);
+}
+
+.{BLOCK_CHILD}-buttons .button:active,
+.{BLOCK_CHILD}-buttons .button-primary:active,
+.{BLOCK_CHILD}-buttons .primary:active {
+  color: var(--nec-blue-50);
+  background-color: var(--nec-sky-05);
+  border: 1px solid var(--nec-sky-05);
+}
+
+.{BLOCK_CHILD}-buttons .button:active img,
+.{BLOCK_CHILD}-buttons .button-primary:active img,
+.{BLOCK_CHILD}-buttons .primary:active img {
+  /* nec-blue-50 icon */
+  filter: brightness(0) saturate(100%) invert(13%) sepia(79%) saturate(5187%) hue-rotate(235deg) brightness(88%) contrast(108%);
+}
+
+.{BLOCK_CHILD}-buttons .button-secondary,
+.{BLOCK_CHILD}-buttons .secondary,
+.{BLOCK_CHILD}-buttons .button-outlined {
+  /* Use button-outlined styles from buttons.css */
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: var(--nec-gray-0);
+  color: var(--nec-sky-50);
+  border: 1px solid var(--nec-sky-50);
+  font-size: var(--font-scale-02);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-xs-px);
+  text-decoration: none;
+  cursor: pointer;
+  gap: var(--spacer-01);
+  border-radius: var(--border-radius-0);
+  padding: 9px var(--spacer-04);
+  transition: all var(--transition-medium) ease-out;
+}
+
+.{BLOCK_CHILD}-buttons .button-secondary img,
+.{BLOCK_CHILD}-buttons .secondary img,
+.{BLOCK_CHILD}-buttons .button-outlined img {
+  /* nec-sky-50 icon */
+  filter: brightness(0) saturate(100%) invert(37%) sepia(87%) saturate(5300%) hue-rotate(226deg) brightness(101%) contrast(101%);
+  transition: all var(--transition-medium) ease-out;
+}
+
+.{BLOCK_CHILD}-buttons .button-secondary:hover,
+.{BLOCK_CHILD}-buttons .secondary:hover,
+.{BLOCK_CHILD}-buttons .button-outlined:hover {
+  color: var(--nec-gray-0);
+  background-color: var(--nec-blue-50);
+  border: 1px solid var(--nec-blue-50);
+}
+
+.{BLOCK_CHILD}-buttons .button-secondary:hover img,
+.{BLOCK_CHILD}-buttons .secondary:hover img,
+.{BLOCK_CHILD}-buttons .button-outlined:hover img {
+  /* white icon */
+  filter: brightness(0) invert(1);
+}
+
+.{BLOCK_CHILD}-buttons .button-secondary:active,
+.{BLOCK_CHILD}-buttons .secondary:active,
+.{BLOCK_CHILD}-buttons .button-outlined:active {
+  color: var(--nec-blue-50);
+  background-color: var(--nec-sky-05);
+  border: 1px solid var(--nec-sky-05);
+}
+
+.{BLOCK_CHILD}-buttons .button-secondary:active img,
+.{BLOCK_CHILD}-buttons .secondary:active img,
+.{BLOCK_CHILD}-buttons .button-outlined:active img {
+  /* nec-blue-50 icon */
+  filter: brightness(0) saturate(100%) invert(13%) sepia(79%) saturate(5187%) hue-rotate(235deg) brightness(88%) contrast(108%);
+}
+
+/* {BLOCK_CHILD_FUNC} Counter (for numbered-top variant) */
+.{BLOCK_CHILD}-counter {
+  position: absolute;
+  top: -10px;
+  left: 1.5rem;
+  z-index: 1;
+}
+
+.{BLOCK_CHILD}-counter-inner {
+  background: var(--nec-blue-50);
+  color: white;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-semibold, 600);
+  font-size: var(--font-scale-02, 14px);
+}
+
+/* Layout Variants */
+.{BLOCK_NAME}-grid .{BLOCK_CHILD} {
+  /* Grid layout specific styles - default grid behavior */
+  position: relative;
+}
+
+.{BLOCK_NAME}-carousel .{BLOCK_CHILD} {
+  /* Carousel layout - width controlled by parent grid-auto-columns or flex */
+  height: auto;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Legacy support for old variant names - these maintain backward compatibility */
+.{BLOCK_NAME}-link .{BLOCK_CHILD} {
+  /* Link layout specific styles (legacy) - inherits grid behavior */
+  position: relative;
+}
+
+.{BLOCK_NAME}-article .{BLOCK_CHILD} {
+  /* Article layout specific styles (legacy) - inherits grid behavior */
+  position: relative;
+}
+
+.{BLOCK_NAME}-article-carousel .{BLOCK_CHILD} {
+  /* Article carousel layout specific styles (legacy) - inherits carousel behavior */
+  flex: 0 0 auto;
+}
+
+/* ==========================================================================
+   Carousel Styles with Peek Effect
+   Shows partial {BLOCK_NAME} at edge for visual continuity
+   - Desktop (≥1080px): 3 full {BLOCK_NAME} + part of 4th {BLOCK_CHILD} (80px peek)
+   - Tablet (800px – 1079px): 1 full {BLOCK_CHILD} + 60% of 2nd {BLOCK_CHILD}
+   - Mobile (≤799px): 1 full {BLOCK_CHILD} only
+   
+   IMPORTANT: Breakout margin only applies to .{BLOCK_NAME}-grid, NOT navigation
+   ========================================================================== */
+
+/* Carousel base - CSS Variables (mobile-first) */
+.{BLOCK_NAME}-carousel {
+  --carousel-grid-gap: 12px;
+  --carousel-breakout: 0px; /* Default: no breakout */
+}
+
+/* Carousel {BLOCK_NAME} grid - horizontal scrolling container */
+.{BLOCK_NAME}-carousel .{BLOCK_NAME}-grid {
+  display: flex;
+  gap: var(--carousel-grid-gap);
+  overflow: auto visible; /* Horizontal scroll, vertical visible for focus outlines */
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-padding-inline: 20px;
+  padding-top: 4px; /* Space for focus outline */
+  padding-bottom: 4px; /* Space for focus outline */
+  margin-top: -4px; /* Compensate for padding */
+  margin-bottom: -4px; /* Compensate for padding */
+  
+  /* Breakout margin - ONLY on {BLOCK_NAME}-grid, not navigation */
+  margin-right: var(--carousel-breakout);
+  width: calc(100% - var(--carousel-breakout));
+}
+
+/* Focus ring visibility for {BLOCK_CHILD}-interactive in carousel
+   Adds padding inside scroll container for focus outline (4px shadow + buffer) */
+.{BLOCK_NAME}-carousel:has(.{BLOCK_CHILD}-interactive) .{BLOCK_NAME}-grid {
+  padding: 8px;
+  margin-top: -8px;
+  margin-bottom: -8px;
+  margin-left: -8px;
+}
+
+.{BLOCK_NAME}-carousel .{BLOCK_NAME}-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.{BLOCK_NAME}-carousel .{BLOCK_NAME}-grid > * {
+  height: auto;
+  scroll-snap-align: start;
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Desktop Carousel (≥1080px): 3 full {BLOCK_NAME} + 80px peek of 4th {BLOCK_CHILD}
+   ========================================================================== */
+@media (min-width: 1080px) {
+  .{BLOCK_NAME}-carousel {
+    --carousel-grid-gap: 20px;
+    --carousel-breakout: -80px; /* Fixed 80px peek - works in grid layouts too */
+  }
+
+  /* {BLOCK_CHILD_FUNC} width: 3 full {BLOCK_NAME} fit in visible area, 4th peeks in extended area
+     Formula: (container - breakout - 2*gaps) / 3 = visible area for 3 {BLOCK_NAME} */
+  .{BLOCK_NAME}-carousel .{BLOCK_NAME}-grid > * {
+    flex: 0 0 calc((100% + var(--carousel-breakout) - 2 * var(--carousel-grid-gap)) / 3);
+    min-width: calc((100% + var(--carousel-breakout) - 2 * var(--carousel-grid-gap)) / 3);
+    max-width: calc((100% + var(--carousel-breakout) - 2 * var(--carousel-grid-gap)) / 3);
+    height: 100%;
+  }
+
+  /* If 3 or fewer {BLOCK_NAME}, no peek needed */
+  .{BLOCK_NAME}-carousel:not(:has(.{BLOCK_CHILD}:nth-child(4))) {
+    --carousel-breakout: 0px;
+  }
+
+  .{BLOCK_NAME}-carousel:not(:has(.{BLOCK_CHILD}:nth-child(4))) .{BLOCK_NAME}-grid > * {
+    flex: 0 0 calc((100% - 2 * var(--carousel-grid-gap)) / 3);
+    min-width: calc((100% - 2 * var(--carousel-grid-gap)) / 3);
+    max-width: calc((100% - 2 * var(--carousel-grid-gap)) / 3);
+  }
+
+  /* If only 2 {BLOCK_NAME}, show 2 columns */
+  .{BLOCK_NAME}-carousel:has(.{BLOCK_CHILD}:nth-child(2)):not(:has(.{BLOCK_CHILD}:nth-child(3))) .{BLOCK_NAME}-grid > * {
+    flex: 0 0 calc((100% - var(--carousel-grid-gap)) / 2);
+    min-width: calc((100% - var(--carousel-grid-gap)) / 2);
+    max-width: calc((100% - var(--carousel-grid-gap)) / 2);
+  }
+
+  /* If only 1 {BLOCK_CHILD}, show full width */
+  .{BLOCK_NAME}-carousel:not(:has(.{BLOCK_CHILD}:nth-child(2))) .{BLOCK_NAME}-grid > * {
+    flex: 0 0 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .{BLOCK_NAME} .carousel-buttons .carousel-nav {
+    width: 38px;
+    height: 38px;
+  }
+
+  .{BLOCK_NAME} .{BLOCK_NAME}-navigation-right a { 
+    height: 38px;
+  }
+
+  .{BLOCK_CHILD}-link-item a {
+    min-height: 30px;
+  }
+}
+
+/* ==========================================================================
+   Tablet Carousel (800px – 1079px): 1 full {BLOCK_CHILD} + 60% of 2nd {BLOCK_CHILD}
+   ========================================================================== */
+@media (min-width: 800px) and (max-width: 1079px) {
+  .{BLOCK_NAME}-carousel {
+    --carousel-grid-gap: 20px;
+    --carousel-breakout: -40px; /* 40px peek for 2nd {BLOCK_CHILD} */
+  }
+
+  /* {BLOCK_CHILD_FUNC} width: 1 full {BLOCK_CHILD} fits in visible area, 60% of 2nd peeks
+     Formula: (container - breakout - gap) / 1.6 */
+  .{BLOCK_NAME}-carousel .{BLOCK_NAME}-grid > * {
+    flex: 0 0 calc((100% + var(--carousel-breakout) - var(--carousel-grid-gap)) / 2);
+    min-width: calc((100% + var(--carousel-breakout) - var(--carousel-grid-gap)) / 2);
+    max-width: calc((100% + var(--carousel-breakout) - var(--carousel-grid-gap)) / 2);
+  }
+
+  /* If only 1 {BLOCK_CHILD}, no peek needed */
+  .{BLOCK_NAME}-carousel:not(:has(.{BLOCK_CHILD}:nth-child(2))) {
+    --carousel-breakout: 0px;
+  }
+
+  .{BLOCK_NAME}-carousel:not(:has(.{BLOCK_CHILD}:nth-child(2))) .{BLOCK_NAME}-grid > * {
+    flex: 0 0 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .{BLOCK_NAME}-carousel:not(:has(.{BLOCK_CHILD}:nth-child(2))) .{BLOCK_NAME}-grid {
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+}
+
+/* ==========================================================================
+   Mobile Carousel (≤799px): 1 full {BLOCK_CHILD} + 20px peek of 2nd {BLOCK_CHILD}
+   ========================================================================== */
+@media (max-width: 799px) {
+  .{BLOCK_NAME}-carousel {
+    --carousel-grid-gap: 12px;
+    --carousel-breakout: -20px; /* 20px peek for 2nd {BLOCK_CHILD} */
+  }
+
+  /* {BLOCK_CHILD_FUNC} width: 1 full {BLOCK_CHILD} fits in visible area, 2nd peeks in extended area
+     Formula: (container - breakout - gap) */
+  .{BLOCK_NAME}-carousel .{BLOCK_NAME}-grid > * {
+    flex: 0 0 calc(100% + var(--carousel-breakout));
+    min-width: calc(100% + var(--carousel-breakout));
+    max-width: calc(100% + var(--carousel-breakout));
+  }
+
+  /* If only 1 {BLOCK_CHILD}, no peek needed */
+  .{BLOCK_NAME}-carousel:not(:has(.{BLOCK_CHILD}:nth-child(2))) {
+    --carousel-breakout: 0px;
+  }
+
+  .{BLOCK_NAME}-carousel:not(:has(.{BLOCK_CHILD}:nth-child(2))) .{BLOCK_NAME}-grid > * {
+    flex: 0 0 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .{BLOCK_NAME}-carousel:not(:has(.{BLOCK_CHILD}:nth-child(2))) .{BLOCK_NAME}-grid {
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+}
+
+/* Navigation Container */
+.{BLOCK_NAME}-navigation-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  border: 1px solid transparent;
+
+  /* Navigation at top (margin-bottom for spacing below) - applies to both carousel and grid */
+  margin-bottom: var(--grid-gutter);
+}
+
+/* Legacy support: Grid navigation at bottom (for backward compatibility if needed) */
+.{BLOCK_NAME}-grid.legacy-bottom-nav ~ .{BLOCK_NAME}-navigation-container {
+  margin-top: var(--grid-gutter);
+  margin-bottom: 0;
+}
+
+.{BLOCK_NAME}-navigation-left {
+  display: flex;
+  align-items: center;
+}
+
+.{BLOCK_NAME}-navigation-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Grid layout with only CTA button - align to the right */
+.{BLOCK_NAME}-grid:not(.{BLOCK_NAME}-carousel) .{BLOCK_NAME}-navigation-container:not(:has(.{BLOCK_NAME}-navigation-left)) {
+  justify-content: flex-end;
+  margin-bottom: 0;
+}
+
+.{BLOCK_NAME}-grid:not(.{BLOCK_NAME}-carousel) .{BLOCK_NAME}-grid {
+  gap: var(--spacer-08, 48px) var(--horizontal-gap, 20px);
+}
+
+/* Alternative approach for browsers that don't support :has() */
+.{BLOCK_NAME}-navigation-container.cta-only {
+  justify-content: flex-end;
+}
+
+.{BLOCK_NAME}-navigation-right a {
+  /* Figma: Button styles */
+  box-sizing: border-box;
+  display: flex;
+  height: var(--btn-height);
+  padding: 0 var(--spacing-04);
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacer-01, 4px);
+  align-self: stretch;
+  background-color: var(--nec-sky-50);
+  border: 1px solid var(--nec-sky-50);
+  color: var(--nec-gray-0);
+  font-size: var(--font-scale-02);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-xs-px);
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--border-radius-0);
+  transition: background-color var(--transition-medium) ease-out,
+    border-color var(--transition-medium) ease-out,
+    color var(--transition-medium) ease-out;
+}
+
+.{BLOCK_NAME}-navigation-right a:hover {
+  color: var(--nec-gray-0);
+  background-color: var(--nec-blue-50);
+  border: 1px solid var(--nec-blue-50);
+}
+
+.{BLOCK_NAME}-navigation-right a:active {
+  color: var(--nec-blue-50);
+  background-color: var(--nec-sky-05);
+  border: 1px solid var(--nec-sky-05);
+}
+
+/* Carousel Navigation */
+.{BLOCK_NAME} .carousel-buttons {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacer-01, 4px);
+}
+
+/* Preload icons to prevent loading delays */
+.{BLOCK_NAME} .carousel-buttons::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  background-image: url('../../icons/backward.svg'), url('../../icons/forward.svg');
+}
+
+.{BLOCK_NAME} .carousel-nav {
+  background: transparent;
+  border: 1px solid transparent;
+  outline: 1px solid var(--nec-blue-50);
+  border-radius: var(--border-radius-1); /* Corner-radius/Radius-1 */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  opacity: 1;
+}
+
+.{BLOCK_NAME} .carousel-nav:hover:not(.disabled),
+.{BLOCK_NAME} .carousel-nav:active:not(.disabled),
+.{BLOCK_NAME} .carousel-nav.active:not(.disabled) {
+  outline-color: var(--nec-blue-50);
+  opacity: 1;
+}
+
+.{BLOCK_NAME} .carousel-nav.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.{BLOCK_NAME} .carousel-prev.disabled,
+.{BLOCK_NAME} .carousel-next.disabled {
+  filter: opacity(0.3); /* Ensures icons are also dimmed when disabled */
+}
+
+.{BLOCK_NAME} .carousel-prev {
+  background-image: url('../../icons/backward.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
+  transition: filter var(--transition-medium) ease-out;
+}
+
+.{BLOCK_NAME} .carousel-next {
+  background-image: url('../../icons/forward.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
+  transition: filter var(--transition-medium) ease-out;
+}
+
+.{BLOCK_NAME} .carousel-prev::before,
+.{BLOCK_NAME} .carousel-next::before {
+  content: '';
+}
+
+/* CTA Button */
+.{BLOCK_NAME} .{BLOCK_NAME}-cta-button {
+  margin-left: 1rem;
+}
+
+/* Variant Classes */
+.{BLOCK_NAME}-borderless .{BLOCK_CHILD} {
+  border: none;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+}
+
+.{BLOCK_NAME}-numbered-top {
+  padding-top: 1rem;
+}
+
+.{BLOCK_NAME}-numbered-top .{BLOCK_CHILD} {
+  margin-top: 10px;
+}
+
+/* .{BLOCK_NAME}-image .{BLOCK_CHILD}-image - maintains original aspect ratio by default */
+
+.{BLOCK_NAME}-highlight .{BLOCK_CHILD} {
+  border-left: var(--border-radius-0) solid var(--nec-blue-50);
+}
+
+.{BLOCK_NAME}-highlight .{BLOCK_CHILD}:hover {
+  border-left-color: var(--nec-blue-60);
+}
+
+.{BLOCK_NAME}-carousel .{BLOCK_CHILD}-post .{BLOCK_CHILD}-publish-date {
+  display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+  .{BLOCK_NAME}-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .{BLOCK_NAME}-section-title {
+    font-size: var(--font-scale-07, 28px);
+  }
+
+  .{BLOCK_CHILD}-content {
+    padding: 0;
+  }
+
+  .{BLOCK_NAME}-navigation-container {
+    flex-direction: row;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .{BLOCK_NAME}-navigation-left,
+  .{BLOCK_NAME}-navigation-right {
+    justify-content: center;
+  }
+
+  .{BLOCK_NAME}-cta-button {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .{BLOCK_NAME}.{BLOCK_NAME}-grid:not(.{BLOCK_NAME}-carousel) .{BLOCK_NAME}-grid {
+    gap: var(--horizontal-gap, 20px) var(--horizontal-gap, 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .{BLOCK_NAME}-section-title {
+    font-size: var(--font-scale-06, 24px);
+  }
+
+  .{BLOCK_CHILD}-title h1,
+  .{BLOCK_CHILD}-title h2,
+  .{BLOCK_CHILD}-title h3,
+  .{BLOCK_CHILD}-title h4,
+  .{BLOCK_CHILD}-title h5,
+  .{BLOCK_CHILD}-title h6 {
+    font-size: var(--font-scale-04, 18px);
+  }
+
+  .{BLOCK_NAME} .carousel-nav:hover:not(.disabled),
+  .{BLOCK_NAME} .carousel-nav:active:not(.disabled),
+  .{BLOCK_NAME} .carousel-nav.active:not(.disabled) {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* ==========================================================================
+   Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .{BLOCK_CHILD} {
+    transition: none;
+  }
+
+  .{BLOCK_CHILD}:hover {
+    transform: none;
+  }
+
+  /* Disable image scaling and transitions for users who prefer reduced motion */
+  .{BLOCK_CHILD}-image img {
+    transition: none;
+  }
+
+  .{BLOCK_CHILD}-topic .{BLOCK_CHILD}-image:hover img,
+  .{BLOCK_CHILD}-post.{BLOCK_CHILD}-interactive a.{BLOCK_CHILD}-link:hover .{BLOCK_CHILD}-image img {
+    transform: none;
+  }
+}
+
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-title .icon,
+.{BLOCK_CHILD}-post .{BLOCK_CHILD}-subtitle .icon {
+  display: inline-block;
+}
+
+/* Reset Japanese typography to use block-specific line-heights */
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_NAME}-section-title {
+  letter-spacing: normal;
+  line-height: var(--line-height-sm, 1.2);
+}
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-title h1 {
+  line-height: var(--line-height-ja-md);
+  letter-spacing: var(--letter-spacing-xs);
+}
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-title h2 {
+  line-height: var(--line-height-ja-md);
+  letter-spacing: 0;
+}
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-title h3 {
+  line-height: var(--line-height-ja-lg);
+  letter-spacing: 0;
+}
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-title h4 {
+  line-height: var(--line-height-ja-xl);
+  letter-spacing: var(--letter-spacing-ja);
+}
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-title h5,
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-title h6 {
+  line-height: var(--line-height-ja-xxl);
+  letter-spacing: var(--letter-spacing-ja);
+}
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-subtitle p,
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-subtitle span,
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-description p,
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-topic .{BLOCK_CHILD}-subtitle p p {
+  line-height: var(--line-height-ja-xxl, 1.6);
+}
+
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-publish-date time,
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-buttons .primary p,
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-buttons .primary span,
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-buttons .button-outlined p,
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_NAME}-navigation-right a,
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_NAME}-navigation-right a span {
+  line-height: var(--line-height-ja-xxxl, 1.75);
+}
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-link-item a,
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-link-item a p {
+  line-height: var(--line-height-ja-xxxl);
+}
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_CHILD}-tag {
+  line-height: var(--line-height-ja-xxxl);
+}

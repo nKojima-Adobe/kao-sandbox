@@ -1,0 +1,107 @@
+{
+  "definitions": [
+    {
+      "title": "引用 - {BLOCK_FUNC}",
+      "id": "{BLOCK_NAME}",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "引用 - {BLOCK_FUNC}",
+              "filter": "{BLOCK_NAME}",
+              "model": "{BLOCK_NAME}"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "{BLOCK_NAME}",
+      "fields": [
+        {
+          "component": "select",
+          "name": "variant",
+          "label": "バリエーション - Variant",
+          "valueType": "string",
+          "options": [
+            { "name": "デフォルト - Default", "value": "default" },
+            { "name": "記事（大） - Article Big", "value": "article-big" },
+            { "name": " 記事（小） - Article Small", "value": "article-small" }
+          ],
+          "default": "default"
+        },
+        {
+          "component": "reference",
+          "name": "logo",
+          "label": "ロゴ - Logo",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "logoAltText",
+          "label": "ロゴ代替テキスト - Logo Alt Text",
+          "valueType": "string",
+          "required": true,
+          "condition": {
+            "var": "logo"
+          },
+          "validation": {
+            "customErrorMsg": "画像を提供する場合は代替テキストが必要です - Alt text is required when providing an image"
+          }
+        },
+        {
+          "component": "richtext",
+          "name": "quoteText",
+          "label": "引用テキスト - {BLOCK_FUNC} Text",
+          "valueType": "string",
+          "required": true,
+          "validation": {
+            "customErrorMsg": "引用テキストは必須です - {BLOCK_FUNC} text is required"
+          }
+        },
+        {
+          "component": "richtext",
+          "name": "attributionInfo1",
+          "label": "引用元情報１ - Attribution Info 1",
+          "valueType": "string",
+          "required": true,
+          "validation": {
+            "customErrorMsg": "引用元名前は必須です - Attribution name is required"
+          }
+        },
+        {
+          "component": "richtext",
+          "name": "attributionInfo2",
+          "label": "引用元情報２ - Attribution Info 2",
+          "valueType": "string"
+        },
+        {
+          "component": "aem-content",
+          "name": "attributionLink",
+          "label": "引用元リンク - Attribution Link",
+          "valueType": "string",
+          "valueFormat": "regexp",
+          "validation": {
+            "regExp": "^(https?://[^\\s/$.?#].[^\\s]*|/[^\\s]*|#[^\\s]*|mailto:[^\\s@]+@[^\\s@]+\\.[^\\s@]+|tel:[+]?[0-9\\s\\-\\(\\)]+)$",
+            "customErrorMsg": "有効なURLを入力してください（内部: /path/to/page または外部: https://example.com） - Please enter a valid URL (internal: /path/to/page or external: https://example.com)"
+          }
+        },
+        {
+          "component": "reference",
+          "name": "attributionAvatar",
+          "label": "引用元アバター - Attribution Avatar",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "{BLOCK_NAME}",
+      "components": []
+    }
+  ]
+}

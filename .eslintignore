@@ -1,3 +1,2 @@
 helix-importer-ui
-dompurify.min.js
-_block-export/
+*.min.js

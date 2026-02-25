@@ -8,6 +8,7 @@ function closeOnEscape(e) {
   if (e.code === 'Escape') {
     const nav = document.getElementById('nav');
     const navSections = nav.querySelector('.nav-sections');
+    if (!navSections) return;
     const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
     if (navSectionExpanded && isDesktop.matches) {
       // eslint-disable-next-line no-use-before-define
@@ -25,6 +26,7 @@ function closeOnFocusLost(e) {
   const nav = e.currentTarget;
   if (!nav.contains(e.relatedTarget)) {
     const navSections = nav.querySelector('.nav-sections');
+    if (!navSections) return;
     const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
     if (navSectionExpanded && isDesktop.matches) {
       // eslint-disable-next-line no-use-before-define
@@ -57,6 +59,7 @@ function focusNavSection() {
  * @param {Boolean} expanded Whether the element should be expanded or collapsed
  */
 function toggleAllNavSections(sections, expanded = false) {
+  if (!sections) return;
   sections.querySelectorAll('.nav-sections .default-content-wrapper > ul > li').forEach((section) => {
     section.setAttribute('aria-expanded', expanded);
   });
@@ -76,19 +79,21 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
   button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
   // enable nav dropdown keyboard accessibility
-  const navDrops = navSections.querySelectorAll('.nav-drop');
-  if (isDesktop.matches) {
-    navDrops.forEach((drop) => {
-      if (!drop.hasAttribute('tabindex')) {
-        drop.setAttribute('tabindex', 0);
-        drop.addEventListener('focus', focusNavSection);
-      }
-    });
-  } else {
-    navDrops.forEach((drop) => {
-      drop.removeAttribute('tabindex');
-      drop.removeEventListener('focus', focusNavSection);
-    });
+  if (navSections) {
+    const navDrops = navSections.querySelectorAll('.nav-drop');
+    if (isDesktop.matches) {
+      navDrops.forEach((drop) => {
+        if (!drop.hasAttribute('tabindex')) {
+          drop.setAttribute('tabindex', 0);
+          drop.addEventListener('focus', focusNavSection);
+        }
+      });
+    } else {
+      navDrops.forEach((drop) => {
+        drop.removeAttribute('tabindex');
+        drop.removeEventListener('focus', focusNavSection);
+      });
+    }
   }
 
   // enable menu collapse on escape keypress
@@ -163,43 +168,4 @@ export default async function decorate(block) {
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
-
-  // Scroll-trigger: if a header-start marker block exists, hide the header
-  // until the user scrolls past it
-  const headerEl = block.closest('header');
-  if (headerEl) {
-    const initScrollTrigger = () => {
-      const marker = document.querySelector('.header-start');
-      if (!marker) return;
-
-      headerEl.classList.add('header-hidden');
-
-      const checkScroll = () => {
-        const rect = marker.getBoundingClientRect();
-        if (rect.bottom <= 0) {
-          headerEl.classList.remove('header-hidden');
-        } else {
-          headerEl.classList.add('header-hidden');
-        }
-      };
-
-      window.addEventListener('scroll', checkScroll, { passive: true });
-      checkScroll();
-    };
-
-    // Deferred: header-start may not be decorated yet when header loads,
-    // so retry after sections have had time to initialize
-    if (document.querySelector('.header-start')) {
-      initScrollTrigger();
-    } else {
-      const retryTimer = setInterval(() => {
-        if (document.querySelector('.header-start')) {
-          clearInterval(retryTimer);
-          initScrollTrigger();
-        }
-      }, 100);
-      // Stop retrying after 5 seconds
-      setTimeout(() => clearInterval(retryTimer), 5000);
-    }
-  }
 }

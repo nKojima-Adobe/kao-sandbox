@@ -1,0 +1,93 @@
+{
+  "blockType": "single",
+  "componentType": "web-component",
+  "originalNames": {
+    "blockName": "back-to-top",
+    "classPrefix": "back-to-top",
+    "functionPrefix": "BackToTop",
+    "variablePrefix": "backToTop",
+    "constantPrefix": "BACK_TO_TOP",
+    "customElement": "back-to-top"
+  },
+  "placeholders": {
+    "{BLOCK_NAME}": "kebab-case (file names, folder names, custom element tag, data attributes)",
+    "{BLOCK_CLASS}": "CSS classes (kebab-case)",
+    "{BLOCK_FUNC}": "PascalCase (class name, constructor)",
+    "{BLOCK_VAR}": "camelCase (variable names)",
+    "{BLOCK_UPPER}": "SCREAMING_SNAKE (constants, not used in this block)"
+  },
+  "sourceStructure": {
+    "_note": "This block has a dual structure: a no-op block decorator + a Web Component in /components/",
+    "blockDecorator": {
+      "path": "blocks/back-to-top/",
+      "files": ["back-to-top.js", "back-to-top.css"],
+      "purpose": "No-op placeholder; actual logic delegated to the Web Component"
+    },
+    "webComponent": {
+      "path": "components/back-to-top/",
+      "files": ["back-to-top.js", "back-to-top.css"],
+      "purpose": "Actual implementation as HTMLElement custom element"
+    },
+    "contentModel": {
+      "path": "blocks/back-to-top/",
+      "files": ["_back-to-top.json"]
+    }
+  },
+  "files": [
+    "{BLOCK_NAME}.js",
+    "{BLOCK_NAME}.css",
+    "{BLOCK_NAME}-noop.js",
+    "{BLOCK_NAME}-noop.css",
+    "_{BLOCK_NAME}.json"
+  ],
+  "cssSelectors": [
+    "{BLOCK_NAME}",
+    "{BLOCK_NAME}.visible",
+    "{BLOCK_NAME}:hover",
+    "{BLOCK_NAME}:active",
+    "{BLOCK_NAME}:focus",
+    "{BLOCK_NAME} .icon",
+    "{BLOCK_NAME} .icon img",
+    "html[lang=\"ja\"] {BLOCK_NAME}",
+    ".{BLOCK_CLASS}-button"
+  ],
+  "jsPatterns": {
+    "className": "class {BLOCK_FUNC} extends HTMLElement",
+    "customElementDefine": "customElements.define('{BLOCK_NAME}', {BLOCK_FUNC})",
+    "constructor": "new {BLOCK_FUNC}(backToTopBlock)",
+    "cssClassName": "'{BLOCK_CLASS}-button'",
+    "querySelector": "'.{BLOCK_CLASS}'",
+    "queryCustomElement": "'{BLOCK_NAME}'"
+  },
+  "externalDependencies": [
+    {
+      "name": "trackNavigationScrollTop",
+      "source": "../../scripts/analytics/data-layer.js",
+      "required": false,
+      "purpose": "Analytics tracking for scroll-to-top clicks"
+    }
+  ],
+  "integrationPoint": {
+    "_note": "This component is imported and instantiated by the header block",
+    "importedBy": "blocks/header/header.js",
+    "importStatement": "import BackToTop from '../../components/back-to-top/back-to-top.js';",
+    "cssImportedBy": "blocks/header/header.css",
+    "cssImportStatement": "@import url(\"../../components/back-to-top/back-to-top.css\");",
+    "instantiation": "const backToTop = new BackToTop(backToTopBlock); document.body.appendChild(backToTop);",
+    "registeredIn": ["component-definition.json", "component-models.json", "component-filters.json", "blocks/header/_header.json"]
+  },
+  "replacements": [
+    {"type": "filename", "original": "back-to-top.js", "placeholder": "{BLOCK_NAME}.js"},
+    {"type": "filename", "original": "back-to-top.css", "placeholder": "{BLOCK_NAME}.css"},
+    {"type": "filename", "original": "_back-to-top.json", "placeholder": "_{BLOCK_NAME}.json"},
+    {"type": "css-selector", "original": "back-to-top", "placeholder": "{BLOCK_NAME}", "context": "custom element tag used as CSS selector"},
+    {"type": "css-class", "original": ".back-to-top-button", "placeholder": ".{BLOCK_CLASS}-button"},
+    {"type": "css-class", "original": ".back-to-top", "placeholder": ".{BLOCK_CLASS}", "context": "querySelector in header.js"},
+    {"type": "js-class", "original": "class BackToTop extends HTMLElement", "placeholder": "class {BLOCK_FUNC} extends HTMLElement"},
+    {"type": "js-class", "original": "export default class BackToTop", "placeholder": "export default class {BLOCK_FUNC}"},
+    {"type": "custom-element", "original": "customElements.define('back-to-top', BackToTop)", "placeholder": "customElements.define('{BLOCK_NAME}', {BLOCK_FUNC})"},
+    {"type": "js-string-literal", "original": "'back-to-top-button'", "placeholder": "'{BLOCK_CLASS}-button'"},
+    {"type": "json-id", "original": "\"back-to-top\"", "placeholder": "\"{BLOCK_NAME}\""},
+    {"type": "json-model", "original": "\"model\": \"back-to-top\"", "placeholder": "\"model\": \"{BLOCK_NAME}\""}
+  ]
+}

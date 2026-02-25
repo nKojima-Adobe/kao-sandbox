@@ -1,0 +1,5 @@
+{
+  "_note": "Add '{BLOCK_NAME}' to the target project's section filter (typically models/_section.json).",
+  "_instruction": "Find the section filter's 'components' array and add \"{BLOCK_NAME}\" to it.",
+  "componentEntry": "{BLOCK_NAME}"
+}

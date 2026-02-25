@@ -1,0 +1,249 @@
+/* Base {BLOCK_NAME} styles */
+.{BLOCK_NAME} {
+  margin: 0 auto;
+}
+
+.{BLOCK_NAME} .{BLOCK_NAME}-blockquote {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  display: grid;
+  gap: 0;
+  align-items: flex-start;
+}
+
+/* {BLOCK_FUNC} text styles */
+.{BLOCK_NAME} .{BLOCK_NAME}-text {
+  font-size: var(--font-scale-07);
+  line-height: var(--line-height-lg);
+  font-weight: var(--font-weight-light);
+  position: relative;
+  margin-top: 39.52px;
+  color: var(--nec-gray-80);
+}
+
+.{BLOCK_NAME} .{BLOCK_NAME}-text .{BLOCK_NAME}-first::before {
+  content: '“';
+  font-size: 105px;
+  line-height: 65px;
+  position: absolute;
+  top: -40px;
+  color: var(--nec-blue-50);
+  width: 32.16px;
+  height: 23.52px;
+  overflow: hidden;
+}
+
+/* Attribution styles */
+.{BLOCK_NAME} .{BLOCK_NAME}-attribution {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: flex-end;
+  padding-top: var(--spacer-04);
+}
+
+.{BLOCK_NAME} .{BLOCK_NAME}-attribution-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.{BLOCK_NAME} .{BLOCK_NAME}-attribution-text {
+  flex: 1;
+}
+
+.{BLOCK_NAME} .{BLOCK_NAME}-cite {
+  font-style: normal;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-xl);
+  font-size: var(--font-scale-03);
+  color: var(--nec-gray-80);
+}
+
+
+.{BLOCK_NAME} .{BLOCK_NAME}-attribution-info2 {
+  font-style: normal;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-xl);
+  font-size: var(--font-scale-03);
+  color: var(--nec-gray-60);
+}
+
+.{BLOCK_NAME} .{BLOCK_NAME}-attribution-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-medium) ease-out;
+  display: block;
+  width: max-content;
+  line-height: inherit;
+}
+
+.{BLOCK_NAME} .{BLOCK_NAME}-attribution-link:hover {
+  color: var(--nec-blue-50);
+  text-decoration: underline;
+}
+
+/* Avatar styles */
+.{BLOCK_NAME} .{BLOCK_NAME}-avatar img {
+  width: 48px;
+  height: 48px;
+  border-radius: 100px;
+  object-fit: cover;
+}
+
+/* Logo styles */
+.{BLOCK_NAME} .{BLOCK_NAME}-logo {
+  padding-bottom: 40px;
+}
+
+.{BLOCK_NAME} .{BLOCK_NAME}-logo img {
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.{BLOCK_NAME}.{BLOCK_NAME}-article-small .{BLOCK_NAME}-blockquote {
+  max-width: 73.215%;
+}
+
+/* Article Small variant */
+.{BLOCK_NAME}.{BLOCK_NAME}-article-small .{BLOCK_NAME}-cite,
+.{BLOCK_NAME}.{BLOCK_NAME}-article-small .{BLOCK_NAME}-attribution-info2 {
+  font-size: var(--font-scale-02);
+}
+
+.{BLOCK_NAME}.{BLOCK_NAME}-article-small .{BLOCK_NAME}-text {
+  font-size: var(--font-scale-04);
+  line-height: var(--line-height-sm);
+}
+
+/* Responsive design */
+
+@media (min-width: 800px) {
+  .{BLOCK_NAME} .{BLOCK_NAME}-logo {
+    max-width: var(--width-5-col);
+  }
+
+  .{BLOCK_NAME}.{BLOCK_NAME}-default .{BLOCK_NAME}-blockquote:not(:has(.{BLOCK_NAME}-content)) { 
+    max-width: var(--width-6-col);
+  }
+
+  .{BLOCK_NAME} .{BLOCK_NAME}-text {
+    margin-top: 47.52px;
+  }
+
+  .{BLOCK_NAME} .{BLOCK_NAME}-text .{BLOCK_NAME}-first::before {
+    top: -48px;
+  }
+
+  .{BLOCK_NAME} .{BLOCK_NAME}-attribution {
+    padding-top: var(--spacer-05);
+  }
+
+  .{BLOCK_NAME}.{BLOCK_NAME}-article-small .{BLOCK_NAME}-blockquote:not(:has(.{BLOCK_NAME}-content)) {
+    max-width: var(--width-3-col);
+  }
+
+  .{BLOCK_NAME}-container.span-col-8:has(.{BLOCK_NAME}-article-big) {
+    grid-column: span 8;
+  }
+}
+
+@media (max-width: 799px) {
+  .{BLOCK_NAME}.{BLOCK_NAME}-article-small .{BLOCK_NAME}-blockquote:not(:has(.{BLOCK_NAME}-content)) {
+    padding: 0 var(--grid-margin-sm) 0;
+  }
+}
+
+@media (min-width: 1080px) {
+  .{BLOCK_NAME} .{BLOCK_NAME}-blockquote {
+    --default-col-1: calc(var(--grid-column-width-5) + var(--grid-gutter) * 4);
+    --default-col-2: calc(var(--grid-column-width-6) + var(--grid-gutter) * 5);
+    --default-grid-gap: calc(var(--grid-column-width-1) + var(--grid-gutter) * 2);
+
+    grid-template-columns: var(--default-col-1) var(--default-col-2);
+    column-gap: var(--default-grid-gap);
+  }
+
+  .{BLOCK_NAME} .{BLOCK_NAME}-blockquote:not(:has(.{BLOCK_NAME}-content)) { 
+    grid-template-columns: auto;
+    max-width: var(--width-8-col);
+  }
+
+  .{BLOCK_NAME}.{BLOCK_NAME}-default .{BLOCK_NAME}-blockquote:not(:has(.{BLOCK_NAME}-content)) { 
+    max-width: var(--width-8-col);
+  }
+
+  .{BLOCK_NAME}.{BLOCK_NAME}-article-big .{BLOCK_NAME}-blockquote:not(:has(.{BLOCK_NAME}-content)) { 
+    max-width: var(--width-8-col);
+  }
+
+  .{BLOCK_NAME}.{BLOCK_NAME}-article-small .{BLOCK_NAME}-blockquote:not(:has(.{BLOCK_NAME}-content)) {
+    max-width: var(--width-3-col);
+  }
+
+  .{BLOCK_NAME} .{BLOCK_NAME}-blockquote .{BLOCK_NAME}-content{
+    grid-row: 1 / 4;
+  }
+
+  .{BLOCK_NAME} .{BLOCK_NAME}-logo {
+    padding-bottom: 0;
+    max-width: none;
+  }
+
+  .{BLOCK_NAME} .{BLOCK_NAME}-text {
+    font-size: var(--font-scale-08);
+    margin-top: 55.52px;
+  }
+
+  .{BLOCK_NAME} .{BLOCK_NAME}-text .{BLOCK_NAME}-first::before {
+    top: -58px;
+  }
+
+  .{BLOCK_NAME} .{BLOCK_NAME}-attribution {
+    padding-top: var(--spacer-06);
+  }
+}
+
+
+/* Focus and keyboard navigation */
+.{BLOCK_NAME} .{BLOCK_NAME}-attribution-link:focus-visible {
+  outline: 2px solid var(--nec-blue-50);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-0);
+  color: var(--nec-blue-50);
+  text-decoration: underline;
+}
+
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_NAME}-text {
+  line-height: var(--line-height-ja-lg);
+  letter-spacing: var(--letter-spacing-ja);
+}
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_NAME}-cite {
+  line-height: var(--line-height-ja-xl);
+  letter-spacing: normal;
+}
+
+html[lang="ja"] .{BLOCK_NAME} .{BLOCK_NAME}-attribution-info2 {
+  line-height: var(--line-height-ja-xl);
+  letter-spacing: normal;
+}
+
+html[lang="ja"] .{BLOCK_NAME}.{BLOCK_NAME}-default .{BLOCK_NAME}-text {
+  letter-spacing: normal;
+}
+
+html[lang="ja"] .{BLOCK_NAME}.{BLOCK_NAME}-article-small .{BLOCK_NAME}-text {
+  line-height: var(--line-height-ja-lg);
+  letter-spacing: var(--letter-spacing-ja);
+}
+
+

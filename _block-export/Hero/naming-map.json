@@ -1,0 +1,218 @@
+{
+  "blockType": "single",
+  "original": {
+    "blockName": "hero",
+    "classPrefix": "hero",
+    "functionPrefix": "Hero",
+    "variablePrefix": "hero",
+    "constantPrefix": "HERO"
+  },
+  "placeholders": {
+    "blockName": "{BLOCK_NAME}",
+    "classPrefix": "{BLOCK_CLASS}",
+    "functionPrefix": "{BLOCK_FUNC}",
+    "variablePrefix": "{BLOCK_VAR}",
+    "constantPrefix": "{BLOCK_UPPER}"
+  },
+  "patterns": {
+    "files": [
+      "{BLOCK_NAME}.js",
+      "{BLOCK_NAME}.css",
+      "{BLOCK_NAME}-utils.js",
+      "{BLOCK_NAME}-constants.js",
+      "{BLOCK_NAME}.stories.js",
+      "_{BLOCK_NAME}.json"
+    ],
+    "cssClasses": [
+      ".{BLOCK_CLASS}",
+      ".{BLOCK_CLASS}-section",
+      ".{BLOCK_CLASS}-inner",
+      ".{BLOCK_CLASS}-wrapper",
+      ".{BLOCK_CLASS}-content",
+      ".{BLOCK_CLASS}-content-inner",
+      ".{BLOCK_CLASS}-pretitle",
+      ".{BLOCK_CLASS}-pretitle-inline",
+      ".{BLOCK_CLASS}-title",
+      ".{BLOCK_CLASS}-title-text",
+      ".{BLOCK_CLASS}-title-with-pretitle",
+      ".{BLOCK_CLASS}-description",
+      ".{BLOCK_CLASS}-media",
+      ".{BLOCK_CLASS}-media-image",
+      ".{BLOCK_CLASS}-media-video",
+      ".{BLOCK_CLASS}-caption",
+      ".{BLOCK_CLASS}-cta",
+      ".{BLOCK_CLASS}-cta-button",
+      ".{BLOCK_CLASS}-video-control",
+      ".{BLOCK_CLASS}-video-control-icon",
+      ".{BLOCK_CLASS}-video-control-play",
+      ".{BLOCK_CLASS}-video-control-pause",
+      ".{BLOCK_CLASS}-scroll-text",
+      ".{BLOCK_CLASS}-grid",
+      ".{BLOCK_CLASS}-text-only",
+      ".{BLOCK_CLASS}-contains-media"
+    ],
+    "jsFunctions": [
+      "{BLOCK_VAR}ParseContent",
+      "{BLOCK_VAR}BuildMediaWrapper",
+      "{BLOCK_VAR}BuildVideoWrapper",
+      "{BLOCK_VAR}CreateScrollTextElement",
+      "{BLOCK_VAR}InitScrollHint",
+      "{BLOCK_VAR}ExtractVideoJsElement",
+      "{BLOCK_VAR}CreateVideoJsFromAttributes",
+      "generate{BLOCK_FUNC}UID",
+      "setup{BLOCK_FUNC}CleanupObserver"
+    ],
+    "jsConstants": [
+      "{BLOCK_UPPER}_CSS_CLASSES",
+      "{BLOCK_UPPER}_FIELD_MAP",
+      "{BLOCK_UPPER}_FADE_START_PX",
+      "{BLOCK_UPPER}_IO_THRESHOLDS",
+      "{BLOCK_UPPER}_BRIGHTCOVE_ATTRIBUTES",
+      "{BLOCK_UPPER}_VIDEO_ATTRIBUTES",
+      "{BLOCK_UPPER}_CONSOLE_PATTERNS",
+      "{BLOCK_UPPER}_DEFAULT_VIDEO_CAPTION",
+      "{BLOCK_UPPER}_SCROLL_TEXT"
+    ],
+    "jsVariables": [
+      "{BLOCK_VAR}Cleanup",
+      "{BLOCK_VAR}WarnPatchedFlag"
+    ]
+  },
+  "replacements": [
+    {
+      "type": "filename",
+      "original": "hero.js",
+      "placeholder": "{BLOCK_NAME}.js",
+      "pattern": "kebab-case"
+    },
+    {
+      "type": "filename",
+      "original": "hero.css",
+      "placeholder": "{BLOCK_NAME}.css",
+      "pattern": "kebab-case"
+    },
+    {
+      "type": "filename",
+      "original": "hero-utils.js",
+      "placeholder": "{BLOCK_NAME}-utils.js",
+      "pattern": "kebab-case"
+    },
+    {
+      "type": "filename",
+      "original": "hero-constants.js",
+      "placeholder": "{BLOCK_NAME}-constants.js",
+      "pattern": "kebab-case"
+    },
+    {
+      "type": "filename",
+      "original": "hero.stories.js",
+      "placeholder": "{BLOCK_NAME}.stories.js",
+      "pattern": "kebab-case"
+    },
+    {
+      "type": "filename",
+      "original": "_hero.json",
+      "placeholder": "_{BLOCK_NAME}.json",
+      "pattern": "kebab-case"
+    },
+    {
+      "type": "constant-prefix",
+      "original": "HERO_",
+      "placeholder": "{BLOCK_UPPER}_",
+      "pattern": "SCREAMING_SNAKE_CASE",
+      "note": "All exported constants use HERO_ prefix"
+    },
+    {
+      "type": "css-class-prefix",
+      "original": "hero-",
+      "placeholder": "{BLOCK_CLASS}-",
+      "pattern": "kebab-case",
+      "note": "All CSS classes and string references using hero- prefix"
+    },
+    {
+      "type": "css-class-standalone",
+      "original": "hero",
+      "placeholder": "{BLOCK_CLASS}",
+      "pattern": "kebab-case",
+      "note": "Standalone CSS class .hero and model IDs"
+    },
+    {
+      "type": "function-infix",
+      "original": "Hero",
+      "placeholder": "{BLOCK_FUNC}",
+      "pattern": "PascalCase",
+      "note": "Used as infix in function names like generateHeroUID, setupHeroCleanupObserver"
+    },
+    {
+      "type": "variable-prefix",
+      "original": "hero",
+      "placeholder": "{BLOCK_VAR}",
+      "pattern": "camelCase",
+      "note": "Used as prefix in camelCase identifiers like heroParseContent, heroCleanup"
+    },
+    {
+      "type": "import-path",
+      "original": "./hero-constants.js",
+      "placeholder": "./{BLOCK_NAME}-constants.js"
+    },
+    {
+      "type": "import-path",
+      "original": "./hero-utils.js",
+      "placeholder": "./{BLOCK_NAME}-utils.js"
+    },
+    {
+      "type": "import-path",
+      "original": "./hero.js",
+      "placeholder": "./{BLOCK_NAME}.js"
+    },
+    {
+      "type": "import-path",
+      "original": "./hero.css",
+      "placeholder": "./{BLOCK_NAME}.css"
+    },
+    {
+      "type": "json-id",
+      "original": "\"id\": \"hero\"",
+      "placeholder": "\"id\": \"{BLOCK_NAME}\"",
+      "pattern": "kebab-case"
+    },
+    {
+      "type": "json-model",
+      "original": "\"model\": \"hero\"",
+      "placeholder": "\"model\": \"{BLOCK_NAME}\"",
+      "pattern": "kebab-case"
+    }
+  ],
+  "externalDependencies": [
+    {
+      "import": "decorateIcons",
+      "from": "../../scripts/aem.js",
+      "note": "AEM EDS core utility for icon decoration"
+    },
+    {
+      "import": "sanitizeText, sanitizeUrl, decodeCmsText, processContentWithIconsAndLink, processRichHtmlWithIconsAndDecode",
+      "from": "../../utils/generic-utils.js",
+      "note": "Shared utility functions for text/URL sanitization and content processing"
+    },
+    {
+      "import": "fetchPlaceholdersForLocale",
+      "from": "../../scripts/placeholders.js",
+      "note": "i18n placeholder loading utility"
+    },
+    {
+      "import": "trackElementInteraction, sanitizeUrlForAnalytics",
+      "from": "../../scripts/analytics/data-layer.js",
+      "note": "Analytics tracking utilities"
+    },
+    {
+      "import": "normalizeText",
+      "from": "../video/video-utils.js",
+      "note": "Video text normalization utility (shared with video block)"
+    },
+    {
+      "import": "HERO_SCROLL_TEXT",
+      "from": "../../constants/placeholders-constants.js",
+      "note": "Placeholder constant key for i18n scroll text. Original value: 'heroScrollText'"
+    }
+  ]
+}

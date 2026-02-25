@@ -160,12 +160,7 @@ function setup() {
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {
     try {
-      const scriptURL = new URL(scriptEl.src, window.location);
-      if (scriptURL.host === window.location.host) {
-        [window.hlx.codeBasePath] = scriptURL.pathname.split('/scripts/scripts.js');
-      } else {
-        [window.hlx.codeBasePath] = scriptURL.href.split('/scripts/scripts.js');
-      }
+      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
@@ -323,17 +318,20 @@ function createOptimizedPicture(
   eager = false,
   breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }],
 ) {
-  const url = new URL(src, window.location.href);
+  const url = !src.startsWith('http') ? new URL(src, window.location.href) : new URL(src);
   const picture = document.createElement('picture');
-  const { pathname } = url;
-  const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
+  const { origin, pathname } = url;
+  const ext = pathname.split('.').pop();
 
   // webp
   breakpoints.forEach((br) => {
     const source = document.createElement('source');
     if (br.media) source.setAttribute('media', br.media);
     source.setAttribute('type', 'image/webp');
-    source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
+    source.setAttribute(
+      'srcset',
+      `${origin}${pathname}?width=${br.width}&format=webply&optimize=medium`,
+    );
     picture.appendChild(source);
   });
 
@@ -342,14 +340,20 @@ function createOptimizedPicture(
     if (i < breakpoints.length - 1) {
       const source = document.createElement('source');
       if (br.media) source.setAttribute('media', br.media);
-      source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+      source.setAttribute(
+        'srcset',
+        `${origin}${pathname}?width=${br.width}&format=${ext}&optimize=medium`,
+      );
       picture.appendChild(source);
     } else {
       const img = document.createElement('img');
       img.setAttribute('loading', eager ? 'eager' : 'lazy');
       img.setAttribute('alt', alt);
       picture.appendChild(img);
-      img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+      img.setAttribute(
+        'src',
+        `${origin}${pathname}?width=${br.width}&format=${ext}&optimize=medium`,
+      );
     }
   });
 
@@ -389,22 +393,11 @@ function wrapTextNodes(block) {
     'H4',
     'H5',
     'H6',
-    'HR',
   ];
 
   const wrap = (el) => {
     const wrapper = document.createElement('p');
     wrapper.append(...el.childNodes);
-    [...el.attributes]
-      // move the instrumentation from the cell to the new paragraph, also keep the class
-      // in case the content is a buttton and the cell the button-container
-      .filter(({ nodeName }) => nodeName === 'class'
-        || nodeName.startsWith('data-aue')
-        || nodeName.startsWith('data-richtext'))
-      .forEach(({ nodeName, nodeValue }) => {
-        wrapper.setAttribute(nodeName, nodeValue);
-        el.removeAttribute(nodeName);
-      });
     el.append(wrapper);
   };
 
@@ -425,50 +418,13 @@ function wrapTextNodes(block) {
 }
 
 /**
- * Decorates paragraphs containing a single link as buttons.
- * @param {Element} element container element
- */
-function decorateButtons(element) {
-  element.querySelectorAll('a').forEach((a) => {
-    a.title = a.title || a.textContent;
-    if (a.href !== a.textContent) {
-      const up = a.parentElement;
-      const twoup = a.parentElement.parentElement;
-      if (!a.querySelector('img')) {
-        if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
-          a.className = 'button'; // default
-          up.classList.add('button-container');
-        }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'STRONG'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
-          a.className = 'button primary';
-          twoup.classList.add('button-container');
-        }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'EM'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
-          a.className = 'button secondary';
-          twoup.classList.add('button-container');
-        }
-      }
-    }
-  });
-}
-
-/**
  * Add <img> for icon, prefixed with codeBasePath and optional prefix.
  * @param {Element} [span] span element with icon classes
  * @param {string} [prefix] prefix to be added to icon src
  * @param {string} [alt] alt text to be added to icon
  */
 function decorateIcon(span, prefix = '', alt = '') {
+  if (span.hasChildNodes()) return; // already decorated
   const iconName = Array.from(span.classList)
     .find((c) => c.startsWith('icon-'))
     .substring(5);
@@ -495,259 +451,44 @@ function decorateIcons(element, prefix = '') {
 }
 
 /**
- * Normalize bottom margin class values to supported spacing tokens.
- * @param {string} marginValue The raw margin value
- * @returns {string} The normalized margin class value
- */
-function normalizeBottomMarginClass(marginValue) {
-  if (!marginValue) return '';
-  const normalizedValue = marginValue.toLowerCase();
-
-  // Legacy pixel values to new spacing tokens
-  if (normalizedValue === '40px') return 'spacing07';
-  if (normalizedValue === '80px') return 'spacing12';
-  if (normalizedValue === '120px') return 'spacing14';
-
-  // Supported new tokens stay as-is
-  if (
-    normalizedValue === 'spacing07'
-    || normalizedValue === 'spacing12'
-    || normalizedValue === 'spacing14'
-  ) {
-    return normalizedValue;
-  }
-
-  // Treat "none" as explicit zero margin
-  if (normalizedValue === 'none' || normalizedValue === '0px') {
-    return '0px';
-  }
-
-  return marginValue;
-}
-
-/**
  * Decorates all sections in a container element.
- * Includes grid-columns awareness: grid-columns containers skip child wrapping
- * but still process metadata.
  * @param {Element} main The container element
  */
 function decorateSections(main) {
-  main.querySelectorAll(':scope > div:not([data-section-status])').forEach((section) => {
-    // Check if this is a grid-columns container
-    const isGridColumns = section.classList.contains('grid-columns');
-
-    if (!isGridColumns) {
-      const wrappers = [];
-      let defaultContent = false;
-      [...section.children].forEach((e) => {
-        if ((e.tagName === 'DIV' && e.className) || !defaultContent) {
-          const wrapper = document.createElement('div');
-          wrappers.push(wrapper);
-          defaultContent = e.tagName !== 'DIV' || !e.className;
-          if (defaultContent) wrapper.classList.add('default-content-wrapper');
-        }
-        wrappers[wrappers.length - 1].append(e);
-      });
-      wrappers.forEach((wrapper) => section.append(wrapper));
-      section.classList.add('section');
-      section.dataset.sectionStatus = 'initialized';
-      section.style.display = 'none';
-    } else {
-      // For grid-columns containers, just mark as initialized
-      section.dataset.sectionStatus = 'initialized';
-    }
+  main.querySelectorAll(':scope > div').forEach((section) => {
+    const wrappers = [];
+    let defaultContent = false;
+    [...section.children].forEach((e) => {
+      if (e.tagName === 'DIV' || !defaultContent) {
+        const wrapper = document.createElement('div');
+        wrappers.push(wrapper);
+        defaultContent = e.tagName !== 'DIV';
+        if (defaultContent) wrapper.classList.add('default-content-wrapper');
+      }
+      wrappers[wrappers.length - 1].append(e);
+    });
+    wrappers.forEach((wrapper) => section.append(wrapper));
+    section.classList.add('section');
+    section.dataset.sectionStatus = 'initialized';
+    section.style.display = 'none';
 
     // Process section metadata
     const sectionMeta = section.querySelector('div.section-metadata');
     if (sectionMeta) {
       const meta = readBlockConfig(sectionMeta);
       Object.keys(meta).forEach((key) => {
-        const normalizedKey = key.toLowerCase().replace(/-/g, '');
-        if (normalizedKey === 'bottommargin') {
-          if (meta[key]) {
-            const rawValue = meta[key].trim();
-            const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
-            if (marginValue) {
-              section.classList.add(`bottom-margin-${marginValue}`);
-            }
-          }
-        } else if (key === 'style' || key === 'columns' || key === 'tablet-columns') {
-          if (meta.style) {
-            const styles = meta.style
-              .split(',')
-              .filter((style) => style)
-              .map((style) => toClassName(style.trim()));
-            styles.forEach((style) => section.classList.add(style));
-          }
-          if (meta.columns) {
-            const columns = meta.columns
-              .split(',')
-              .filter((column) => column)
-              .map((column) => toClassName(column.trim()));
-            columns.forEach((column) => section.classList.add(column));
-          }
-          if (meta['tablet-columns']) {
-            const tabletColumns = meta['tablet-columns']
-              .split(',')
-              .filter((column) => column)
-              .map((column) => toClassName(column.trim()));
-            tabletColumns.forEach((column) => section.classList.add(column));
-          }
+        if (key === 'style') {
+          const styles = meta.style
+            .split(',')
+            .filter((style) => style)
+            .map((style) => toClassName(style.trim()));
+          styles.forEach((style) => section.classList.add(style));
         } else {
           section.dataset[toCamelCase(key)] = meta[key];
         }
       });
       sectionMeta.parentNode.remove();
     }
-
-    // Check data attributes for bottomMargin
-    const bottomMarginData = section.dataset.bottommargin
-      || section.dataset.bottomMargin
-      || section.getAttribute('data-bottommargin')
-      || section.getAttribute('data-bottom-margin');
-    if (bottomMarginData) {
-      const rawValue = bottomMarginData.trim();
-      const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
-      const className = marginValue && `bottom-margin-${marginValue}`;
-      if (className && !section.classList.contains(className)) {
-        section.classList.add(className);
-      }
-    }
-  });
-}
-
-/**
- * Wraps a single section's children (used for sections inside grid-columns containers).
- * @param {Element} section The section element to decorate
- */
-function decorateSectionColumn(section) {
-  const wrappers = [];
-  let defaultContent = false;
-  [...section.children].forEach((e) => {
-    if ((e.tagName === 'DIV' && e.className) || !defaultContent) {
-      const wrapper = document.createElement('div');
-      wrappers.push(wrapper);
-      defaultContent = e.tagName !== 'DIV' || !e.className;
-      if (defaultContent) wrapper.classList.add('default-content-wrapper');
-    }
-    wrappers[wrappers.length - 1].append(e);
-  });
-  wrappers.forEach((wrapper) => section.append(wrapper));
-  section.classList.add('section');
-  section.dataset.sectionStatus = 'initialized';
-  section.style.display = 'none';
-
-  // Process section metadata
-  const sectionMeta = section.querySelector('div.section-metadata');
-  if (sectionMeta) {
-    const meta = readBlockConfig(sectionMeta);
-    Object.keys(meta).forEach((key) => {
-      const normalizedKey = key.toLowerCase().replace(/-/g, '');
-      if (normalizedKey === 'bottommargin') {
-        if (meta[key]) {
-          const rawValue = meta[key].trim();
-          const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
-          if (marginValue) {
-            section.classList.add(`bottom-margin-${marginValue}`);
-          }
-        }
-      } else if (key === 'style') {
-        if (meta.style) {
-          const styles = meta.style
-            .split(',')
-            .filter((style) => style)
-            .map((style) => toClassName(style.trim()));
-          styles.forEach((style) => section.classList.add(style));
-        }
-      } else {
-        section.dataset[toCamelCase(key)] = meta[key];
-      }
-    });
-    sectionMeta.parentNode.remove();
-  }
-}
-
-/**
- * Main grid-columns grouping logic.
- * Decorates unprocessed sections inside grid-columns containers and groups
- * consecutive span-col sections into grid-columns wrappers.
- * @param {Element} main The container element
- */
-function decorateSectionsColumn(main) {
-  if (!main) return;
-
-  const decorateUnprocessed = (selector) => {
-    main.querySelectorAll(selector).forEach(decorateSectionColumn);
-  };
-
-  // Decorate standalone and nested sections
-  decorateUnprocessed(':scope > div:not([data-section-status]):not(.grid-columns)');
-  decorateUnprocessed(':scope > div.grid-columns > div:not([data-section-status])');
-
-  // Process bottomMargin for existing grid-columns containers
-  main.querySelectorAll(':scope > div.grid-columns').forEach((gridContainer) => {
-    // Check data attributes for bottomMargin
-    const bottomMarginData = gridContainer.dataset.bottommargin
-      || gridContainer.dataset.bottomMargin
-      || gridContainer.getAttribute('data-bottommargin')
-      || gridContainer.getAttribute('data-bottom-margin');
-    if (bottomMarginData) {
-      const rawValue = bottomMarginData.trim();
-      const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
-      if (marginValue) {
-        gridContainer.classList.add(`bottom-margin-${marginValue}`);
-      }
-    }
-
-    // Process bottomMargin from metadata
-    const sectionMeta = gridContainer.querySelector('div.section-metadata');
-    if (sectionMeta) {
-      const meta = readBlockConfig(sectionMeta);
-      Object.keys(meta).forEach((key) => {
-        const normalizedKey = key.toLowerCase().replace(/-/g, '');
-        if (normalizedKey === 'bottommargin') {
-          if (meta[key]) {
-            const rawValue = meta[key].trim();
-            const marginValue = normalizeBottomMarginClass(toClassName(rawValue));
-            if (marginValue) {
-              gridContainer.classList.add(`bottom-margin-${marginValue}`);
-            }
-          }
-        }
-      });
-    }
-  });
-
-  // Skip regrouping if current element itself is a grid-columns block
-  if (main.classList.contains('grid-columns')) return;
-
-  const colSectionGroups = {};
-  let currentGroupIndex = main.querySelectorAll('.grid-columns').length;
-
-  main.querySelectorAll(':scope > div.section').forEach((section) => {
-    const isSpanCol = Array.from(section.classList).some((cls) => cls.startsWith('span-col-'));
-
-    if (isSpanCol) {
-      const prev = section.previousElementSibling;
-      if (prev?.classList.contains('grid-columns')) {
-        prev.appendChild(section);
-        return;
-      }
-
-      (colSectionGroups[currentGroupIndex] ||= []).push(section);
-    } else if (colSectionGroups[currentGroupIndex]?.length) {
-      currentGroupIndex += 1;
-    }
-  });
-
-  Object.entries(colSectionGroups).forEach(([index, group]) => {
-    if (!group.length) return;
-    const wrapper = document.createElement('div');
-    wrapper.className = 'grid-columns';
-    wrapper.id = `grid-columns-${index}`;
-
-    main.replaceChild(wrapper, group[0]);
-    wrapper.append(...group);
   });
 }
 
@@ -825,7 +566,7 @@ async function loadBlock(block) {
  */
 function decorateBlock(block) {
   const shortBlockName = block.classList[0];
-  if (shortBlockName && !block.dataset.blockStatus) {
+  if (shortBlockName) {
     block.classList.add('block');
     block.dataset.blockName = shortBlockName;
     block.dataset.blockStatus = 'initialized';
@@ -834,8 +575,6 @@ function decorateBlock(block) {
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
     const section = block.closest('.section');
     if (section) section.classList.add(`${shortBlockName}-container`);
-    // eslint-disable-next-line no-use-before-define
-    decorateButtons(block);
   }
 }
 
@@ -931,10 +670,8 @@ export {
   createOptimizedPicture,
   decorateBlock,
   decorateBlocks,
-  decorateButtons,
   decorateIcons,
   decorateSections,
-  decorateSectionsColumn,
   decorateTemplateAndTheme,
   getMetadata,
   loadBlock,
