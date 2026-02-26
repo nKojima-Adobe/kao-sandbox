@@ -587,6 +587,51 @@ function decorateBlocks(main) {
 }
 
 /**
+ * Resolves the base path for header/footer fragments.
+ * Walks up the path from the page's directory to root, finding the first
+ * directory where both nav and footer exist. Caches result for parallel block loading.
+ * @returns {Promise<string>} Base path with trailing slash (e.g. '/ja/jp/content/' or '/')
+ */
+let headerFooterBasePathCache = null;
+
+async function getHeaderFooterBasePath() {
+  if (headerFooterBasePathCache) return headerFooterBasePathCache;
+
+  const navMeta = getMetadata('nav');
+  const footerMeta = getMetadata('footer');
+  const metaPath = navMeta || footerMeta;
+  if (metaPath) {
+    const url = new URL(metaPath, window.location);
+    const pathname = url.pathname.replace(/\/[^/]+$/, '/');
+    headerFooterBasePathCache = pathname || '/';
+    return headerFooterBasePathCache;
+  }
+
+  const pathname = window.location.pathname.replace(/\.(html?|md)$/, '').replace(/\/$/, '');
+  const segments = pathname.split('/').filter(Boolean);
+
+  const candidates = [];
+  for (let i = segments.length - 1; i >= 0; i -= 1) {
+    const dirPath = i > 0 ? `/${segments.slice(0, i).join('/')}/` : '/';
+    candidates.push(dirPath);
+  }
+
+  const results = await Promise.all(candidates.map(async (dirPath) => {
+    const navUrl = new URL(`${dirPath}nav.plain.html`, window.location).href;
+    const footerUrl = new URL(`${dirPath}footer.plain.html`, window.location).href;
+    const [navResp, footerResp] = await Promise.all([
+      fetch(navUrl, { method: 'HEAD' }),
+      fetch(footerUrl, { method: 'HEAD' }),
+    ]);
+    return { dirPath, ok: navResp.ok && footerResp.ok };
+  }));
+
+  const found = results.find((r) => r.ok);
+  headerFooterBasePathCache = found ? found.dirPath : '/';
+  return headerFooterBasePathCache;
+}
+
+/**
  * Loads a block named 'header' into header
  * @param {Element} header header element
  * @returns {Promise}
@@ -673,6 +718,7 @@ export {
   decorateIcons,
   decorateSections,
   decorateTemplateAndTheme,
+  getHeaderFooterBasePath,
   getMetadata,
   loadBlock,
   loadCSS,
