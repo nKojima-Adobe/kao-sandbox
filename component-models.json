@@ -214,5 +214,102 @@
         "valueType": "string"
       }
     ]
+  },
+  {
+    "id": "table-item",
+    "fields": [
+      {
+        "component": "select",
+        "name": "columns",
+        "label": "Number of Columns",
+        "value": "1",
+        "valueType": "string",
+        "options": [
+          { "name": "1", "value": "1" },
+          { "name": "2", "value": "2" },
+          { "name": "3", "value": "3" },
+          { "name": "4", "value": "4" },
+          { "name": "5", "value": "5" }
+        ]
+      },
+      {
+        "component": "richtext",
+        "name": "col1Text",
+        "label": "Column 1 Text",
+        "value": "",
+        "valueType": "string"
+      },
+      {
+        "component": "reference",
+        "name": "col1Image",
+        "label": "Column 1 Image/Video",
+        "valueType": "string",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "col2Text",
+        "label": "Column 2 Text",
+        "value": "",
+        "valueType": "string",
+        "condition": { "in": [{ "var": "columns" }, ["2", "3", "4", "5"]] }
+      },
+      {
+        "component": "reference",
+        "name": "col2Image",
+        "label": "Column 2 Image/Video",
+        "valueType": "string",
+        "multi": false,
+        "condition": { "in": [{ "var": "columns" }, ["2", "3", "4", "5"]] }
+      },
+      {
+        "component": "richtext",
+        "name": "col3Text",
+        "label": "Column 3 Text",
+        "value": "",
+        "valueType": "string",
+        "condition": { "in": [{ "var": "columns" }, ["3", "4", "5"]] }
+      },
+      {
+        "component": "reference",
+        "name": "col3Image",
+        "label": "Column 3 Image/Video",
+        "valueType": "string",
+        "multi": false,
+        "condition": { "in": [{ "var": "columns" }, ["3", "4", "5"]] }
+      },
+      {
+        "component": "richtext",
+        "name": "col4Text",
+        "label": "Column 4 Text",
+        "value": "",
+        "valueType": "string",
+        "condition": { "in": [{ "var": "columns" }, ["4", "5"]] }
+      },
+      {
+        "component": "reference",
+        "name": "col4Image",
+        "label": "Column 4 Image/Video",
+        "valueType": "string",
+        "multi": false,
+        "condition": { "in": [{ "var": "columns" }, ["4", "5"]] }
+      },
+      {
+        "component": "richtext",
+        "name": "col5Text",
+        "label": "Column 5 Text",
+        "value": "",
+        "valueType": "string",
+        "condition": { "===": [{ "var": "columns" }, "5"] }
+      },
+      {
+        "component": "reference",
+        "name": "col5Image",
+        "label": "Column 5 Image/Video",
+        "valueType": "string",
+        "multi": false,
+        "condition": { "===": [{ "var": "columns" }, "5"] }
+      }
+    ]
   }
 ]

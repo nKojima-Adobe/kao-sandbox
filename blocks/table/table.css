@@ -1,0 +1,27 @@
+.table {
+  overflow-x: auto;
+}
+
+.table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table td {
+  padding: 12px 16px;
+  border: 1px solid #dadada;
+  vertical-align: top;
+}
+
+.table td p {
+  margin: 0 0 8px;
+}
+
+.table td p:last-child {
+  margin-bottom: 0;
+}
+
+.table td img {
+  max-width: 100%;
+  height: auto;
+}
