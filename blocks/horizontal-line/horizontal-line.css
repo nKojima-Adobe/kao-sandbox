@@ -10,3 +10,7 @@
   margin: 0;
   width: 100%;
 }
+
+.horizontal-line.green-line hr {
+  background-color: rgb(0 128 109);
+}
