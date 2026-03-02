@@ -6,11 +6,62 @@ import {
   decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
+  getMetadata,
   waitForFirstImage,
   loadSection,
   loadSections,
   loadCSS,
 } from './aem.js';
+
+let headerFooterBasePathPromise;
+
+/**
+ * Resolves the closest directory containing both nav and footer fragments.
+ * Walks from the page's directory up to root, returning the first directory
+ * where both {dir}nav.plain.html and {dir}footer.plain.html respond 200.
+ * Metadata overrides (nav/footer) take precedence if set.
+ * Result is cached so header and footer share the same resolution.
+ * @returns {Promise<string>} directory with trailing slash, e.g. '/newsroom/'
+ */
+export function getHeaderFooterBasePath() {
+  if (headerFooterBasePathPromise) return headerFooterBasePathPromise;
+
+  headerFooterBasePathPromise = (async () => {
+    const navMeta = getMetadata('nav');
+    const footerMeta = getMetadata('footer');
+    if (navMeta || footerMeta) {
+      const metaPath = navMeta || footerMeta;
+      const dir = metaPath.substring(0, metaPath.lastIndexOf('/') + 1) || '/';
+      return dir;
+    }
+
+    const pathname = window.location.pathname.replace(/\.(html|htm|md)$/, '');
+    const segments = pathname.split('/').filter(Boolean);
+    segments.pop();
+
+    const candidates = [];
+    for (let i = segments.length; i >= 0; i -= 1) {
+      const dir = i === 0 ? '/' : `/${segments.slice(0, i).join('/')}/`;
+      candidates.push(dir);
+    }
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const dir of candidates) {
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        const [navResp, footerResp] = await Promise.all([
+          fetch(`${dir}nav.plain.html`, { method: 'HEAD' }),
+          fetch(`${dir}footer.plain.html`, { method: 'HEAD' }),
+        ]);
+        if (navResp.ok && footerResp.ok) return dir;
+      } catch (e) { /* try next candidate */ }
+    }
+
+    return '/';
+  })();
+
+  return headerFooterBasePathPromise;
+}
 
 /**
  * Moves all the attributes from a given elmenet to another given element.
