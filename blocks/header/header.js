@@ -24,25 +24,25 @@ function buildLink(anchor) {
 function openDropdown(nav, navItem) {
   const overlay = nav.querySelector('.nav-dropdown-overlay');
   const content = overlay.querySelector('.nav-dropdown-content');
-  const submenu = navItem.querySelector('ul');
 
   closeDropdown(nav);
 
-  if (!submenu) return;
+  // L1 <li> clicked — its direct child <ul> contains one L2 <li>
+  const l2List = navItem.querySelector(':scope > ul');
+  if (!l2List) return;
+  const l2Item = l2List.querySelector(':scope > li');
+  if (!l2Item) return;
 
   content.innerHTML = '';
 
-  const items = [...submenu.children];
-  if (items.length === 0) return;
-
-  const topItem = items[0];
+  // L2 — top link
   const topLink = document.createElement('div');
   topLink.className = 'nav-dropdown-top-link';
-  const topAnchor = topItem.querySelector('a');
-  if (topAnchor) {
-    topLink.append(buildLink(topAnchor));
+  const l2Anchor = l2Item.querySelector(':scope > a');
+  if (l2Anchor) {
+    topLink.append(buildLink(l2Anchor));
   } else {
-    topLink.textContent = topItem.textContent;
+    topLink.textContent = l2Item.firstChild?.textContent?.trim() || '';
   }
   content.append(topLink);
 
@@ -50,33 +50,44 @@ function openDropdown(nav, navItem) {
   divider.className = 'nav-dropdown-divider';
   content.append(divider);
 
+  // L3 items live inside a <ul> nested in the L2 <li>
+  const l3List = l2Item.querySelector(':scope > ul');
+  if (!l3List) {
+    navItem.classList.add('active');
+    navItem.setAttribute('aria-expanded', 'true');
+    overlay.setAttribute('aria-hidden', 'false');
+    return;
+  }
+
   const body = document.createElement('div');
   body.className = 'nav-dropdown-body';
 
-  items.slice(1).forEach((item) => {
+  [...l3List.children].forEach((l3Item) => {
     const group = document.createElement('div');
     group.className = 'nav-dropdown-group';
 
+    // L3 — section heading
     const heading = document.createElement('div');
     heading.className = 'nav-dropdown-group-heading';
-    const headingAnchor = item.querySelector(':scope > a');
-    if (headingAnchor) {
-      heading.append(buildLink(headingAnchor));
+    const l3Anchor = l3Item.querySelector(':scope > a');
+    if (l3Anchor) {
+      heading.append(buildLink(l3Anchor));
     } else {
-      heading.textContent = item.firstChild?.textContent?.trim() || '';
+      heading.textContent = l3Item.firstChild?.textContent?.trim() || '';
     }
     group.append(heading);
 
-    const subList = item.querySelector(':scope > ul');
-    if (subList) {
+    // L4 — sub-links inside a <ul> nested in the L3 <li>
+    const l4List = l3Item.querySelector(':scope > ul');
+    if (l4List) {
       const ul = document.createElement('ul');
-      [...subList.children].forEach((li) => {
+      [...l4List.children].forEach((l4Item) => {
         const newLi = document.createElement('li');
-        const anchor = li.querySelector('a');
+        const anchor = l4Item.querySelector('a');
         if (anchor) {
           newLi.append(buildLink(anchor));
         } else {
-          newLi.textContent = li.textContent;
+          newLi.textContent = l4Item.textContent;
         }
         ul.append(newLi);
       });

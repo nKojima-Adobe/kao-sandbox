@@ -122,7 +122,7 @@ header .nav-dropdown-top-link a::before {
 header .nav-dropdown-divider {
   border: none;
   height: 1px;
-  background: rgb(255 255 255 / 30%);
+  background: rgb(255 255 255 / 80%);
   margin: 20px 0;
 }
 
