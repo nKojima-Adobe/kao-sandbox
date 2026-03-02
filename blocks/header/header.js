@@ -150,7 +150,34 @@ export default async function decorate(block) {
   const topBar = document.createElement('div');
   topBar.className = 'nav-top-bar';
   if (navBrand) topBar.append(navBrand);
-  if (navTools) topBar.append(navTools);
+
+  if (navTools) {
+    const toolsBar = document.createElement('div');
+    toolsBar.className = 'nav-tools';
+    const items = navTools.querySelectorAll('li');
+    if (items.length) {
+      items.forEach((li) => {
+        const span = document.createElement('span');
+        span.className = 'nav-tools-item';
+        const a = li.querySelector('a');
+        if (a) {
+          span.append(buildLink(a));
+        } else {
+          span.textContent = li.textContent.trim();
+        }
+        toolsBar.append(span);
+      });
+    } else {
+      const links = navTools.querySelectorAll('a');
+      links.forEach((a) => {
+        const span = document.createElement('span');
+        span.className = 'nav-tools-item';
+        span.append(buildLink(a));
+        toolsBar.append(span);
+      });
+    }
+    topBar.append(toolsBar);
+  }
 
   const greenBar = document.createElement('div');
   greenBar.className = 'nav-green-bar';
@@ -231,9 +258,26 @@ export default async function decorate(block) {
     }
 
     if (navTools) {
-      const toolsClone = navTools.cloneNode(true);
-      toolsClone.className = 'nav-mobile-tools';
-      mobileNav.append(toolsClone);
+      const mobileTools = document.createElement('div');
+      mobileTools.className = 'nav-mobile-tools';
+      const toolItems = navTools.querySelectorAll('li');
+      if (toolItems.length) {
+        toolItems.forEach((li) => {
+          const a = li.querySelector('a');
+          if (a) {
+            mobileTools.append(buildLink(a));
+          } else {
+            const span = document.createElement('span');
+            span.textContent = li.textContent.trim();
+            mobileTools.append(span);
+          }
+        });
+      } else {
+        navTools.querySelectorAll('a').forEach((a) => {
+          mobileTools.append(buildLink(a));
+        });
+      }
+      mobileNav.append(mobileTools);
     }
 
     nav.append(mobileNav);
