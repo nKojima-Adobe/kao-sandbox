@@ -216,6 +216,24 @@
     ]
   },
   {
+    "id": "table",
+    "fields": [
+      {
+        "component": "multiselect",
+        "name": "classes",
+        "value": "",
+        "label": "Style",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Grey First Column",
+            "value": "grey-first-column"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "table-item",
     "fields": [
       {

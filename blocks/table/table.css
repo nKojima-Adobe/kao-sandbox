@@ -34,3 +34,7 @@
   max-width: 100%;
   height: auto;
 }
+
+.table.grey-first-column .table-row .table-cell:first-child {
+  background-color: #f5f5f5;
+}
