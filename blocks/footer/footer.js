@@ -1,4 +1,4 @@
-import { getHeaderFooterBasePath } from '../../scripts/aem.js';
+import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 /**
@@ -6,9 +6,9 @@ import { loadFragment } from '../fragment/fragment.js';
  * @param {Element} block The footer block element
  */
 export default async function decorate(block) {
-  // load footer as fragment (path-based: same directory as header)
-  const basePath = await getHeaderFooterBasePath();
-  const footerPath = `${basePath}footer`;
+  // load footer as fragment
+  const footerMeta = getMetadata('footer');
+  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
   const fragment = await loadFragment(footerPath);
 
   // decorate footer DOM
