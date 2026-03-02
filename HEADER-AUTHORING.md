@@ -29,7 +29,7 @@ This section appears on the left side of the white top bar.
 
 1. Add an **Image** block with the Kao logo
 2. Select the image and add a **link** pointing to `/`
-3. Below the image, add a **Text** block with the content `Japan・日本語`
+3. Below the image, add a **Rich Text** block with the content `Japan・日本語`
 
 ---
 
@@ -62,7 +62,7 @@ This section contains a **single bulleted list** authored in the rich text edito
 
 ### How to author
 
-1. Add a **Text** block in Section 2
+1. Add a **Rich Text** block in Section 2
 2. Start a **bulleted list** using the RTE toolbar
 3. Type the first green bar item name (e.g. `ニュースルーム`)
 4. Press **Enter**, then **Tab** (or click Increase Indent) to create a nested bullet
@@ -107,7 +107,7 @@ This section appears on the right side of the white top bar. It contains simple 
 
 ### How to author
 
-1. Add a **Text** block in Section 3
+1. Add a **Rich Text** block in Section 3
 2. Type each utility link as text and add links:
 
 | Link text | URL |

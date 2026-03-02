@@ -129,10 +129,11 @@ export default async function decorate(block) {
   const navTools = nav.querySelector('.nav-tools');
 
   if (navBrand) {
-    const brandLink = navBrand.querySelector('.button');
+    const brandLink = navBrand.querySelector('.button') || navBrand.querySelector('a[href]');
     if (brandLink) {
       brandLink.className = '';
-      brandLink.closest('.button-container').className = '';
+      const container = brandLink.closest('.button-container');
+      if (container) container.className = '';
     }
   }
 
@@ -145,7 +146,8 @@ export default async function decorate(block) {
   greenBar.className = 'nav-green-bar';
 
   if (navSections) {
-    const navList = navSections.querySelector('.default-content-wrapper > ul');
+    const navList = navSections.querySelector('.default-content-wrapper > ul')
+      || navSections.querySelector('ul');
     if (navList) {
       const clonedList = navList.cloneNode(true);
 
@@ -201,7 +203,8 @@ export default async function decorate(block) {
     const mobileNav = document.createElement('div');
     mobileNav.className = 'nav-mobile-menu';
 
-    const mobileNavList = navSections.querySelector('.default-content-wrapper > ul');
+    const mobileNavList = navSections.querySelector('.default-content-wrapper > ul')
+      || navSections.querySelector('ul');
     if (mobileNavList) {
       const mobileClone = mobileNavList.cloneNode(true);
       mobileClone.querySelectorAll(':scope > li').forEach((li) => {
