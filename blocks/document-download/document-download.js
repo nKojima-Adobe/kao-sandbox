@@ -24,9 +24,18 @@ function getFileType(href) {
   return 'file';
 }
 
+function extractFileRef(cell) {
+  if (!cell) return '';
+  const pic = cell.querySelector('picture img, img');
+  if (pic) return pic.src || pic.getAttribute('src') || '';
+  const anchor = cell.querySelector('a[href]');
+  if (anchor) return anchor.href;
+  return cell.textContent.trim();
+}
+
 export default function decorate(block) {
   const cells = [...block.querySelectorAll(':scope > div > div')];
-  const fileRef = cells[0]?.textContent?.trim() || '';
+  const fileRef = extractFileRef(cells[0]);
   const label = cells[1]?.textContent?.trim() || 'Download';
 
   block.textContent = '';
