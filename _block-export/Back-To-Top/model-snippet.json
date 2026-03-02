@@ -1,6 +1,0 @@
-{
-  "_note": "This block is NOT registered in the main section filter. It is a child component of the header block.",
-  "_instruction": "Add '{BLOCK_NAME}' to the header block's filter in its _header.json (or equivalent parent block filter). Also register in component-definition.json, component-models.json, and component-filters.json if using the component model pattern.",
-  "componentEntry": "{BLOCK_NAME}",
-  "parentFilter": "header"
-}

@@ -1,4 +1,0 @@
-{
-  "_instruction": "Add '{BLOCK_NAME}' to the 'components' array in models/_section.json (or equivalent section filter) to make this block available in sections.",
-  "component_id": "{BLOCK_NAME}"
-}

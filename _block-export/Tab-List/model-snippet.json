@@ -1,7 +1,0 @@
-{
-  "_instruction": "Add the '{BLOCK_NAME}' filter reference to models/_component-filters.json to register the block's filter definitions.",
-  "component_filters_entry": {
-    "\"...\"": "\"../blocks/{BLOCK_NAME}/_{BLOCK_NAME}.json#/filters\""
-  },
-  "_note": "The block's own _{BLOCK_NAME}.json defines a '{BLOCK_PANEL}' filter listing which blocks are allowed inside tab panels. The block also needs to be available inside grid-columns and other section filters that reference it."
-}
