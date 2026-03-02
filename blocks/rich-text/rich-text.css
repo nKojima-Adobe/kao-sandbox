@@ -1,0 +1,33 @@
+.rich-text .rich-text-content p {
+  margin: 0 0 1em;
+}
+
+.rich-text .rich-text-content p:last-child {
+  margin-bottom: 0;
+}
+
+.rich-text .rich-text-content ul,
+.rich-text .rich-text-content ol {
+  padding-left: 1.5em;
+  margin: 0 0 1em;
+}
+
+.rich-text .rich-text-content a {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+.rich-text .rich-text-content a:hover {
+  text-decoration: none;
+}
+
+.rich-text .rich-text-content h1,
+.rich-text .rich-text-content h2,
+.rich-text .rich-text-content h3,
+.rich-text .rich-text-content h4,
+.rich-text .rich-text-content h5,
+.rich-text .rich-text-content h6 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  scroll-margin: calc(var(--nav-height, 64px) + 16px);
+}
