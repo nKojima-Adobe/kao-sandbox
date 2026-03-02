@@ -36,8 +36,13 @@
   --heading-font-size-s: 24px;
   --heading-font-size-xs: 22px;
 
+  /* kao header color */
+  --kao-green: rgb(0 128 109);
+
   /* nav height */
-  --nav-height: 64px;
+  --nav-top-bar-height: 50px;
+  --nav-green-bar-height: 50px;
+  --nav-height: 100px;
 }
 
 /* fallback fonts */
