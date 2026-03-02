@@ -45,13 +45,20 @@ export function getHeaderFooterBasePath() {
       candidates.push(dir);
     }
 
+    const timeout = (ms) => new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('timeout')), ms);
+    });
+
     // eslint-disable-next-line no-restricted-syntax
     for (const dir of candidates) {
       try {
         // eslint-disable-next-line no-await-in-loop
-        const [navResp, footerResp] = await Promise.all([
-          fetch(`${dir}nav.plain.html`, { method: 'HEAD' }),
-          fetch(`${dir}footer.plain.html`, { method: 'HEAD' }),
+        const [navResp, footerResp] = await Promise.race([
+          Promise.all([
+            fetch(`${dir}nav.plain.html`, { method: 'HEAD' }),
+            fetch(`${dir}footer.plain.html`, { method: 'HEAD' }),
+          ]),
+          timeout(3000),
         ]);
         if (navResp.ok && footerResp.ok) return dir;
       } catch (e) { /* try next candidate */ }
