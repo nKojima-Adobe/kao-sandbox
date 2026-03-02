@@ -16,8 +16,15 @@ export default function decorate(block) {
     for (let i = 0; i < colCount; i += 1) {
       const cellEl = document.createElement('div');
       cellEl.className = 'table-cell';
-      const textCell = cells[1 + i * 2];
-      const imageCell = cells[2 + i * 2];
+
+      const widthCell = cells[1 + i * 3];
+      const textCell = cells[2 + i * 3];
+      const imageCell = cells[3 + i * 3];
+
+      const widthVal = parseInt(widthCell?.textContent?.trim(), 10);
+      if (widthVal >= 1 && widthVal <= 10) {
+        cellEl.style.flex = `0 0 ${widthVal * 10}%`;
+      }
 
       if (textCell) {
         while (textCell.firstChild) cellEl.append(textCell.firstChild);

@@ -251,6 +251,27 @@
         ]
       },
       {
+        "component": "select",
+        "name": "col1Width",
+        "label": "Column 1 Width",
+        "value": "",
+        "valueType": "string",
+        "description": "Width as fraction of 10 (e.g. 3 = 30%). Leave empty for equal distribution.",
+        "options": [
+          { "name": "Auto", "value": "" },
+          { "name": "1 (10%)", "value": "1" },
+          { "name": "2 (20%)", "value": "2" },
+          { "name": "3 (30%)", "value": "3" },
+          { "name": "4 (40%)", "value": "4" },
+          { "name": "5 (50%)", "value": "5" },
+          { "name": "6 (60%)", "value": "6" },
+          { "name": "7 (70%)", "value": "7" },
+          { "name": "8 (80%)", "value": "8" },
+          { "name": "9 (90%)", "value": "9" },
+          { "name": "10 (100%)", "value": "10" }
+        ]
+      },
+      {
         "component": "richtext",
         "name": "col1Text",
         "label": "Column 1 Text",
@@ -263,6 +284,27 @@
         "label": "Column 1 Image/Video",
         "valueType": "string",
         "multi": false
+      },
+      {
+        "component": "select",
+        "name": "col2Width",
+        "label": "Column 2 Width",
+        "value": "",
+        "valueType": "string",
+        "condition": { "in": [{ "var": "columns" }, ["2", "3", "4", "5"]] },
+        "options": [
+          { "name": "Auto", "value": "" },
+          { "name": "1 (10%)", "value": "1" },
+          { "name": "2 (20%)", "value": "2" },
+          { "name": "3 (30%)", "value": "3" },
+          { "name": "4 (40%)", "value": "4" },
+          { "name": "5 (50%)", "value": "5" },
+          { "name": "6 (60%)", "value": "6" },
+          { "name": "7 (70%)", "value": "7" },
+          { "name": "8 (80%)", "value": "8" },
+          { "name": "9 (90%)", "value": "9" },
+          { "name": "10 (100%)", "value": "10" }
+        ]
       },
       {
         "component": "richtext",
@@ -281,6 +323,27 @@
         "condition": { "in": [{ "var": "columns" }, ["2", "3", "4", "5"]] }
       },
       {
+        "component": "select",
+        "name": "col3Width",
+        "label": "Column 3 Width",
+        "value": "",
+        "valueType": "string",
+        "condition": { "in": [{ "var": "columns" }, ["3", "4", "5"]] },
+        "options": [
+          { "name": "Auto", "value": "" },
+          { "name": "1 (10%)", "value": "1" },
+          { "name": "2 (20%)", "value": "2" },
+          { "name": "3 (30%)", "value": "3" },
+          { "name": "4 (40%)", "value": "4" },
+          { "name": "5 (50%)", "value": "5" },
+          { "name": "6 (60%)", "value": "6" },
+          { "name": "7 (70%)", "value": "7" },
+          { "name": "8 (80%)", "value": "8" },
+          { "name": "9 (90%)", "value": "9" },
+          { "name": "10 (100%)", "value": "10" }
+        ]
+      },
+      {
         "component": "richtext",
         "name": "col3Text",
         "label": "Column 3 Text",
@@ -297,6 +360,27 @@
         "condition": { "in": [{ "var": "columns" }, ["3", "4", "5"]] }
       },
       {
+        "component": "select",
+        "name": "col4Width",
+        "label": "Column 4 Width",
+        "value": "",
+        "valueType": "string",
+        "condition": { "in": [{ "var": "columns" }, ["4", "5"]] },
+        "options": [
+          { "name": "Auto", "value": "" },
+          { "name": "1 (10%)", "value": "1" },
+          { "name": "2 (20%)", "value": "2" },
+          { "name": "3 (30%)", "value": "3" },
+          { "name": "4 (40%)", "value": "4" },
+          { "name": "5 (50%)", "value": "5" },
+          { "name": "6 (60%)", "value": "6" },
+          { "name": "7 (70%)", "value": "7" },
+          { "name": "8 (80%)", "value": "8" },
+          { "name": "9 (90%)", "value": "9" },
+          { "name": "10 (100%)", "value": "10" }
+        ]
+      },
+      {
         "component": "richtext",
         "name": "col4Text",
         "label": "Column 4 Text",
@@ -311,6 +395,27 @@
         "valueType": "string",
         "multi": false,
         "condition": { "in": [{ "var": "columns" }, ["4", "5"]] }
+      },
+      {
+        "component": "select",
+        "name": "col5Width",
+        "label": "Column 5 Width",
+        "value": "",
+        "valueType": "string",
+        "condition": { "===": [{ "var": "columns" }, "5"] },
+        "options": [
+          { "name": "Auto", "value": "" },
+          { "name": "1 (10%)", "value": "1" },
+          { "name": "2 (20%)", "value": "2" },
+          { "name": "3 (30%)", "value": "3" },
+          { "name": "4 (40%)", "value": "4" },
+          { "name": "5 (50%)", "value": "5" },
+          { "name": "6 (60%)", "value": "6" },
+          { "name": "7 (70%)", "value": "7" },
+          { "name": "8 (80%)", "value": "8" },
+          { "name": "9 (90%)", "value": "9" },
+          { "name": "10 (100%)", "value": "10" }
+        ]
       },
       {
         "component": "richtext",
