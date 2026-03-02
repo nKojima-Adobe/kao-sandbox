@@ -255,6 +255,24 @@
     ]
   },
   {
+    "id": "document-download",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "file",
+        "label": "File",
+        "valueType": "string",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "name": "label",
+        "label": "Button Label",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "rich-text",
     "fields": [
       {
