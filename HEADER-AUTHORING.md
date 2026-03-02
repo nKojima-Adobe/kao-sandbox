@@ -35,19 +35,20 @@ This section appears on the left side of the white top bar.
 
 ## Section 2: Navigation (green bar + dropdowns)
 
-This section contains a **single bulleted list** authored in the rich text editor. The nesting levels control what appears in the green bar and the mega dropdown menus.
+This section contains a **single bulleted list** authored in the rich text editor. The list has 4 nesting levels that control the green bar and mega dropdown menus.
 
 ### Structure
 
 ```
-● Green Bar Item Label                              ← Level 0: top-level bullet
-  ● Category Top Link [link]                        ← Level 1: 1st indented bullet
-  ● Column Heading [link]                           ← Level 1: 2nd+ indented bullet
-    ● Sub-link [link]                               ← Level 2: doubly indented bullet
+● Green Bar Item Label                              ← Level 1: green bar nav item
+  ● Category Top Link [link]                        ← Level 2: bold link at top of dropdown
+                                                       (horizontal line appears below this)
+  ● Section Heading [link]                          ← Level 3: bold section heading with >
+    ● Sub-link [link]                               ← Level 4: individual link with >
     ● Sub-link [link]
-  ● Column Heading [link]                           ← Level 1: another column
+  ● Section Heading [link]                          ← Level 3: another section heading
     ● Sub-link [link]
-● Next Green Bar Item                               ← Level 0: next top-level bullet
+● Next Green Bar Item                               ← Level 1: next green bar item
   ...
 ```
 
@@ -55,39 +56,54 @@ This section contains a **single bulleted list** authored in the rich text edito
 
 | Nesting level | What it becomes |
 |---------------|-----------------|
-| Level 0 (top-level bullet) | Green bar navigation item label |
-| Level 1 — 1st bullet | Dropdown top link (bold heading at top of mega menu) |
-| Level 1 — 2nd bullet onward | Dropdown column heading |
-| Level 2 (under a Level 1 bullet) | Sub-links within that column |
+| Level 1 (top-level bullet) | Green bar navigation item label |
+| Level 2 (1st indented bullet) | Dropdown top link — bold heading at the top, followed by an HR |
+| Level 3 (2nd indented bullet onward) | Section heading — bold with `>`, starts a group |
+| Level 4 (under a Level 3 bullet) | Sub-links within that group — regular weight with `>` |
+
+Level 3 groups and their Level 4 items are laid out using CSS multi-column layout. The left column fills first; when it reaches a certain height, content wraps to a new column to the right.
 
 ### How to author
 
 1. Add a **Rich Text** block in Section 2
 2. Start a **bulleted list** using the RTE toolbar
-3. Type the first green bar item name (e.g. `ニュースルーム`)
-4. Press **Enter**, then **Tab** (or click Increase Indent) to create a nested bullet
-5. Type the category top link text, select it, and add a **link**
-6. Continue adding Level 1 bullets for each dropdown column heading
-7. For sub-links under a column, press **Enter** + **Tab** again to go to Level 2
-8. To start a new green bar item, press **Enter** + **Shift+Tab** until you return to Level 0
+3. Type the first green bar item name (e.g. `イノベーション`)
+4. Press **Enter** + **Tab** to create Level 2 — type the top link (e.g. `イノベーショントップ`) and add a link
+5. Press **Enter** (stay at Level 2) to create Level 3 items — type a section heading and add a link
+6. Press **Enter** + **Tab** to go to Level 4 — type sub-links under that section heading
+7. Press **Shift+Tab** to return to Level 3 for the next section heading
+8. Press **Shift+Tab** twice to return to Level 1 for the next green bar item
 
 ### Concrete example
 
 ```
-● ニュースルーム
-  ● ニュースルームトップ  →  link to /newsroom
-  ● ニュースリリース  →  link to /newsroom/releases
-    ● 最新ニュース  →  link to /newsroom/releases/latest
-    ● 2026年  →  link to /newsroom/releases/2026
-    ● 2025年  →  link to /newsroom/releases/2025
-  ● メディアライブラリ  →  link to /newsroom/media
-    ● 画像素材  →  link to /newsroom/media/images
-    ● 動画素材  →  link to /newsroom/media/videos
+● イノベーション
+  ● イノベーショントップ  →  link to /innovation
+  ● 研究開発ニュースリリース  →  link to /innovation/news
+  ● 研究開発  →  link to /innovation/rd
+    ● 商品開発研究  →  link to /innovation/rd/product
+    ● 基盤技術研究  →  link to /innovation/rd/core
+    ● 衛生科学研究  →  link to /innovation/rd/hygiene
+    ● 蚊の行動制御研究  →  link to /innovation/rd/mosquito
+    ● サステナブル界面活性剤 Bio IOS ®  →  link
+    ● 組織運営  →  link
+    ● 研究開発拠点  →  link
+    ● 受賞実績  →  link
+    ● 掲載論文  →  link
+    ● 臨床研究法に基づく情報公開  →  link
+  ● 品質保証  →  link to /innovation/quality
+    ● 商品開発〜生産〜発売後の品質保証活動  →  link
+    ● お客さまの声を活かす取り組み  →  link
+    ● 化学物質をより安全に使用するための取り組み  →  link
+    ● 品質基本方針  →  link
+    ● 家庭品の安全基準  →  link
+    ● 化粧品の安全基準  →  link
+    ● 食品の安全基準  →  link
 ● 花王について
   ● 花王についてトップ  →  link to /about
   ● 企業情報  →  link to /about/corporate
-    ● 社長メッセージ  →  link to /about/corporate/message
-    ● 企業理念  →  link to /about/corporate/philosophy
+    ● 社長メッセージ  →  link
+    ● 企業理念  →  link
   ● 事業紹介  →  link to /about/business
 ```
 
@@ -96,7 +112,7 @@ This section contains a **single bulleted list** authored in the rich text edito
 If a green bar item should be a simple link with no dropdown, author it as a single bullet with a link and **no nested bullets** underneath:
 
 ```
-● お問い合わせ  →  link to /contact
+● 採用情報  →  link to /careers
 ```
 
 ---

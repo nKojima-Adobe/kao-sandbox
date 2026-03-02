@@ -14,6 +14,13 @@ function closeDropdown(nav) {
   });
 }
 
+function buildLink(anchor) {
+  const a = document.createElement('a');
+  a.href = anchor.href;
+  a.textContent = anchor.textContent;
+  return a;
+}
+
 function openDropdown(nav, navItem) {
   const overlay = nav.querySelector('.nav-dropdown-overlay');
   const content = overlay.querySelector('.nav-dropdown-content');
@@ -33,34 +40,32 @@ function openDropdown(nav, navItem) {
   topLink.className = 'nav-dropdown-top-link';
   const topAnchor = topItem.querySelector('a');
   if (topAnchor) {
-    const a = document.createElement('a');
-    a.href = topAnchor.href;
-    a.textContent = topAnchor.textContent;
-    topLink.append(a);
+    topLink.append(buildLink(topAnchor));
   } else {
     topLink.textContent = topItem.textContent;
   }
   content.append(topLink);
 
-  const columnsWrapper = document.createElement('div');
-  columnsWrapper.className = 'nav-dropdown-columns';
+  const divider = document.createElement('hr');
+  divider.className = 'nav-dropdown-divider';
+  content.append(divider);
+
+  const body = document.createElement('div');
+  body.className = 'nav-dropdown-body';
 
   items.slice(1).forEach((item) => {
-    const col = document.createElement('div');
-    col.className = 'nav-dropdown-column';
+    const group = document.createElement('div');
+    group.className = 'nav-dropdown-group';
 
     const heading = document.createElement('div');
-    heading.className = 'nav-dropdown-column-heading';
+    heading.className = 'nav-dropdown-group-heading';
     const headingAnchor = item.querySelector(':scope > a');
     if (headingAnchor) {
-      const a = document.createElement('a');
-      a.href = headingAnchor.href;
-      a.textContent = headingAnchor.textContent;
-      heading.append(a);
+      heading.append(buildLink(headingAnchor));
     } else {
       heading.textContent = item.firstChild?.textContent?.trim() || '';
     }
-    col.append(heading);
+    group.append(heading);
 
     const subList = item.querySelector(':scope > ul');
     if (subList) {
@@ -69,22 +74,19 @@ function openDropdown(nav, navItem) {
         const newLi = document.createElement('li');
         const anchor = li.querySelector('a');
         if (anchor) {
-          const a = document.createElement('a');
-          a.href = anchor.href;
-          a.textContent = anchor.textContent;
-          newLi.append(a);
+          newLi.append(buildLink(anchor));
         } else {
           newLi.textContent = li.textContent;
         }
         ul.append(newLi);
       });
-      col.append(ul);
+      group.append(ul);
     }
 
-    columnsWrapper.append(col);
+    body.append(group);
   });
 
-  content.append(columnsWrapper);
+  content.append(body);
 
   navItem.classList.add('active');
   navItem.setAttribute('aria-expanded', 'true');
