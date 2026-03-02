@@ -216,6 +216,10 @@
     ]
   },
   {
+    "id": "horizontal-line",
+    "fields": []
+  },
+  {
     "id": "table",
     "fields": [
       {
