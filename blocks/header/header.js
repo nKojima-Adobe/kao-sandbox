@@ -21,21 +21,7 @@ function buildLink(anchor) {
   return a;
 }
 
-function openDropdown(nav, navItem) {
-  const overlay = nav.querySelector('.nav-dropdown-overlay');
-  const content = overlay.querySelector('.nav-dropdown-content');
-
-  closeDropdown(nav);
-
-  // L1 <li> clicked — its direct child <ul> contains one L2 <li>
-  const l2List = navItem.querySelector(':scope > ul');
-  if (!l2List) return;
-  const l2Item = l2List.querySelector(':scope > li');
-  if (!l2Item) return;
-
-  content.innerHTML = '';
-
-  // L2 — top link
+function buildDropdownSection(l2Item, container) {
   const topLink = document.createElement('div');
   topLink.className = 'nav-dropdown-top-link';
   const l2Anchor = l2Item.querySelector(':scope > a');
@@ -44,20 +30,14 @@ function openDropdown(nav, navItem) {
   } else {
     topLink.textContent = l2Item.firstChild?.textContent?.trim() || '';
   }
-  content.append(topLink);
+  container.append(topLink);
 
   const divider = document.createElement('hr');
   divider.className = 'nav-dropdown-divider';
-  content.append(divider);
+  container.append(divider);
 
-  // L3 items live inside a <ul> nested in the L2 <li>
   const l3List = l2Item.querySelector(':scope > ul');
-  if (!l3List) {
-    navItem.classList.add('active');
-    navItem.setAttribute('aria-expanded', 'true');
-    overlay.setAttribute('aria-hidden', 'false');
-    return;
-  }
+  if (!l3List) return;
 
   const body = document.createElement('div');
   body.className = 'nav-dropdown-body';
@@ -66,7 +46,6 @@ function openDropdown(nav, navItem) {
     const group = document.createElement('div');
     group.className = 'nav-dropdown-group';
 
-    // L3 — section heading
     const heading = document.createElement('div');
     heading.className = 'nav-dropdown-group-heading';
     const l3Anchor = l3Item.querySelector(':scope > a');
@@ -77,7 +56,6 @@ function openDropdown(nav, navItem) {
     }
     group.append(heading);
 
-    // L4 — sub-links inside a <ul> nested in the L3 <li>
     const l4List = l3Item.querySelector(':scope > ul');
     if (l4List) {
       const ul = document.createElement('ul');
@@ -97,7 +75,26 @@ function openDropdown(nav, navItem) {
     body.append(group);
   });
 
-  content.append(body);
+  container.append(body);
+}
+
+function openDropdown(nav, navItem) {
+  const overlay = nav.querySelector('.nav-dropdown-overlay');
+  const content = overlay.querySelector('.nav-dropdown-content');
+
+  closeDropdown(nav);
+
+  const l2List = navItem.querySelector(':scope > ul');
+  if (!l2List) return;
+
+  const l2Items = [...l2List.children];
+  if (l2Items.length === 0) return;
+
+  content.innerHTML = '';
+
+  l2Items.forEach((l2Item) => {
+    buildDropdownSection(l2Item, content);
+  });
 
   navItem.classList.add('active');
   navItem.setAttribute('aria-expanded', 'true');
