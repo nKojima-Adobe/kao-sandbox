@@ -1,5 +1,6 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { getHeaderFooterBasePath } from '../../scripts/scripts.js';
 
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
@@ -103,7 +104,13 @@ function toggleMobileMenu(nav, forceExpanded = null) {
 
 export default async function decorate(block) {
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+  let navPath;
+  if (navMeta) {
+    navPath = new URL(navMeta, window.location).pathname;
+  } else {
+    const basePath = await getHeaderFooterBasePath();
+    navPath = `${basePath}nav`;
+  }
   const fragment = await loadFragment(navPath);
 
   block.textContent = '';
