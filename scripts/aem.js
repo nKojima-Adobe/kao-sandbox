@@ -11,6 +11,17 @@
  */
 
 /* eslint-env browser */
+
+// Inject aem-content-path meta if missing (AEM delivery may not use head.html; UE page metadata will override when available)
+(function injectAemContentPathMeta() {
+  if (!document.head.querySelector('meta[name="aem-content-path"]')) {
+    const meta = document.createElement('meta');
+    meta.name = 'aem-content-path';
+    meta.content = '/content/ksandbox/us/en';
+    document.head.appendChild(meta);
+  }
+})();
+
 function sampleRUM(checkpoint, data) {
   // eslint-disable-next-line max-len
   const timeShift = () => (window.performance ? window.performance.now() : Date.now() - window.hlx.rum.firstReadTime);
