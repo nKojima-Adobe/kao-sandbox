@@ -5,7 +5,7 @@ import { loadFragment } from '../fragment/fragment.js';
  * Base URL of the AEM publish environment.
  * Can be overridden via <meta name="aem-publish-url" content="...">.
  */
-const DEFAULT_AEM_PUBLISH_BASE_URL = 'https://publish-p12345-e567890.adobeaemcloud.com';
+const DEFAULT_AEM_PUBLISH_BASE_URL = 'https://publish-p150422-e1918841.adobeaemcloud.com';
 
 /**
  * Builds the header URL for a given AEM content path.
@@ -146,9 +146,11 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
  */
 export default async function decorate(block) {
   // 1. If aem-content-path or aemContentPath meta exists, fetch header from AEM
-  const contentPath = getMetadata('aem-content-path') || getMetadata('aemContentPath');
+  const contentPath = getMetadata('aem-content-path') || getMetadata('aemContentPath')
+    || getMetadata('aemcontentpath');
   if (contentPath) {
-    const baseUrl = getMetadata('aem-publish-url') || DEFAULT_AEM_PUBLISH_BASE_URL;
+    const baseUrl = getMetadata('aem-publish-url') || getMetadata('aempublishurl')
+      || DEFAULT_AEM_PUBLISH_BASE_URL;
     try {
       const html = await fetchHeaderHtml(contentPath, baseUrl);
       block.innerHTML = html;
