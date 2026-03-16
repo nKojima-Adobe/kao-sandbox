@@ -20,6 +20,13 @@
         "name": "keywords",
         "multi": true,
         "label": "Keywords"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "aem-content-path",
+        "label": "AEM Content Path",
+        "description": "AEM page path whose header should be displayed (e.g. /content/ksandbox/us/en)"
       }
     ]
   },
