@@ -1,6 +1,38 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
+/**
+ * Base URL of the AEM publish environment.
+ * Can be overridden via <meta name="aem-publish-url" content="...">.
+ */
+const DEFAULT_AEM_PUBLISH_BASE_URL = 'https://publish-p150422-e1918841.adobeaemcloud.com';
+
+/**
+ * Builds the header URL for a given AEM content path.
+ * @param {string} contentPath - e.g. '/content/ksandbox/us/en' or '/content/kao-sandbox/index'
+ * @param {string} baseUrl - AEM publish base URL
+ * @returns {string}
+ */
+function buildHeaderUrl(contentPath, baseUrl) {
+  const normalized = contentPath.startsWith('/') ? contentPath : `/${contentPath}`;
+  return `${baseUrl.replace(/\/$/, '')}${normalized}.eds-header.html`;
+}
+
+/**
+ * Fetches the header HTML snippet from AEM for the given content path.
+ * @param {string} contentPath
+ * @param {string} baseUrl
+ * @returns {Promise<string>}
+ */
+async function fetchHeaderHtml(contentPath, baseUrl) {
+  const url = buildHeaderUrl(contentPath, baseUrl);
+  const response = await fetch(url, { credentials: 'omit' });
+  if (!response.ok) {
+    throw new Error(`[header] Failed to fetch header from AEM for path "${contentPath}": ${response.status} ${response.statusText}`);
+  }
+  return response.text();
+}
+
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
@@ -113,10 +145,33 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  // load nav as fragment
+  // 1. If aem-content-path or aemContentPath meta exists, fetch header from AEM
+  const contentPath = getMetadata('aem-content-path') || getMetadata('aemContentPath')
+    || getMetadata('aemcontentpath');
+  if (contentPath) {
+    const baseUrl = getMetadata('aem-publish-url') || getMetadata('aempublishurl')
+      || DEFAULT_AEM_PUBLISH_BASE_URL;
+    try {
+      const html = await fetchHeaderHtml(contentPath, baseUrl);
+      block.innerHTML = html;
+      // NOTE: Clientlibs (CSS/JS) are not loaded in this iteration. A future iteration
+      // will extend this block to inject the required AEM clientlibs.
+      return;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('[header] Error loading AEM header:', e);
+      block.innerHTML = '';
+      return;
+    }
+  }
+
+  // 2. Fallback: load nav as fragment
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
   const fragment = await loadFragment(navPath);
+  if (!fragment) {
+    return;
+  }
 
   // decorate nav DOM
   block.textContent = '';

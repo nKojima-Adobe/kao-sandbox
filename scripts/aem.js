@@ -11,6 +11,20 @@
  */
 
 /* eslint-env browser */
+
+// Inject aem-content-path meta if missing (UE page metadata overrides when available)
+(function injectAemContentPathMeta() {
+  const metaName = 'aem-content-path';
+  const altMetaName = 'aemContentPath';
+  if (!document.head.querySelector(`meta[name="${metaName}"]`)
+      && !document.head.querySelector(`meta[name="${altMetaName}"]`)) {
+    const meta = document.createElement('meta');
+    meta.name = metaName;
+    meta.content = '/content/ksandbox/us/en';
+    document.head.appendChild(meta);
+  }
+}());
+
 function sampleRUM(checkpoint, data) {
   // eslint-disable-next-line max-len
   const timeShift = () => (window.performance ? window.performance.now() : Date.now() - window.hlx.rum.firstReadTime);
