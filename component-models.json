@@ -24,9 +24,10 @@
       {
         "component": "text",
         "valueType": "string",
-        "name": "aem-content-path",
+        "name": "aemContentPath",
         "label": "AEM Content Path",
-        "description": "AEM page path whose header should be displayed (e.g. /content/ksandbox/us/en)"
+        "description": "AEM page path whose header should be displayed (e.g. /content/ksandbox/us/en)",
+        "value": "/content/ksandbox/us/en"
       }
     ]
   },
