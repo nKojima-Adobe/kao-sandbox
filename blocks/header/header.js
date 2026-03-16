@@ -145,7 +145,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  // 1. If aem-content-path or aemContentPath meta exists, fetch header from AEM and inject (HTML-only; no clientlibs)
+  // 1. If aem-content-path or aemContentPath meta exists, fetch header from AEM
   const contentPath = getMetadata('aem-content-path') || getMetadata('aemContentPath');
   if (contentPath) {
     const baseUrl = getMetadata('aem-publish-url') || DEFAULT_AEM_PUBLISH_BASE_URL;
