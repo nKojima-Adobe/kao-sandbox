@@ -26,7 +26,8 @@ function buildHeaderUrl(contentPath, baseUrl) {
  */
 async function fetchHeaderHtml(contentPath, baseUrl) {
   const url = buildHeaderUrl(contentPath, baseUrl);
-  const response = await fetch(url, { credentials: 'omit' });
+  // Avoid stale XF after AEM publishes: default fetch can reuse cached GET responses.
+  const response = await fetch(url, { credentials: 'omit', cache: 'no-store' });
   if (!response.ok) {
     throw new Error(`[header] Failed to fetch header from AEM for path "${contentPath}": ${response.status} ${response.statusText}`);
   }
