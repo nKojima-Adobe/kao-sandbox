@@ -1,4 +1,4 @@
-import { getMetadata } from '../../scripts/aem.js';
+import { getMetadata, loadCSS, loadScript } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 /**
@@ -31,6 +31,26 @@ async function fetchHeaderHtml(contentPath, baseUrl) {
     throw new Error(`[header] Failed to fetch header from AEM for path "${contentPath}": ${response.status} ${response.statusText}`);
   }
   return response.text();
+}
+
+/**
+ * Loads AEM clientlibs (CSS and JS) required for the header XF to display correctly.
+ * @param {string} baseUrl - AEM publish base URL
+ */
+async function injectAemClientlibs(baseUrl) {
+  const clientlibBase = `${baseUrl.replace(/\/$/, '')}/etc.clientlibs/ksandbox/clientlibs`;
+  const styles = [
+    `${clientlibBase}/clientlib-dependencies.css`,
+    `${clientlibBase}/clientlib-site.css`,
+  ];
+  const scripts = [
+    `${clientlibBase}/clientlib-dependencies.js`,
+    `${clientlibBase}/clientlib-site.js`,
+  ];
+  await Promise.all([
+    ...styles.map((href) => loadCSS(href)),
+    ...scripts.map((src) => loadScript(src)),
+  ]);
 }
 
 // media query match that indicates mobile/tablet width
@@ -154,12 +174,13 @@ export default async function decorate(block) {
     try {
       const html = await fetchHeaderHtml(contentPath, baseUrl);
       block.innerHTML = html;
-      // NOTE: Clientlibs (CSS/JS) are not loaded in this iteration. A future iteration
-      // will extend this block to inject the required AEM clientlibs.
+      block.classList.add('header--aem-xf');
+      await injectAemClientlibs(baseUrl);
       return;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('[header] Error loading AEM header:', e);
+      block.classList.remove('header--aem-xf');
       block.innerHTML = '';
       return;
     }

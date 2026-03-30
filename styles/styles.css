@@ -84,8 +84,21 @@ body.appear {
   display: block;
 }
 
+/* Fixed height reserves space for EDS fallback nav (mobile uses position:fixed .nav-wrapper). */
 header {
   height: var(--nav-height);
+}
+
+/* AEM XF header is taller than --nav-height; grow the shell so main is not overlapped. */
+body > header:has(.header--aem-xf) {
+  height: auto;
+  min-height: var(--nav-height);
+}
+
+/* Nested <header> from Experience Fragment must not inherit the global fixed height. */
+body > header:has(.header--aem-xf) header {
+  height: auto;
+  min-height: 0;
 }
 
 header .header,
