@@ -90,13 +90,13 @@ header {
 }
 
 /* AEM XF header is taller than --nav-height; grow the shell so main is not overlapped. */
-body > header:has(.header--aem-xf) {
+body > header:has(.header-aem-xf) {
   height: auto;
   min-height: var(--nav-height);
 }
 
 /* Nested <header> from Experience Fragment must not inherit the global fixed height. */
-body > header:has(.header--aem-xf) header {
+body > header:has(.header-aem-xf) header {
   height: auto;
   min-height: 0;
 }

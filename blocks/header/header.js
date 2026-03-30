@@ -174,13 +174,13 @@ export default async function decorate(block) {
     try {
       const html = await fetchHeaderHtml(contentPath, baseUrl);
       block.innerHTML = html;
-      block.classList.add('header--aem-xf');
+      block.classList.add('header-aem-xf');
       await injectAemClientlibs(baseUrl);
       return;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('[header] Error loading AEM header:', e);
-      block.classList.remove('header--aem-xf');
+      block.classList.remove('header-aem-xf');
       block.innerHTML = '';
       return;
     }
