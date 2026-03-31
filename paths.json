@@ -1,0 +1,9 @@
+{
+  "mappings": [
+    "/content/kao-sandbox/:/",
+    "/content/kao-sandbox/configuration:/.helix/config.json"
+  ],
+  "includes": [
+    "/content/kao-sandbox/"
+  ]
+}
